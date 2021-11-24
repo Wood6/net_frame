@@ -1,4 +1,4 @@
-﻿
+
 #include "ngx_global.h"
 #include "ngx_c_conf.h"
 #include "ngx_global.h"
@@ -119,6 +119,12 @@ void LogStderr(int err, const char* fmt, ...)
 	write(STDERR_FILENO, arr_errstr, p_errstr - arr_errstr);
 	if (gs_log.fd > STDERR_FILENO)    // 如果这是个有效的日志文件，本条件肯定成立，此时也才有意义将这个信息写到日志文件
 	{
+		// 因为上边已经把err信息显示出来了，所以这里就不要显示了，否则显示重复了
+		err = 0;         // 不要再次把错误信息弄到字符串里，否则字符串里重复了
+
+		--p_errstr;      
+		*p_errstr = 0;   // 把原来末尾的\n干掉，因为到ngx_log_err_core中还会加这个\n
+
 		// 往日志文件里面写一行错误日志
 		LogErrorCore(NGX_LOG_STDERR, err, (const char*)arr_errstr);
 	}
@@ -234,8 +240,8 @@ void LogErrorCore(int level, int err, const char* fmt, ...)
 
 
 	p_arr_errstr = ngx_cpymem(arr_errstr, arr_curr_time, strlen((const char*)arr_curr_time));  // 时间，得到形如：2019/01/08 20:26:07
-	p_arr_errstr = SlPrintf(p_arr_errstr, p_last, " [%s] ", arr2_err_levels[level]);           // 日志等级，得到形如：2019/01/08 20:26:07 [crit] 
-	p_arr_errstr = SlPrintf(p_arr_errstr, p_last, "%P: ", g_pid);                            // 进程号，得到形如：2019/01/08 20:50:15 [crit] 2037:
+	p_arr_errstr = SlPrintf(p_arr_errstr, p_last, " [%s] ", arr2_err_levels[level]);            // 日志等级，得到形如：2019/01/08 20:26:07 [crit] 
+	p_arr_errstr = SlPrintf(p_arr_errstr, p_last, "%P: ", g_pid);                               // 进程号，得到形如：2019/01/08 20:50:15 [crit] 2037:
 
 	va_list args;
 	va_start(args, fmt);        // 这行不能没有，否则走到VslPrintf中会报段错误
