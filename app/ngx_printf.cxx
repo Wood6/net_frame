@@ -1,4 +1,4 @@
-﻿// 
+// 
 #include "ngx_global.h"
 #include "ngx_macro.h"
 #include "ngx_func.h"

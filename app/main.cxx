@@ -1,9 +1,10 @@
-﻿// 主文件
+// 主文件
 
 #include "ngx_global.h"
 #include "ngx_c_conf.h"
 #include "ngx_macro.h"
 #include "ngx_func.h"
+#include "ngx_c_socket.h"
 
 
 #ifdef LIYAO_DEBUG
@@ -36,10 +37,14 @@ int g_process_type;    // 进程类型，用来标识是master进程还是worker
 // 一般等价于int【通常情况下，int类型的变量通常是原子访问的，也可以认为 sig_atomic_t就是int类型的数据】
 sig_atomic_t g_flag_workproc_change;
 
+// socket相关
+CSocket g_socket;      // socket全局对象
+
 
 // 专门在程序执行末尾释放资源的函数【一系列的main返回前的释放动作函数】
 void FreeResource();
 
+// 程序入口函数
 int main(int argc, char **argv)
 {
 	int exit_code = 0;
@@ -116,7 +121,13 @@ int main(int argc, char **argv)
 #endif
 
 	// 第四部分：一些初始化函数，准备放这里
-	if (InitSignals() == false)    // 信号注册
+	if (InitSignals() == false)          // 信号注册
+	{
+		exit_code = 1;
+		goto lblexit;
+	}
+	 
+	if (g_socket.InitSocket() == false)  // 初始化socket
 	{
 		exit_code = 1;
 		goto lblexit;
