@@ -1,4 +1,4 @@
-﻿
+
 #include <signal.h>
 
 #include "ngx_global.h"
@@ -132,6 +132,8 @@ void MasterProcessCycle()
  */
 static void StartCreatWorkerProc(int cnt_workprocess)
 {
+	LogErrorCore(NGX_LOG_INFO, 0, "进入了StartCreatWorkerProc()");
+
 	for (int i = 0; i < cnt_workprocess; ++i)
 	{
 		CreatWorkerProc(i, "worker process");
@@ -159,6 +161,8 @@ static void StartCreatWorkerProc(int cnt_workprocess)
  */
 static int CreatWorkerProc(int inum, const char* p_procname)
 {
+	LogErrorCore(NGX_LOG_INFO, 0, "进入了CreatWorkerProc()");
+
 	pid_t pid_fork = fork();
 	switch (pid_fork)
 	{
@@ -199,6 +203,8 @@ static int CreatWorkerProc(int inum, const char* p_procname)
  */
 static void WorkerProcessCycle(int inum, const char* p_procname)
 {
+	LogErrorCore(NGX_LOG_INFO, 0, "进入了WorkerProcessCycle()");
+
 	g_process_type = NGX_PROCESS_IS_WORKER;
 
 	/* 初始化子进程，重新设置标题，*/
@@ -214,7 +220,9 @@ static void WorkerProcessCycle(int inum, const char* p_procname)
 	{
 		// printf("worker进程休息1秒");       
 		// fflush(stdout); //刷新标准输出缓冲区，把输出缓冲区里的东西打印到标准输出设备上，则printf里的东西会立即输出；
-		sleep(1); // 先sleep一下 以后扩充.......
+		//sleep(1); // 先sleep一下 以后扩充.......
+
+		ProcessEventsAndTimers();         // 处理网络事件和定时器事件
 
 	}
 }
@@ -238,6 +246,8 @@ static void WorkerProcessCycle(int inum, const char* p_procname)
  */
 static void InitWorkerProcess(int inum)
 {
+	LogErrorCore(NGX_LOG_INFO, 0, "进入了InitWorkerProcess()");
+
 	sigset_t set;
 
 	sigemptyset(&set);   // 清空信号集
@@ -247,6 +257,9 @@ static void InitWorkerProcess(int inum)
 		LogErrorCore(NGX_LOG_ALERT, errno, "ngx_worker_process_init()中sigprocmask()失败!");
 	}
 
+	// 如下这些代码参照官方nginx里的ngx_event_process_init()函数中的代码
+	g_socket.InitEpoll();           // 初始化epoll相关内容，同时 往监听socket上增加监听事件，从而开始让监听端口履行其职责
+	
 	// 将来扩充代码
 }
 

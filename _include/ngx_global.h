@@ -1,4 +1,4 @@
-﻿// 通用的系统头文件
+// 通用的系统头文件
 // 一些比较通用的定义放此头文件，比如typedef定义
 // 一些全局变量的外部声明也放这里
 
@@ -17,6 +17,7 @@
 #include <signal.h>
 
 #include "ngx_macro.h"
+#include "ngx_c_socket.h"
 
 
 // 调试宏开关,
@@ -87,6 +88,8 @@ extern int g_os_argc;
 extern char** g_os_argv;
 
 extern gs_log_t gs_log;
+
+extern CSocket g_socket;
 
 
 #endif 

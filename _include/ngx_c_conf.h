@@ -1,4 +1,4 @@
-﻿// 配置文件相关头文件
+// 配置文件相关头文件
 #ifndef __NGX_C_CONF_H__
 #define __NGX_C_CONF_H__
 

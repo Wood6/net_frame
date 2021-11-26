@@ -1,4 +1,4 @@
-﻿// 一些公开的函数声明头文件
+// 一些公开的函数声明头文件
 
 #ifndef __NGX_FUNC_H__
 #define __NGX_FUNC_H__
@@ -27,6 +27,7 @@ void LogErrorCore(int level, int err, const char* fmt, ...);
 
 // 日志字符串格式化处理相关
 u_char* SlPrintf(u_char* p_buf, u_char* p_last, const char* fmt, ...);
+u_char * SnPrintf(u_char *p_buf, size_t max, const char *fmt, ...);
 u_char* VslPrintf(u_char* p_buf, u_char* p_last, const char* fmt, va_list args);
 
 // 信号相关代码
@@ -42,5 +43,6 @@ int CreatDaemon();
 
 // 和主流程相关
 void MasterProcessCycle();
+void ProcessEventsAndTimers();
 
 #endif

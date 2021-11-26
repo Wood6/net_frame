@@ -1,4 +1,4 @@
-﻿// 信号相关
+// 信号相关
 #include <signal.h>
 #include <sys/wait.h>
 
