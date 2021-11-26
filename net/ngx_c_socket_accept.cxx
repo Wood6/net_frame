@@ -99,27 +99,27 @@ void CSocket::EventAccept(gp_connection_t p_oldc)
 
 			if (use_accept4 && err == ENOSYS) //accept4()函数没实现，坑爹？
 			{
-				use_accept4 = 0;  //标记不使用accept4()函数，改用accept()函数
-				continue;         //回去重新用accept()函数搞
+				use_accept4 = 0;  // 标记不使用accept4()函数，改用accept()函数
+				continue;         // 回去重新用accept()函数搞
 			}
 
 			if (err == ECONNABORTED)  //对方关闭套接字
 			{
-				//这个错误因为可以忽略，所以不用干啥
-				//do nothing
+				// 这个错误因为可以忽略，所以不用干啥
+				// do nothing
 			}
 
 			if (err == EMFILE || err == ENFILE)
 			{
-				//do nothing，这个官方做法是先把读事件从listen socket上移除，然后再弄个定时器，定时器到了则继续执行该函数，
-				//但是定时器到了有个标记，会把读事件增加到listen socket上去；
-				//我这里目前先不处理吧【因为上边已经写这个日志了】；
+				// do nothing，这个官方做法是先把读事件从listen socket上移除，然后再弄个定时器，定时器到了则继续执行该函数，
+				// 但是定时器到了有个标记，会把读事件增加到listen socket上去；
+				// 我这里目前先不处理吧【因为上边已经写这个日志了】；
 			}
 			return;
 		}  //end if(s == -1)
 
-		//走到这里的，表示accept4()成功了        
-		//ngx_log_stderr(errno,"accept4成功s=%d",s); //s这里就是 一个句柄了
+		// 走到这里的，表示accept4()成功了        
+		// ngx_log_stderr(errno,"accept4成功s=%d",s); //s这里就是 一个句柄了
 		p_newc = GetElementOfConnection(s); //这是针对新连入用户的连接，和监听套接字 所对应的连接是两个不同的东西，不要搞混
 		if (p_newc == NULL)
 		{
@@ -143,32 +143,33 @@ void CSocket::EventAccept(gp_connection_t p_oldc)
 
 		if (!use_accept4)
 		{
-			//如果不是用accept4()取得的socket，那么就要设置为非阻塞【因为用accept4()的已经被accept4()设置为非阻塞了】
+			// 如果不是用accept4()取得的socket，那么就要设置为非阻塞【因为用accept4()的已经被accept4()设置为非阻塞了】
 			if (SetNonblocking(s) == false)
 			{
-				//设置非阻塞居然失败
-				CloseAcceptedConnection(p_newc); //回收连接池中的连接（千万不能忘记），并关闭socket
-				return; //直接返回
+				// 设置非阻塞居然失败
+				CloseAcceptedConnection(p_newc); // 回收连接池中的连接（千万不能忘记），并关闭socket
+				return; // 直接返回
 			}
 		}
 
-		p_newc->listening = p_oldc->listening;                    //连接对象 和监听对象关联，方便通过连接对象找监听对象【关联到监听端口】
-		p_newc->write_ready = 1;                                    //标记可以写，新连接写事件肯定是ready的；【从连接池拿出一个连接时这个连接的所有成员都是0】            
-		p_newc->read_handler = &CSocket::WaitRequestHandler;  //设置数据来时的读处理函数，其实官方nginx中是ngx_http_wait_request_handler()
-		//客户端应该主动发送第一次的数据，这里将读事件加入epoll监控
+		p_newc->listening = p_oldc->listening;                    // 连接对象 和监听对象关联，方便通过连接对象找监听对象【关联到监听端口】
+		p_newc->write_ready = 1;                                    // 标记可以写，新连接写事件肯定是ready的；【从连接池拿出一个连接时这个连接的所有成员都是0】            
+		p_newc->read_handler = &CSocket::WaitRequestHandler;  // 设置数据来时的读处理函数，其实官方nginx中是ngx_http_wait_request_handler()
+		// 客户端应该主动发送第一次的数据，这里将读事件加入epoll监控
 		if (EpollAddEvent(s,                 //socket句柄
-			1, 0,              //读，写 ,这里读为1，表示客户端应该主动给我服务器发送消息，我服务器需要首先收到客户端的消息；
-			EPOLLET,          //其他补充标记【EPOLLET(高速模式，边缘触发ET)】
-			EPOLL_CTL_ADD,    //事件类型【增加，还有删除/修改】                                    
-			p_newc              //连接池中的连接
+			1, 0,               // 读，写 ,这里读为1，表示客户端应该主动给我服务器发送消息，我服务器需要首先收到客户端的消息；
+			0,                  // 其他补充标记【EPOLLET(高速模式，边缘触发ET)】，0水平触发模式
+			                    // 后续因为实际项目需要，我们采用LT模式【水平触发模式/低速模式】
+			EPOLL_CTL_ADD,      // 事件类型【增加，还有删除/修改】                                    
+			p_newc              // 连接池中的连接
 		) == -1)
 		{
-			//增加事件失败，失败日志在ngx_epoll_add_event中写过了，因此这里不多写啥；
+			// 增加事件失败，失败日志在ngx_epoll_add_event中写过了，因此这里不多写啥；
 			CloseAcceptedConnection(p_newc);//回收连接池中的连接（千万不能忘记），并关闭socket
-			return; //直接返回
+			return; // 直接返回
 		}
 
-		break;  //一般就是循环一次就跳出去
+		break;      // 一般就是循环一次就跳出去
 	} while (1);
 
 	return;
