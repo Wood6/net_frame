@@ -22,6 +22,19 @@
  */
 void CSocket::WaitRequestHandler(gp_connection_t p_c)
 {
-	LogStderr(errno, "8888888888888888888.");
+	//LogStderr(errno, "8888888888888888888.");
+
+	// ET(边缘模式，一次实践系统只给一次信号)测试代码
+	unsigned char buf[10] = { 0 };
+	memset(buf, 0, sizeof(buf));
+	do
+	{
+		int n = recv(p_c->fd, buf, 2, 0);   // 每次只收两个字节
+		if (n == -1 && errno == EAGAIN)
+			break;                          // 数据收完了
+		else if (n == 0)
+			break;
+		LogStderr(0, "OK，收到的字节数为%d,内容为%s", n, buf);
+	} while (1);
 }
 
