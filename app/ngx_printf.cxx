@@ -25,7 +25,7 @@ static u_char* SprintfNum(u_char* p_buf, u_char* p_last, uint64_t ui64, u_char z
 	VslPrintfNum()
 
  * 其他说明：
-	该函数只不过相当于针对ngx_vslprintf()函数包装了一下，所以，直接研究ngx_vslprintf()即可
+	该函数只不过相当于针对 VslPrintf() 函数包装了一下，所以，直接研究 VslPrintf() 即可
 
  * 例子说明：
 
@@ -39,6 +39,41 @@ u_char* SlPrintf(u_char* p_buf, u_char* p_last, const char* fmt, ...)
 
 	return p;
 }
+
+/**
+ * 功能：
+	和上边的 SlPrintf非常类似，只是将末尾位置直接指定改为加个最大偏移量max指定
+	类printf()格式化函数，比较安全，max指明了缓冲区结束位置
+
+ * 输入参数：(u_char *p_buf, size_t max, const char *fmt, ...)   
+	p_buf 往这里放按格式转换后的数据
+	max 相对于起始点上指明了缓冲区结束位置
+	fmt 挨着可变参数的一个普通函数，其中可能包含有控制字符
+	... 变参，参数个数与fmt中的格式化控制字%数量相等，若不相等会出错
+
+ * 返回值：
+	实质就是函数执行完时的p_buf指针，即转换放好的数据后面一个指针位置
+
+ * 调用了函数：
+	VslPrintfNum()
+
+ * 其他说明：
+	该函数只不过相当于针对 VslPrintf() 函数包装了一下，所以，直接研究 VslPrintf() 即可
+
+ * 例子说明：
+
+ */
+u_char * SnPrintf(u_char *p_buf, size_t max, const char *fmt, ...)
+{
+	u_char   *p;
+	va_list   args;
+
+	va_start(args, fmt);
+	p = VslPrintf(p_buf, p_buf + max, fmt, args);
+	va_end(args);
+	return p;
+}
+
 
 /**
  * 功能：
@@ -192,7 +227,14 @@ u_char* VslPrintf(u_char* p_buf, u_char* p_last, const char* fmt, va_list args)
 				++fmt;
 				continue;
 
-			case 'p':
+			case 'p':         // 与大写P再区分开来，这个小写p表示格式化输出指针值，即一个地址值
+				ui64 = (uintptr_t)va_arg(args, void *);
+				hex = 2;     // 标记以大写字母显示十六进制中的A-F
+				sign = 0;    // 标记这是个无符号数
+				zero = '0';  // 前边0填充
+				width = 2 * sizeof(void *);
+				break;
+
 			case 'P':         // 转换一个pid_t类型,大小写都可以，即%p和%P都是可以读取进程号的
 				i64 = (int64_t)va_arg(args, pid_t);
 				sign = 1;
@@ -359,7 +401,7 @@ static u_char* SprintfNum(u_char* p_buf, u_char* p_last, uint64_t ui64, u_char z
 		{
 			--p_arrtmp;
 			*p_arrtmp = arr_hex[(uint32_t)(ui64 & 0xf)];
-		} while (ui64 >> 4);
+		} while (ui64 >>= 4);
 	}
 	else
 	{
@@ -367,7 +409,7 @@ static u_char* SprintfNum(u_char* p_buf, u_char* p_last, uint64_t ui64, u_char z
 		{
 			--p_arrtmp;
 			*p_arrtmp = arr_HEX[(uint32_t)(ui64 & 0xf)];
-		} while (ui64 >> 4);
+		} while (ui64 >>= 4);
 	}
 
 	size_t len = (arr_tmp + INT64_LEN) - p_arrtmp;   //  得到这个数字的宽度，比如 “7654321”这个数字 ,len = 7
