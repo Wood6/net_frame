@@ -674,7 +674,10 @@ int CSocket::EpollProcessEvents(int timer)
 		revents = m_arr_events[i].events;        // 取出事件类型
 		if (revents & (EPOLLERR | EPOLLHUP)) // 例如对方close掉套接字，这里会感应到【换句话说：如果发生了错误或者客户端断连】
 		{
-			// 这加上读写标记，方便后续代码处理
+			// 这加上读写标记，方便后续代码处理,至于怎么处理，后续再说，这里也是参照nginx官方代码引入的这段代码；
+			// 官方说法：if the error events were returned, 
+			// add EPOLLIN and EPOLLOUT，to handle the events at least in one active handler
+            // 我认为官方也是经过反复思考才加上着东西的，先放这里放着吧； 
 			revents |= EPOLLIN | EPOLLOUT;   // EPOLLIN：表示对应的链接上有数据可以读出（TCP链接的远端主动关闭连接，也相当于可读事件，因为本服务器小处理发送来的FIN包）
 										     // EPOLLOUT：表示对应的连接上可以写入数据发送【写准备好】
 			// ngx_log_stderr(errno,"2222222222222222222222222.");
@@ -688,9 +691,13 @@ int CSocket::EpollProcessEvents(int timer)
 											  //如果是已经连入，发送数据到这里，则这里执行的应该是 CSocekt::ngx_wait_request_handler
 		}
 
-		if (revents & EPOLLOUT) //如果是写事件
+        // 如果是写事件【对方关闭连接也触发这个，再研究。。。。。。】
+        // 注意上边的 if(revents & (EPOLLERR|EPOLLHUP))  revents |= EPOLLIN|EPOLLOUT; 读写标记都给加上了
+		if (revents & EPOLLOUT) 
 		{
 			// ....待扩展
+			// 客户端关闭时，关闭的时候能够执行到这里，
+			// 因为上边有if(revents & (EPOLLERR|EPOLLHUP))  revents |= EPOLLIN|EPOLLOUT; 代码
 			LogStderr(errno, "111111111111111111111111111111.");
 
 		}
