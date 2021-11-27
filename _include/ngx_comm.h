@@ -28,7 +28,7 @@ typedef struct _s_comm_pkg_head gs_comm_pkg_header_t, *gsp_comm_pkg_header_t;
 #pragma pack(1)       // 对齐方式,1字节对齐【结构之间成员不做任何字节对齐：紧密的排列在一起】
 typedef struct _s_comm_pkg_head
 {
-    unsigned short pkg_len;      // 报文总长度【包头+包体】--2字节，2字节可以表示的最大数字为6万多，
+    unsigned short len_pkg;      // 报文总长度【包头+包体】--2字节，2字节可以表示的最大数字为6万多，
                                  // 我们定义_PKG_MAX_LENGTH 30000，所以用pkgLen足够保存下
 	                             // 包头中记录着整个包【包头—+包体】的长度
 	                             

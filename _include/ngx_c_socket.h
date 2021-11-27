@@ -132,6 +132,12 @@ private:
 
     void ClearMsgRecvQueue();         // 清理接受收据的消息队列
 
+    ssize_t RecvProc(gp_connection_t p_conn,  char* p_buff, ssize_t len_buf);   // 接收从客户端来的数据专用函数
+	void WaitRequestHandlerProcPart1(gp_connection_t p_conn);            // 包头收完整后的处理                                                                   
+	void WaitRequestHandlerProcLast(gp_connection_t p_conn);             // 收到一个完整包后的处理
+	void AddMsgRecvQueue(char* p_buf) ;           // 收到一个完整消息后，入消息队列
+	void TmpOutMsgRecvQueue();                    // 临时清除对列中消息函数，测试用，将来会删除该函数
+
 public:
 	CSocket();
 	virtual ~CSocket();
