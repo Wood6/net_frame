@@ -2,7 +2,7 @@
 // 给保存接受消息那个数据结构申请堆内存用的一个类头文件
 // 
 #ifndef __NGX_MEMORY_H__
-#define __NGX_MACRO_H__
+#define __NGX_MEMORY_H__
 
 
 #include <stddef.h>    // NULL
@@ -48,7 +48,7 @@ public:
 		{
 			if (CMemory::mp_instance != NULL)
 			{
-				delete CMemory::mp_instance;
+				delete CMemory::mp_instance;  // 这个释放是整个系统退出的时候，系统来调用释放内存的
 				CMemory::mp_instance = NULL;
 			}
 		}

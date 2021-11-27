@@ -43,8 +43,8 @@ CSocket::CSocket()
 	mp_free_connections = NULL;   // 连接池中空闲的连接链 
 
     // 一些和网络通讯有关的常用变量值，供后续频繁使用时提高效率
-    m_len_pkg_header = sizeof(gs_comm_pkg_header_t);
-    m_len_msg_header = sizeof(gs_msg_header_t);
+    m_len_pkg_header = sizeof(gs_comm_pkg_header_t);  // 包头的sizeof值【占用的字节数】
+    m_len_msg_header = sizeof(gs_msg_header_t);       // 消息头的sizeof值【占用的字节数】
 }
 
 /**
@@ -80,7 +80,7 @@ CSocket::~CSocket()
 	if (mp_connections != NULL)        // 释放连接池
 		delete[] mp_connections;
 
-    //(3)接收消息队列中内容释放
+    // (3)接收消息队列中内容释放
     ClearMsgRecvQueue();
 }
 

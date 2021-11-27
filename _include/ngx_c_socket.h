@@ -121,7 +121,7 @@ private:
 
 	void EventAccept(gp_connection_t old_c);                    // 建立新连接
 	void WaitRequestHandler(gp_connection_t p_c);               // 设置数据来时的读处理函数
-	void CloseAcceptedConnection(gp_connection_t p_c);          // 用户连入，我们accept4()时，得到的socket
+	void CloseConnection(gp_connection_t p_conn);               // 用户连入，我们accept4()时，得到的socket
 	                                                            // 在处理中产生失败，则资源用这个函数释放
 	                                                            // 【因为这里涉及到好几个要释放的资源，所以写成函数】
 
