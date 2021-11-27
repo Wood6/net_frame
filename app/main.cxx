@@ -5,6 +5,7 @@
 #include "ngx_macro.h"
 #include "ngx_func.h"
 #include "ngx_c_socket.h"
+#include "ngx_c_memory.h"
 
 
 #ifdef LIYAO_DEBUG
@@ -48,6 +49,7 @@ void FreeResource();
 int main(int argc, char **argv)
 {
 	int exit_code = 0;
+    CMemory* p_memory;
 
 	// 第一部分：无伤大雅也不需要释放的放最上面
 	g_pid = getpid();
@@ -81,6 +83,9 @@ int main(int argc, char **argv)
 		exit_code = 2;   // 标记找不到文件退出
 		goto lblexit;
 	}
+
+     // (2.1)内存单例类可以在这里初始化，返回值不用保存
+    CMemory::GetInstance();
 
 #ifdef LIYAO_DEBUG_PASS
 	cout << "******************************** liyao debug start ********************************" << endl;
@@ -174,10 +179,4 @@ void FreeResource()
 		gs_log.fd = -1;     // 标记下，防止被再次close吧
 	}
 }
-
-
-
-
-
-
 

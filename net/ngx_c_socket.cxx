@@ -3,6 +3,7 @@
 #include "ngx_c_socket.h"
 #include "ngx_c_conf.h"
 #include "ngx_func.h"
+#include "ngx_c_memory.h"
 
 #include <iostream>
 #include <sys/socket.h>
@@ -40,6 +41,10 @@ CSocket::CSocket()
 	m_handle_epoll = -1;          // epoll返回的句柄
 	mp_connections = NULL;        // 连接池【连接数组】先给空
 	mp_free_connections = NULL;   // 连接池中空闲的连接链 
+
+    // 一些和网络通讯有关的常用变量值，供后续频繁使用时提高效率
+    m_len_pkg_header = sizeof(gs_comm_pkg_header_t);
+    m_len_msg_header = sizeof(gs_msg_header_t);
 }
 
 /**
@@ -74,7 +79,47 @@ CSocket::~CSocket()
 	// (2)连接池相关的内容释放---------
 	if (mp_connections != NULL)        // 释放连接池
 		delete[] mp_connections;
+
+    //(3)接收消息队列中内容释放
+    ClearMsgRecvQueue();
 }
+
+/**
+ * 功能：
+    清理接收消息队列，注意这个函数的写法。
+
+ * 输入参数：
+ 	无
+
+ * 返回值：
+	无
+
+ * 调用了函数：
+
+ * 其他说明：
+    注意清理队列结构实质就是清理其中中的每一个元素的这个思想
+
+ * 例子说明：
+
+ */
+void CSocket::ClearMsgRecvQueue()
+{
+    char* p_tmp = NULL;
+    
+    // 消息队列是个链表结构，清理这个结构实质是要清理掉这个链表上的每一个元素
+    // 所以这里定义一个队列上的元素指针，等会就是调用元素清理函数实现清理过程
+    CMemory* p_memory = CMemory::GetInstance();
+   
+    while(!m_list_rece_msg_queue.empty())
+    {
+        p_tmp = m_list_rece_msg_queue.front();
+        m_list_rece_msg_queue.pop_front();
+
+        // 每个元素经此清理，while循环遍历每个元素完后，整个链表队列也就清理完毕了
+        p_memory->FreeMemory(p_tmp);
+    }
+}
+
 
 /**
  * 功能：
