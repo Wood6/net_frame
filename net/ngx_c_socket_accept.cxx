@@ -147,7 +147,7 @@ void CSocket::EventAccept(gp_connection_t p_oldc)
 			if (SetNonblocking(s) == false)
 			{
 				// 设置非阻塞居然失败
-				CloseAcceptedConnection(p_newc); // 回收连接池中的连接（千万不能忘记），并关闭socket
+				CloseConnection(p_newc); // 回收连接池中的连接（千万不能忘记），并关闭socket
 				return; // 直接返回
 			}
 		}
@@ -165,7 +165,7 @@ void CSocket::EventAccept(gp_connection_t p_oldc)
 		) == -1)
 		{
 			// 增加事件失败，失败日志在ngx_epoll_add_event中写过了，因此这里不多写啥；
-			CloseAcceptedConnection(p_newc);//回收连接池中的连接（千万不能忘记），并关闭socket
+			CloseConnection(p_newc);//回收连接池中的连接（千万不能忘记），并关闭socket
 			return; // 直接返回
 		}
 
@@ -173,38 +173,5 @@ void CSocket::EventAccept(gp_connection_t p_oldc)
 	} while (1);
 
 	return;
-}
-
-
-/**
- * 功能：
-	用户连入，我们accept4()时，得到的socket在处理中产生失败，
-	则资源用这个函数释放【因为这里涉及到好几个要释放的资源，所以写成函数】
-
- * 输入参数：(gp_connection_t p_c)
-	p_c 
-
- * 返回值：
-	无
-
- * 调用了函数：
-	主要调用自定义函数：FreeConnection(p_c);
-
- * 其他说明：
-
- * 例子说明：
-
- */
-void CSocket::CloseAcceptedConnection(gp_connection_t p_c)
-{
-	int fd = p_c->fd;
-
-	FreeConnection(p_c);
-	p_c->fd = -1;                          // 官方nginx这么写，这么写有意义；
-	
-	if (close(fd) == -1 )
-	{
-		LogErrorCore(NGX_LOG_ALERT, errno, "CSocekt::ngx_close_accepted_connection()中close(%d)失败!", fd);
-	}
 }
 
