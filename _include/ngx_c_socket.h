@@ -57,7 +57,7 @@ struct gs_connection
     unsigned char              pkg_cur_state;                          // 当前收包的状态
     char                       arr_pkghead_info[PKG_HEAD_BUFSIZE];     // 用于保存收到的数据的包头信息			
     char*                      p_recvbuf_pos;     // 接收数据的缓冲区的头指针，对收到不全的包非常有用，看具体应用的代码
-    unsigned int               len_recv;          //  要收到多少数据，由这个变量指定，和precvbuf配套使用，看具体应用的代码
+    unsigned int               len_recv;          // 要收到多少数据，由这个变量指定，和precvbuf配套使用，看具体应用的代码
 
     bool                       is_new_recvmem;    // 如果我们成功的收到了包头，
                                                   // 那么我们就要分配内存开始保存 包头+消息头+包体内容，

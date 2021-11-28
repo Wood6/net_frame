@@ -1,4 +1,4 @@
-﻿// 主文件
+// 主文件
 
 #include "ngx_global.h"
 #include "ngx_c_conf.h"
@@ -53,7 +53,7 @@ void FreeResource();
 int main(int argc, char **argv)
 {
 	int exit_code = 0;
-    CMemory* p_memory;
+    //CMemory* p_memory;
 
 	// 第一部分：无伤大雅也不需要释放的放最上面
 	g_pid = getpid();

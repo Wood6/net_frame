@@ -227,7 +227,8 @@ u_char* VslPrintf(u_char* p_buf, u_char* p_last, const char* fmt, va_list args)
 				++fmt;
 				continue;
 
-			case 'p':         // 与大写P再区分开来，这个小写p表示格式化输出指针值，即一个地址值
+
+			case 'p':        // 与大写P再区分开来，这个小写p表示格式化输出指针值，即一个地址值
 				ui64 = (uintptr_t)va_arg(args, void *);
 				hex = 2;     // 标记以大写字母显示十六进制中的A-F
 				sign = 0;    // 标记这是个无符号数

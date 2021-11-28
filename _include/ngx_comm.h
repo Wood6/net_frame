@@ -26,7 +26,7 @@ typedef struct _s_comm_pkg_head gs_comm_pkg_header_t, *gps_comm_pkg_header_t;
 // 一些和网络通讯相关的结构放在这里
 // 包头结构,1字节对齐这个包头结构体长度是8字节
 #pragma pack(1)       // 对齐方式,1字节对齐【结构之间成员不做任何字节对齐：紧密的排列在一起】
-typedef struct _s_comm_pkg_head
+struct _s_comm_pkg_head
 {
     unsigned short len_pkg;      // 报文总长度【包头+包体】--2字节，2字节可以表示的最大数字为6万多，
                                  // 我们定义_PKG_MAX_LENGTH 30000，所以用pkgLen足够保存下
@@ -44,7 +44,7 @@ typedef struct _s_comm_pkg_head
 // 这个数字大小一定要 > sizeof(gs_comm_pkg_header_t) ,
 // 所以我这里定义为   sizeof(gs_comm_pkg_header_t) + 10 总是比包头多10个字节，收包头绰绰有余，
 // 如果日后COMM_PKG_HEADER大小变动，这个数字也会动态调整满足 > sizeof(COMM_PKG_HEADER) 的要求
-const unsigned short PKG_HEAD_BUFSIZE = sizeof(gs_comm_pkg_header_t) + 10;
+const unsigned int PKG_HEAD_BUFSIZE = sizeof(gs_comm_pkg_header_t) + 10;
 
 #endif
 

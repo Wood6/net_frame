@@ -262,7 +262,7 @@ void LogErrorCore(int level, int err, const char* fmt, ...)
 	}
 	*p_arr_errstr++ = '\n';   // 加换行
 
-	size_t n = 0;
+	ssize_t n = 0;
 	while (1)
 	{
 		// 要打印的这个日志的等级太落后（等级数字太大，比配置文件中的数字大)

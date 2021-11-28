@@ -14,7 +14,10 @@ private:
     // 单例类，所以是私有化下面这三个函数
     CMemory() {};
     CMemory(const CMemory&) {};
-    CMemory& operator =(const CMemory&) {};
+	// 正常是不能用这个传参来做直接返回的
+	// 但这里加上返回值是消除警告的，反正这个已经私有化了，外界是调用不了的
+	// 即这个赋值构造永远都不会被调用，所以为了消除编译器警告，这样用吧
+    CMemory& operator =(const CMemory& obj) { return const_cast<CMemory&>(obj); };
 
 public:
 	~CMemory() {};

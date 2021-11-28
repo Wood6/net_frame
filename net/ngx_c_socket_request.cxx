@@ -43,7 +43,7 @@ void CSocket::WaitRequestHandler(gps_connection_t p_conn)
     // 连接建立起来时肯定是这个状态，因为在GetElementOfConnection()中已经把pkg_cur_state成员赋值成        PKG_HEAD_INIT
     if(p_conn->pkg_cur_state == PKG_HEAD_INIT)  
     {        
-        if(recv_cnt == m_len_pkg_header)  // 正好收到完整包头，这里拆解包头
+        if(recv_cnt == static_cast<ssize_t>(m_len_pkg_header))  // 正好收到完整包头，这里拆解包头
         {   
             WaitRequestHandlerProcPart1(p_conn); //那就调用专门针对包头处理完整的函数去处理把。
         }
@@ -58,7 +58,7 @@ void CSocket::WaitRequestHandler(gps_connection_t p_conn)
     } 
     else if(p_conn->pkg_cur_state == PKG_HEAD_RECV_ING)   // 接收包头中，包头不完整，继续接收中，这个条件才会成立
     {
-        if(p_conn->len_recv == recv_cnt)                  // 要求收到的宽度和我实际收到的宽度相等
+        if(static_cast<ssize_t>(p_conn->len_recv) == recv_cnt)                  // 要求收到的宽度和我实际收到的宽度相等
         {
             // 包头收完整了
             WaitRequestHandlerProcPart1(p_conn);          // 那就调用专门针对包头处理完整的函数去处理把。
@@ -74,7 +74,7 @@ void CSocket::WaitRequestHandler(gps_connection_t p_conn)
     else if(p_conn->pkg_cur_state == PKG_BODY_INIT) 
     {
         //  包头刚好收完，准备接收包体
-        if(p_conn->len_recv == recv_cnt)
+        if(static_cast<ssize_t>(p_conn->len_recv) == recv_cnt)
         {
             // 收到的宽度等于要收的宽度，包体也收完整了
             WaitRequestHandlerProcLast(p_conn);
@@ -90,7 +90,7 @@ void CSocket::WaitRequestHandler(gps_connection_t p_conn)
     else if(p_conn->pkg_cur_state == PKG_BODY_RECV_ING) 
     {
         // 接收包体中，包体不完整，继续接收中
-        if(p_conn->len_recv == recv_cnt)
+        if(static_cast<ssize_t>(p_conn->len_recv) == recv_cnt)
         {
             // 包体收完整了
             WaitRequestHandlerProcLast(p_conn);
@@ -190,7 +190,7 @@ ssize_t CSocket::RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_bu
         {
             // 能走到这里的，都表示错误，我打印一下日志，希望知道一下是啥错误，我准备打印到屏幕上
             // 正式运营时可以考虑这些日志打印去掉
-            (errno,"CSocekt::recvproc()中发生错误，我打印出来看看是啥错误！");   
+            LogStderr(errno,"CSocekt::recvproc()中发生错误，我打印出来看看是啥错误！"); 
         } 
         
         //LogStderr(0,"连接被客户端 非 正常关闭！");

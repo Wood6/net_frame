@@ -12,7 +12,10 @@ private:
 	// 单例类将这些私有化，禁止默认构造方式
 	CConfig() {};
 	CConfig(const CConfig&) {};
-	CConfig& operator = (const CConfig&) {};
+	// 正常是不能用这个传参来做直接返回的
+	// 但这里加上返回值是消除警告的，反正这个已经私有化了，外界是调用不了的
+	// 即这个赋值构造永远都不会被调用，所以为了消除编译器警告，这样用吧
+	CConfig& operator = (const CConfig& obj) { return const_cast<CConfig&>(obj); };
 
 	static CConfig * mp_instance;
 public:

@@ -1,4 +1,4 @@
-﻿
+
 #include <signal.h>
 
 #include "ngx_global.h"
@@ -182,6 +182,8 @@ static int CreatWorkerProc(int inum, const char* p_procname)
 	default:
 		break;
 	}
+
+	return -1;
 }
 
 /**
