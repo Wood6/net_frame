@@ -18,7 +18,7 @@
 
 #include "ngx_macro.h"
 #include "ngx_c_socket.h"
-
+#include "ngx_c_threadpool.h"
 
 // 调试宏开关,
 // 1只打开调试中LIYAO_DEBUG_ING的日志输出，
@@ -90,6 +90,7 @@ extern char** g_os_argv;
 extern gs_log_t gs_log;
 
 extern CSocket g_socket;
+extern CThreadPool g_threadpool;
 
 
 #endif 

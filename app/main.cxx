@@ -1,4 +1,4 @@
-// 主文件
+﻿// 主文件
 
 #include "ngx_global.h"
 #include "ngx_c_conf.h"
@@ -6,6 +6,7 @@
 #include "ngx_func.h"
 #include "ngx_c_socket.h"
 #include "ngx_c_memory.h"
+#include "ngx_c_threadpool.h"
 
 
 #ifdef LIYAO_DEBUG
@@ -40,6 +41,9 @@ sig_atomic_t g_flag_workproc_change;
 
 // socket相关
 CSocket g_socket;           // socket全局对象
+
+// 线程池相关
+CThreadPool g_threadpool;   // 线程池全局对象
 
 
 // 专门在程序执行末尾释放资源的函数【一系列的main返回前的释放动作函数】
@@ -84,8 +88,8 @@ int main(int argc, char **argv)
 		goto lblexit;
 	}
 
-     // (2.1)内存单例类可以在这里初始化，返回值不用保存
-    CMemory::GetInstance();
+    // (2.1)内存单例类可以在这里初始化，返回值不用保存
+    //CMemory::GetInstance();
 
 #ifdef LIYAO_DEBUG_PASS
 	cout << "******************************** liyao debug start ********************************" << endl;

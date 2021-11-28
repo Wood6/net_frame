@@ -1,9 +1,11 @@
-
+﻿
 #include <signal.h>
 
 #include "ngx_global.h"
 #include "ngx_func.h"
 #include "ngx_c_conf.h"
+
+#include <string>
 
 
 // 静态变量定义worker进程名字
@@ -76,7 +78,7 @@ void MasterProcessCycle()
 		SetProcTitle(title);             // 设置标题
 
 		// 设置标题时顺便记录下来进程名，进程id等信息到日志
-		LogErrorCore(NGX_LOG_NOTICE, 0, "%s %P 启动并开始运行......!", title, g_pid);
+		LogErrorCore(NGX_LOG_NOTICE, 0, "%s %P 【master进程】启动并开始运行......!", title, g_pid);
 	}
 	// 设置主进程标题结束
 
@@ -225,6 +227,9 @@ static void WorkerProcessCycle(int inum, const char* p_procname)
 		ProcessEventsAndTimers();         // 处理网络事件和定时器事件
 
 	}
+
+    // 如果从上面for循环跳出来，考虑在这里停止线程池
+    g_threadpool.StopAll();
 }
 
 /**
@@ -257,6 +262,17 @@ static void InitWorkerProcess(int inum)
 		LogErrorCore(NGX_LOG_ALERT, errno, "ngx_worker_process_init()中sigprocmask()失败!");
 	}
 
+    // 线程池代码，率先创建，至少要比和socket相关的内容优先，因为socket起来可能立刻就有事件需要线程处理
+    CConfig* p_config  = CConfig::GetInstance();
+    // 读配置，若配置文件中没有指定则默认给创建5个线程
+    int creat_thread_n = p_config->GetIntDefault(CONFING_ITEMNAME_CREAT_THREAD_N.c_str(), 5);  
+    if(g_threadpool.Create(creat_thread_n) == false)
+    {
+        // 内存没释放，但是简单粗暴退出；
+        exit(-2);
+    }
+    sleep(1);        // 再休息1秒；
+    
 	// 如下这些代码参照官方nginx里的ngx_event_process_init()函数中的代码
 	g_socket.InitEpoll();           // 初始化epoll相关内容，同时 往监听socket上增加监听事件，从而开始让监听端口履行其职责
 	

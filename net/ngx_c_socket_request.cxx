@@ -5,6 +5,7 @@
 #include "ngx_func.h"
 #include "ngx_c_memory.h"
 #include "ngx_c_lockmutex.h"  // 自动释放互斥量的一个类
+#include "ngx_global.h"       // 调用全局线程池变量 g_threadpool
 
 #include <arpa/inet.h>        // ntohs()
 #include <pthread.h>          // pthread多线程相关
@@ -320,8 +321,8 @@ void CSocket::WaitRequestHandlerProcLast(gps_connection_t p_conn)
     // 上面拿到消息数，下面就知道有多少消息需要处理，
     // 从而好直接告诉线程需要激活多个个线程来处理消息对应的业务逻辑了
     
-    // 这里暂时还没实现，后面添加这个调用。。。。
-
+    // 通过全局线程变量直接调用线程来处理了
+    g_threadpool.Call(msgqueue_n);                           // 激发线程池中的某个线程来处理业务逻辑
     
     p_conn->is_new_recvmem     = false;                      // 内存不再需要释放，因为你收完整了包，这个包被上边
 	                                                         // 调用InMsgRecvQueue()移入消息队列，那么释放内存就
