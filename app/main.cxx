@@ -23,15 +23,15 @@ size_t g_argv_need_mem = 0;
 size_t g_env_need_mem = 0;
 int g_os_argc = 0;
 char** g_os_argv = NULL;
-char* gp_envmem = NULL;   // 指向自己分配的env环境变量的内存，在InitSetProcTitle()函数中会被分配内存
+char* gp_envmem = NULL;    // 指向自己分配的env环境变量的内存，在InitSetProcTitle()函数中会被分配内存
 
 
-int g_is_daemon = 0;     // 是否开启守护进程模式，0未启用，1启用
+int g_is_daemon = 0;       // 是否开启守护进程模式，0未启用，1启用
 
 // 和进程本身有关的全局变量
-pid_t g_pid;           // 当前进程的pid
-pid_t g_ppid;          // 父进程pid
-int g_process_type;    // 进程类型，用来标识是master进程还是worker进程
+pid_t g_pid;               // 当前进程的pid
+pid_t g_ppid;              // 父进程pid
+int g_process_type;        // 进程类型，用来标识是master进程还是worker进程
 
 // 标记子进程状态变化[一般是子进程发来SIGCHLD信号表示退出],
 // sig_atomic_t:系统定义的类型：访问或改变这些变量需要在计算机的一条指令内完成
@@ -39,7 +39,7 @@ int g_process_type;    // 进程类型，用来标识是master进程还是worker
 sig_atomic_t g_flag_workproc_change;
 
 // socket相关
-CSocket g_socket;      // socket全局对象
+CSocket g_socket;           // socket全局对象
 
 
 // 专门在程序执行末尾释放资源的函数【一系列的main返回前的释放动作函数】
@@ -90,7 +90,7 @@ int main(int argc, char **argv)
 #ifdef LIYAO_DEBUG_PASS
 	cout << "******************************** liyao debug start ********************************" << endl;
 	cout << "m_vec_config_item.size() = " << p_config->m_vec_config_item.size() << endl;
-	for (std::vector<gp_stru_conf_item_t>::iterator iter = p_config->m_vec_config_item.begin(); iter != p_config->m_vec_config_item.end(); ++iter)
+	for (std::vector<gps_stru_conf_item_t>::iterator iter = p_config->m_vec_config_item.begin(); iter != p_config->m_vec_config_item.end(); ++iter)
 	{
 		string strName = (*iter)->c_arr_item_name;
 		string strContent = (*iter)->c_arr_iter_content;
@@ -139,7 +139,7 @@ int main(int argc, char **argv)
 	}
 
 	// 第五部分：一些不好归类的其他类别代码，准备放这里
-	InitSetProcTitle();     // 把环境变量搬家
+	InitSetProcTitle();                   // 把环境变量搬家
 
 	// 第六部分：创建守护进程
 	if (p_config->GetIntDefault("Daemon", 0) == 1)

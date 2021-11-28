@@ -15,7 +15,7 @@
 using namespace std;
 #endif
 
-CConfig* CConfig::m_instance = NULL;
+CConfig* CConfig::mp_instance = NULL;
 
 /**
  * 功能：
@@ -51,14 +51,14 @@ bool CConfig::Load(const char * p_config_name)
 			continue;
 
 		// 对读取的行数据合法性检测，有非法字符的直接舍弃这行的读取
-		if (0 == lineBuf[0])    // 行首为NUL字符跳过
+		if (0 == lineBuf[0])     // 行首为NUL字符跳过
 			continue;
-		// 读取的数据末尾若有换行，回车，空格，全部去掉
-		if (';' == lineBuf[0] || ' ' == lineBuf[0] || '#' == lineBuf[0] || '\t' == lineBuf[0] || '\n' == lineBuf[0])            // 注释行跳过
+		// 读取的数据末尾若有换行，回车，空格，全部去掉,注释行跳过
+		if (';' == lineBuf[0] || ' ' == lineBuf[0] || '#' == lineBuf[0] || '\t' == lineBuf[0] || '\n' == lineBuf[0])     
 			continue;
 
 		// NUL字符跳过
-		if (0 == lineBuf[0])    // 行首为NUL字符跳过
+		if (0 == lineBuf[0])      // 行首为NUL字符跳过
 			continue;
 		// '[' 行首为这个跳过
 		if ('[' == lineBuf[0])    // 行首为NUL字符跳过
@@ -70,7 +70,7 @@ bool CConfig::Load(const char * p_config_name)
 		if (NULL != pChTmp)
 		{
 			// 将'='两边数据截取暂存到内存变量中
-			gp_stru_conf_item_t psConfItem = new gs_conf_iterm_t();
+			gps_stru_conf_item_t psConfItem = new gs_conf_iterm_t();
 			memset(psConfItem, 0, sizeof(gs_conf_iterm_t));
 			strncpy(psConfItem->c_arr_item_name, lineBuf, static_cast<int>(pChTmp - lineBuf));
 			strcpy(psConfItem->c_arr_iter_content, pChTmp + 1);
@@ -106,7 +106,7 @@ const char* CConfig::GetString(const char *pItemname)
 {
 	char *ret = NULL;
 
-	std::vector<gp_stru_conf_item_t>::iterator iter;
+	std::vector<gps_stru_conf_item_t>::iterator iter;
 	for (iter = m_vec_config_item.begin(); iter != m_vec_config_item.end(); ++iter)
 	{
 		if (0 == strcmp(pItemname, (*iter)->c_arr_item_name))
@@ -122,7 +122,7 @@ int CConfig::GetIntDefault(const char *pItemname, const int def)
 {
 	int ret = 0;
 
-	std::vector<gp_stru_conf_item_t>::iterator iter;
+	std::vector<gps_stru_conf_item_t>::iterator iter;
 	for (iter = m_vec_config_item.begin(); iter != m_vec_config_item.end(); ++iter)
 	{
 		if (0 == strcmp(pItemname, (*iter)->c_arr_item_name))

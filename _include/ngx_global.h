@@ -38,7 +38,7 @@ typedef struct
 {
 	char c_arr_item_name[51];
 	char c_arr_iter_content[501];
-}gs_conf_iterm_t, *gp_stru_conf_item_t;
+}gs_conf_iterm_t, *gps_stru_conf_item_t;
 
 
 // 和运行日志相关

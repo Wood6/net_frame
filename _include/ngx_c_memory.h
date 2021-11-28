@@ -48,7 +48,7 @@ public:
 		{
 			if (CMemory::mp_instance != NULL)
 			{
-				delete CMemory::mp_instance;  // 这个释放是整个系统退出的时候，系统来调用释放内存的
+				delete CMemory::mp_instance;     // 这个释放是整个系统退出的时候，系统来调用释放内存的
 				CMemory::mp_instance = NULL;
 			}
 		}

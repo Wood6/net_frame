@@ -412,7 +412,7 @@ static u_char* SprintfNum(u_char* p_buf, u_char* p_last, uint64_t ui64, u_char z
 		} while (ui64 >>= 4);
 	}
 
-	size_t len = (arr_tmp + INT64_LEN) - p_arrtmp;   //  得到这个数字的宽度，比如 “7654321”这个数字 ,len = 7
+	size_t len = (arr_tmp + INT64_LEN) - p_arrtmp;   // 得到这个数字的宽度，比如 “7654321”这个数字 ,len = 7
 	size_t tmp = len;
 	while ((tmp++ < width) && (p_buf < p_last))
 	{

@@ -1,4 +1,4 @@
-﻿
+
 #include "ngx_global.h"
 #include "ngx_func.h"
 
@@ -56,17 +56,17 @@ int CreatDaemon()
 	}
 	// dup2(oldfd, newfd)  将old的文件映射到新的文件描述符newfd上，以后往newfd上写东西就是动写进了oldfd打开的文件里面去了
 	// dup2()就是一个重定向的功能
-	if (dup2(fd, STDIN_FILENO) == -1) //先关闭STDIN_FILENO[这是规矩，已经打开的描述符，动他之前，先close]，类似于指针指向null，让/dev/null成为标准输入；
+	if (dup2(fd, STDIN_FILENO) == -1)  // 先关闭STDIN_FILENO[这是规矩，已经打开的描述符，动他之前，先close]，类似于指针指向null，让/dev/null成为标准输入；
 	{
 		LogErrorCore(NGX_LOG_EMERG, errno, "ngx_daemon()中dup2(STDIN)失败!");
 		return -1;
 	}
-	if (dup2(fd, STDOUT_FILENO) == -1) //再关闭STDIN_FILENO，类似于指针指向null，让/dev/null成为标准输出；
+	if (dup2(fd, STDOUT_FILENO) == -1) // 再关闭STDIN_FILENO，类似于指针指向null，让/dev/null成为标准输出；
 	{
 		LogErrorCore(NGX_LOG_EMERG, errno, "ngx_daemon()中dup2(STDOUT)失败!");
 		return -1;
 	}
-	if (fd > STDERR_FILENO)  //fd应该是3，这个应该成立
+	if (fd > STDERR_FILENO)   // fd应该是3，这个应该成立
 	{
 		if (close(fd) == -1)  //释放资源这样这个文件描述符就可以被复用；不然这个数字【文件描述符】会被一直占着；
 		{

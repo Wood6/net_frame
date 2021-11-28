@@ -7,7 +7,7 @@
  * 功能：
 	建立新连接专用函数
 
- * 输入参数：(gp_connection_t p_oldc)
+ * 输入参数：(gps_connection_t p_oldc)
 	p_oldc 
 
  * 返回值：
@@ -26,7 +26,7 @@
  * 例子说明：
 
  */
-void CSocket::EventAccept(gp_connection_t p_oldc)
+void CSocket::EventAccept(gps_connection_t p_oldc)
 {
 	// 因为listen套接字上用的不是ET【边缘触发】，而是LT【水平触发】，意味着客户端连入如果我要不处理，这个函数会被多次调用，
 	// 所以，我这里这里可以不必多次accept()，可以只执行一次accept()
@@ -37,7 +37,7 @@ void CSocket::EventAccept(gp_connection_t p_oldc)
 	int                level;
 	int                s;
 	static int         use_accept4 = 1;     // 我们先认为能够使用accept4()函数
-	gp_connection_t    p_newc;              // 代表连接池中的一个连接【注意这是指针】
+	gps_connection_t    p_newc;              // 代表连接池中的一个连接【注意这是指针】
 
 	// ngx_log_stderr(0,"这是几个\n"); 这里会惊群，也就是说，epoll技术本身有惊群的问题
 
@@ -152,11 +152,11 @@ void CSocket::EventAccept(gp_connection_t p_oldc)
 			}
 		}
 
-		p_newc->listening = p_oldc->listening;                    // 连接对象 和监听对象关联，方便通过连接对象找监听对象【关联到监听端口】
-		p_newc->write_ready = 1;                                    // 标记可以写，新连接写事件肯定是ready的；【从连接池拿出一个连接时这个连接的所有成员都是0】            
+		p_newc->p_listening = p_oldc->p_listening;            // 连接对象 和监听对象关联，方便通过连接对象找监听对象【关联到监听端口】
+		p_newc->write_ready = 1;                              // 标记可以写，新连接写事件肯定是ready的；【从连接池拿出一个连接时这个连接的所有成员都是0】            
 		p_newc->read_handler = &CSocket::WaitRequestHandler;  // 设置数据来时的读处理函数，其实官方nginx中是ngx_http_wait_request_handler()
 		// 客户端应该主动发送第一次的数据，这里将读事件加入epoll监控
-		if (EpollAddEvent(s,                 //socket句柄
+		if (EpollAddEvent(s,    // socket句柄
 			1, 0,               // 读，写 ,这里读为1，表示客户端应该主动给我服务器发送消息，我服务器需要首先收到客户端的消息；
 			0,                  // 其他补充标记【EPOLLET(高速模式，边缘触发ET)】，0水平触发模式
 			                    // 后续因为实际项目需要，我们采用LT模式【水平触发模式/低速模式】
@@ -165,11 +165,11 @@ void CSocket::EventAccept(gp_connection_t p_oldc)
 		) == -1)
 		{
 			// 增加事件失败，失败日志在ngx_epoll_add_event中写过了，因此这里不多写啥；
-			CloseConnection(p_newc);//回收连接池中的连接（千万不能忘记），并关闭socket
-			return; // 直接返回
+			CloseConnection(p_newc); // 回收连接池中的连接（千万不能忘记），并关闭socket
+			return;                  // 直接返回
 		}
 
-		break;      // 一般就是循环一次就跳出去
+		break;                       // 一般就是循环一次就跳出去
 	} while (1);
 
 	return;

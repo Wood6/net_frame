@@ -70,6 +70,3 @@ void RightTrim(char * s)
 		s[len] = '\0';
 	}
 }
-
-
-

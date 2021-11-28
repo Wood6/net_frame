@@ -1,4 +1,4 @@
-﻿//和设置课执行程序标题（名称）相关的放这里 
+//和设置课执行程序标题（名称）相关的放这里 
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,7 +30,7 @@ void InitSetProcTitle()
 	// 这里无需判断penvmen == NULL,有些编译器new会返回NULL，有些会报异常，
 	// 但不管怎样，如果在重要的地方new失败了，你无法收场，让程序失控崩溃，助你发现问题为好； 
 	gp_envmem = new char[g_env_need_mem];
-	memset(gp_envmem, 0, g_env_need_mem);  //内存要清空防止出现问题
+	memset(gp_envmem, 0, g_env_need_mem);     //内存要清空防止出现问题
 
 	char *ptmp = gp_envmem;
 	// 把原来的内存内容搬到新地方来

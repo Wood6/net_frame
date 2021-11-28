@@ -21,9 +21,9 @@
  * 例子说明：
 
  */
-gp_connection_t CSocket::GetElementOfConnection(int isock)
+gps_connection_t CSocket::GetElementOfConnection(int isock)
 {
-	gp_connection_t ret_p_c = mp_free_connections;
+	gps_connection_t ret_p_c = mp_free_connections;
 	if (NULL == ret_p_c)
 	{
 		// 系统应该控制连接数量，防止空闲连接被耗尽，能走到这里，都不正常
@@ -35,12 +35,12 @@ gp_connection_t CSocket::GetElementOfConnection(int isock)
 	--m_free_connections_n;               // 空闲连接少1
 
 	// (1)注意这里的操作,先把ret_p_c指向的对象中有用的东西搞出来保存成变量，因为这些数据可能有用
-	uintptr_t instance = ret_p_c->instance;   // 常规c->instance在刚构造连接池时这里是1【失效】
+	uintptr_t instance = ret_p_c->instance;               // 常规c->instance在刚构造连接池时这里是1【失效】
 	uint64_t currse_quence = ret_p_c->cnt_currse_quence;  //  序号也暂存，后续用于恢复
 	//....其他内容再增加
 
 	// (2)把以往有用的数据搞出来后，清空并给适当值
-	memset(ret_p_c, 0, sizeof(gs_connection_t));  // 注意，类型不要用成gp_connection_t，否则就出错了
+	memset(ret_p_c, 0, sizeof(gs_connection_t));  // 注意，类型不要用成gps_connection_t，否则就出错了
 	ret_p_c->fd = isock;                          // 套接字要保存起来，这东西具有唯一性 
 
     // 初始化收包相关
@@ -64,7 +64,7 @@ gp_connection_t CSocket::GetElementOfConnection(int isock)
  * 功能：
 	归还参数p_c所代表的连接到到连接池中，注意参数类型是指针
 
- * 输入参数：(gp_connection_t p_c)
+ * 输入参数：(gps_connection_t p_c)
 	p_c 指针，指向要归还的连接池元素内存地址
 
  * 返回值：
@@ -77,7 +77,7 @@ gp_connection_t CSocket::GetElementOfConnection(int isock)
  * 例子说明：
 
  */
-void CSocket::FreeConnection(gp_connection_t p_conn)
+void CSocket::FreeConnection(gps_connection_t p_conn)
 {
 	if(p_conn->is_new_recvmem == true)
     {
@@ -105,7 +105,7 @@ void CSocket::FreeConnection(gp_connection_t p_conn)
 	把 CloseAcceptedConnection() 函数改名为让名字CloseConnection()更通用，
 	并从文件ngx_socket_accept.cxx迁移到本文件中，并改造其中代码，注意顺序
 
- * 输入参数：(gp_connection_t p_conn)
+ * 输入参数：(gps_connection_t p_conn)
 	p_conn 指针，指向连接池中的一个连接
 
  * 返回值：
@@ -119,7 +119,7 @@ void CSocket::FreeConnection(gp_connection_t p_conn)
  * 例子说明：
 
  */
-void CSocket::CloseConnection(gp_connection_t p_conn)
+void CSocket::CloseConnection(gps_connection_t p_conn)
 {
 	if (close(p_conn->fd) == -1 )
 	{

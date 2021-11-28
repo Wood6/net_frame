@@ -69,7 +69,7 @@ CSocket::~CSocket()
 {
 	// 释放必须的内存
 	// (1)监听端口相关内存的释放--------
-	std::vector<gp_listening_t>::iterator iter;
+	std::vector<gps_listening_t>::iterator iter;
 	for (iter = m_vec_listen_socket.begin(); iter != m_vec_listen_socket.end(); ++iter)   // vector
 	{
 		delete (*iter); // 一定要把指针指向的内存干掉，不然内存泄漏
@@ -143,7 +143,7 @@ void CSocket::ReadConf()
 {
 	CConfig *p_config = CConfig::GetInstance();
 	m_worker_connections_n = p_config->GetIntDefault("worker_connections", m_worker_connections_n);  // epoll连接的最大项数
-	m_lister_port_cnt = p_config->GetIntDefault("listen_port_cnt", m_lister_port_cnt);   // 取得要监听的端口数量
+	m_lister_port_cnt = p_config->GetIntDefault("listen_port_cnt", m_lister_port_cnt);               // 取得要监听的端口数量
 }
 
 /**
@@ -263,7 +263,7 @@ bool CSocket::OpenListeningSockets()
 		}
 
 		// 可以，放到vector里来
-		gp_listening_t p_listen_socket = new gs_listening;          // 千万不要写错，注意前边类型是指针，后边类型是一个结构体
+		gps_listening_t p_listen_socket = new gs_listening;         // 千万不要写错，注意前边类型是指针，后边类型是一个结构体
 		memset(p_listen_socket, 0, sizeof(gs_listening));           // 注意后边用的是 ngx_listening_t而不是lpngx_listening_t
 		p_listen_socket->port = iport;                              // 记录下所监听的端口号
 		p_listen_socket->fd = isock;                                // 套接字木柄保存下来   
@@ -394,7 +394,7 @@ int CSocket::InitEpoll()
 	// （2）创建一个连接池，将其按单链表式串起来，并对其内某些成员初始化赋值
 	m_connection_n = m_worker_connections_n;                  // 记录当前连接池中连接总数
 	// 连接池申请内存【数组，每个元素是一个对象】
-	//LogErrorCore(NGX_LOG_INFO, 0, "CSocket::InitEpoll()中mp_connections = %p, m_connection_n = %d,", mp_connections, m_connection_n);
+	// LogErrorCore(NGX_LOG_INFO, 0, "CSocket::InitEpoll()中mp_connections = %p, m_connection_n = %d,", mp_connections, m_connection_n);
 	LogErrorCore(NGX_LOG_INFO, 0, "CSocket::InitEpoll()中sizeof(gs_connection_t) = %d", sizeof(gs_connection_t));
 	mp_connections = new gs_connection_t[m_connection_n];     // new不可以失败，不用判断结果，如果失败直接报异常更好一些
 	if(NULL == mp_connections)
@@ -408,11 +408,11 @@ int CSocket::InitEpoll()
 	}
 
 	int cnt_tmp = m_connection_n;                  // 连接池中连接数
-	gp_connection_t p_next = NULL;
-	gp_connection_t p_c = mp_connections;          // 连接池数组首地址
+	gps_connection_t p_next = NULL;
+	gps_connection_t p_c = mp_connections;         // 连接池数组首地址
 	do
 	{
-		--cnt_tmp;                           // 注意cnt_tmp是数字的末尾，从最后遍历，cnt_tmp递减至数组首个元素
+		--cnt_tmp;                             // 注意cnt_tmp是数字的末尾，从最后遍历，cnt_tmp递减至数组首个元素
 		
 		// 好，从屁股往前走，利用next一个个串起来形成一个从前至后的单链表结构
 		(p_c[cnt_tmp]).data = p_next;          // 设置连接对象的next指针，注意第一次循环时next = NULL;
@@ -421,13 +421,13 @@ int CSocket::InitEpoll()
 		(p_c[cnt_tmp]).cnt_currse_quence = 0;  // 当前序号统一从0开始
 
 		p_next = &p_c[cnt_tmp];                // next指针前移          
-	} while (cnt_tmp);   // 循环直至cnt_tmp为0，即数组首地址
-	mp_free_connections = p_next;            // 设置空闲连接链表头指针,因为现在next指向c[0]，注意现在整个链表都是空的
-	m_free_connections_n = m_connection_n;   // 空闲连接链表长度，因为现在整个链表都是空的，这两个长度相等；
+	} while (cnt_tmp);                         // 循环直至cnt_tmp为0，即数组首地址
+	mp_free_connections = p_next;              // 设置空闲连接链表头指针,因为现在next指向c[0]，注意现在整个链表都是空的
+	m_free_connections_n = m_connection_n;     // 空闲连接链表长度，因为现在整个链表都是空的，这两个长度相等；
 
 	// （3）遍历所有监听socket【监听端口】，我们为每个监听socket增加一个 连接池中的连接
 	// 【说白了就是让一个socket和一个内存绑定，以方便记录该sokcet相关的数据、状态等等】
-	std::vector<gp_listening_t>::iterator iter;
+	std::vector<gps_listening_t>::iterator iter;
 	for (iter = m_vec_listen_socket.begin(); iter != m_vec_listen_socket.end(); ++iter)
 	{
 		p_c = GetElementOfConnection((*iter)->fd);
@@ -437,7 +437,7 @@ int CSocket::InitEpoll()
 			LogStderr(errno, "CSocekt::ngx_epoll_init()中ngx_get_connection()失败.");
 			exit(2); // 直接退，资源由系统释放吧，这里不刻意释放了，比较麻烦
 		}
-		p_c->listening = (*iter);       // 连接对象 和监听对象关联，方便通过连接对象找监听对象
+		p_c->p_listening = (*iter);     // 连接对象 和监听对象关联，方便通过连接对象找监听对象
 		(*iter)->p_connection = p_c;    // 监听对象 和连接对象关联，方便通过监听对象找连接对象
 
 		// 对监听端口的读事件设置处理方法，
@@ -453,7 +453,7 @@ int CSocket::InitEpoll()
 			p_c) == -1                   // 连接池中的一个连接 
 			)
 		{
-			exit(2);  // 有问题，直接退出，日志 已经写过了
+			exit(2);                     // 有问题，直接退出，日志 已经写过了
 		}
 	}  // end for
 	return 1;
@@ -464,7 +464,7 @@ int CSocket::InitEpoll()
 	epoll增加事件，可能被ngx_epoll_init()等函数调用
 
  * 输入参数：(int fd,int read_event, int write_event,uint32_t otherflag,
-              uint32_t event_type, gp_connection_t p_c)
+              uint32_t event_type, gps_connection_t p_c)
 	fd 句柄，一个socket
 	read_event  1是个读事件，0不是
 	write_event 1是个写事件，0不是
@@ -488,7 +488,7 @@ int CSocket::EpollAddEvent(int fd,
 	int read_event, int write_event,
 	uint32_t otherflag,
 	uint32_t event_type,
-	gp_connection_t p_c
+	gps_connection_t p_c
 )
 {
 	struct epoll_event ev;
@@ -620,15 +620,15 @@ int CSocket::EpollProcessEvents(int timer)
 	// ngx_log_stderr(errno,"惊群测试1:%d",events); 
 
 	// 走到这里，就是属于有事件收到了
-	gp_connection_t p_c;
+	gps_connection_t p_c;
 	uintptr_t          instance;
 	uint32_t           revents;
 	for (int i = 0; i < events; ++i)    // 遍历本次epoll_wait返回的所有事件，注意events才是返回的实际事件数量
 	{
-		p_c = (gp_connection_t)(m_arr_events[i].data.ptr);            // ngx_epoll_add_event()给进去的，这里能取出来
-		instance = (uintptr_t)p_c & 1;                                // 将地址的最后一位取出来，用instance变量标识, 见ngx_epoll_add_event，
-																      // 该值是当时随着连接池中的连接一起给进来的
-		p_c = (gp_connection_t)((uintptr_t)p_c & (uintptr_t)~1);      // 最后1位干掉，得到真正的c地址
+		p_c = (gps_connection_t)(m_arr_events[i].data.ptr);          // ngx_epoll_add_event()给进去的，这里能取出来
+		instance = (uintptr_t)p_c & 1;                               // 将地址的最后一位取出来，用instance变量标识, 见ngx_epoll_add_event，
+																     // 该值是当时随着连接池中的连接一起给进来的
+		p_c = (gps_connection_t)((uintptr_t)p_c & (uintptr_t)~1);    // 最后1位干掉，得到真正的c地址
 
 		// 仔细分析一下官方nginx的这个判断 
 		// 过滤过期事件
@@ -685,10 +685,10 @@ int CSocket::EpollProcessEvents(int timer)
 		if (revents & EPOLLIN)  //如果是读事件
 		{
 			// 一个客户端新连入，这个会成立
-			// p_c->r_ready = 1;               //标记可以读；【从连接池拿出一个连接时这个连接的所有成员都是0】            
-			(this->* (p_c->read_handler))(p_c);    //注意括号的运用来正确设置优先级，防止编译出错；【如果是个新客户连入
-											  //如果新连接进入，这里执行的应该是CSocekt::ngx_event_accept(c)】            
-											  //如果是已经连入，发送数据到这里，则这里执行的应该是 CSocekt::ngx_wait_request_handler
+			// p_c->r_ready = 1;                // 标记可以读；【从连接池拿出一个连接时这个连接的所有成员都是0】            
+			(this->* (p_c->read_handler))(p_c); // 注意括号的运用来正确设置优先级，防止编译出错；【如果是个新客户连入
+											    // 如果新连接进入，这里执行的应该是CSocekt::ngx_event_accept(c)】            
+											    // 如果是已经连入，发送数据到这里，则这里执行的应该是 CSocekt::ngx_wait_request_handler
 		}
 
         // 如果是写事件【对方关闭连接也触发这个，再研究。。。。。。】

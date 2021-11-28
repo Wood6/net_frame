@@ -38,18 +38,18 @@ void MasterProcessCycle()
 	sigemptyset(&set);
 
 	sigaddset(&set, SIGCHLD);
-	//下列这些信号在执行本函数期间不希望收到【考虑到官方nginx中有这些信号，老师就都搬过来了】（保护不希望由信号中断的代码临界区）
-	//建议fork()子进程时学习这种写法，防止信号的干扰；
-	sigaddset(&set, SIGCHLD);     //子进程状态改变
-	sigaddset(&set, SIGALRM);     //定时器超时
-	sigaddset(&set, SIGIO);       //异步I/O
-	sigaddset(&set, SIGINT);      //终端中断符
-	sigaddset(&set, SIGHUP);      //连接断开
-	sigaddset(&set, SIGUSR1);     //用户定义信号
-	sigaddset(&set, SIGUSR2);     //用户定义信号
-	sigaddset(&set, SIGWINCH);    //终端窗口大小改变
-	sigaddset(&set, SIGTERM);     //终止
-	sigaddset(&set, SIGQUIT);     //终端退出符
+	// 下列这些信号在执行本函数期间不希望收到【考虑到官方nginx中有这些信号，都搬过来了】（保护不希望由信号中断的代码临界区）
+	// 建议fork()子进程时学习这种写法，防止信号的干扰；
+	sigaddset(&set, SIGCHLD);     // 子进程状态改变
+	sigaddset(&set, SIGALRM);     // 定时器超时
+	sigaddset(&set, SIGIO);       // 异步I/O
+	sigaddset(&set, SIGINT);      // 终端中断符
+	sigaddset(&set, SIGHUP);      // 连接断开
+	sigaddset(&set, SIGUSR1);     // 用户定义信号
+	sigaddset(&set, SIGUSR2);     // 用户定义信号
+	sigaddset(&set, SIGWINCH);    // 终端窗口大小改变
+	sigaddset(&set, SIGTERM);     // 终止
+	sigaddset(&set, SIGQUIT);     // 终端退出符
 	//.........可以根据开发的实际需要往其中添加其他要屏蔽的信号......
 
 	// 设置，此时无法接受的信号；
@@ -83,7 +83,7 @@ void MasterProcessCycle()
 	/******* 要开始创建工作子进程了 **********/
 	CConfig *p_config = CConfig::GetInstance();                               // 单例类
 	int cnt_workprocess = p_config->GetIntDefault("workprocess_conut", 1);    // 从配置文件中得到要创建的worker进程数量
-	StartCreatWorkerProc(cnt_workprocess);                                         // 这里要创建worker子进程
+	StartCreatWorkerProc(cnt_workprocess);                                    // 这里要创建worker子进程
 
 
 	// 创建子进程后，父进程的执行流程会返回到这里，子进程不会走进来    

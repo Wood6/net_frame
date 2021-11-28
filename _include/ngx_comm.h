@@ -21,7 +21,7 @@ const unsigned char PKG_BODY_INIT          = 2;     // 包头刚好收完，准�
 const unsigned char PKG_BODY_RECV_ING      = 3;     // 接收包体中，包体不完整，继续接收中，处理后直接回到 PKG_HEAD_INIT 状态
 //const unsigned char _PKG_RECV_FINISHED    = 4;    // 完整包收完，这个状态似乎没什么用处
 
-typedef struct _s_comm_pkg_head gs_comm_pkg_header_t, *gsp_comm_pkg_header_t;
+typedef struct _s_comm_pkg_head gs_comm_pkg_header_t, *gps_comm_pkg_header_t;
 
 // 一些和网络通讯相关的结构放在这里
 // 包头结构,1字节对齐这个包头结构体长度是8字节

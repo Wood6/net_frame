@@ -15,20 +15,20 @@ const int NGX_LISTEN_BACKLOG = 511;
 // epoll_wait一次最多接收这么多个事件，nginx中缺省是512，我们这里固定给成512就行，没太大必要修改
 const int NGX_MAX_EVENTS = 512;
 
-typedef struct gs_listening              gs_listening_t,  *gp_listening_t;
-typedef struct gs_connection             gs_connection_t, *gp_connection_t;
+typedef struct gs_listening              gs_listening_t,  *gps_listening_t;
+typedef struct gs_connection             gs_connection_t, *gps_connection_t;
 typedef struct _s_msg_header             gs_msg_header_t, *gps_msg_header_t;
 
 typedef class CSocket                    CSocket;
 
-typedef void (CSocket::*EpollEventHandlerPt)(gp_connection_t c);                 // 定义CSocket类的成员函数指针
+typedef void (CSocket::*EpollEventHandlerPt)(gps_connection_t c);                 // 定义CSocket类的成员函数指针
 
 // 一些专用结构定义放在这里，暂时不考虑放ngx_global.h里了
 struct gs_listening
 {
 	int               port;            // 监听的端口号
 	int               fd;              // 套接字句柄socket
-	gp_connection_t   p_connection;    // 指向连接池中的一个连接，注意这是个指针
+	gps_connection_t  p_connection;    // 指向连接池中的一个连接，注意这是个指针
 	                                   // 这个指针就将这个结构体与连接池结构体联系起来了
 };
 
@@ -37,8 +37,8 @@ struct gs_listening
 struct gs_connection
 {
 	int                       fd;                // 套接字句柄socket
-	gp_listening_t            listening;         // 如果这个链接被分配给了一个监听套接字，那么这个里边就指向监听套接字对应的那个 gp_listening_t 的内存首地址
-											     // 用此指针与上面监听套接字的结构体联系起来了
+	gps_listening_t           p_listening;       // 如果这个链接被分配给了一个监听套接字，那么这个里边就指向监听套接字对应的
+											     // 那个 gps_listening_t 的内存首地址,用此指针与上面监听套接字的结构体联系起来了
 
 	// ------------------------------------	
 	unsigned                  instance : 1;      // 【位域】失效标志位：0：有效，1：失效【这个是官方nginx提供，到底有什么用，ngx_epoll_process_events()中详解】  
@@ -67,16 +67,16 @@ struct gs_connection
 
 
 	// --------------------------------------------------
-	gp_connection_t            data;             // 这是个指针【等价于传统链表里的next成员：后继指针】，
-	                                             // 指向下一个本类型对象，用于把空闲的连接池对象串起来构成一个单向链表，
-											     // 方便取用
+	gps_connection_t            data;             // 这是个指针【等价于传统链表里的next成员：后继指针】，
+	                                              // 指向下一个本类型对象，用于把空闲的连接池对象串起来
+											      // 构成一个单向链表，方便取用
 };
 
 // 消息头，引入的目的是当收到数据包时，额外记录一些代码中需要用到的辅助信息，以备将来使用
 typedef struct _s_msg_header
 {
-    gp_connection_t   p_conn;             //  记录对应的链接，注意这是个指针
-    uint64_t          cnt_currse_quence;  //  收到数据包时记录对应连接的序号，将来能用于比较是否连接已经作废用
+    gps_connection_t   p_conn;             //  记录对应的链接，注意这是个指针
+    uint64_t          cnt_currse_quence;   //  收到数据包时记录对应连接的序号，将来能用于比较是否连接已经作废用
     // ......其他以后扩展	
 }gs_msg_header_t, *gps_msg_header_t;
 
@@ -85,8 +85,8 @@ typedef struct _s_msg_header
 class CSocket
 {
 private:
-	int                           m_lister_port_cnt;    // 默认监听端口数量
-	std::vector<gp_listening_t>   m_vec_listen_socket;  // 存储套接字的数据vector结构
+	int                           m_lister_port_cnt;     // 默认监听端口数量
+	std::vector<gps_listening_t>   m_vec_listen_socket;  // 存储套接字的数据vector结构
 
 	// epoll 相关成员变量
 	int                           m_handle_epoll;               // 系统函数 epoll_creat() 返回的句柄
@@ -95,13 +95,13 @@ private:
 	
 
 	// 连接池相关
-	gp_connection_t               mp_connections;       // 注意这是个指针，其实这是个连接池的首地址
-	gp_connection_t               mp_free_connections;  // 空闲连接链表头，连接池中总是有某些连接被占用，
-	                                                    // 为了快速在池中找到一个空闲的连接，我把空闲的
-	                                                    // 连接专门用该成员记录;【串成一串，其实这里
-	                                                    // 指向的都是m_pconnections连接池里的没有被使用的成员】
-	int                           m_connection_n;       // 当前进程中所有连接对象的总数【连接池大小】
-	int                           m_free_connections_n; // 连接池中可用连接总数
+	gps_connection_t               mp_connections;       // 注意这是个指针，其实这是个连接池的首地址
+	gps_connection_t               mp_free_connections;  // 空闲连接链表头，连接池中总是有某些连接被占用，
+	                                                     // 为了快速在池中找到一个空闲的连接，我把空闲的
+	                                                     // 连接专门用该成员记录;【串成一串，其实这里
+	                                                     // 指向的都是m_pconnections连接池里的没有被使用的成员】
+	int                           m_connection_n;        // 当前进程中所有连接对象的总数【连接池大小】
+	int                           m_free_connections_n;  // 连接池中可用连接总数
 
     // 一些和网络通讯有关的成员变量
     size_t                        m_len_pkg_header;      // sizeof(COMM_PKG_HEADER);		
@@ -115,15 +115,15 @@ private:
 	void CloseListeningSockets();              // 关闭监听套接字
 	bool SetNonblocking(int sockfd);           // 设置非阻塞套接字
 
-	gp_connection_t GetElementOfConnection(int isock);         // 从连接池中获取一个空闲连接
-	void FreeConnection(gp_connection_t p_c);                  // 将 p_c 归还进连接池
+	gps_connection_t GetElementOfConnection(int isock);    // 从连接池中获取一个空闲连接
+	void FreeConnection(gps_connection_t p_c);             // 将 p_conn 归还进连接池
 
 
-	void EventAccept(gp_connection_t old_c);                    // 建立新连接
-	void WaitRequestHandler(gp_connection_t p_c);               // 设置数据来时的读处理函数
-	void CloseConnection(gp_connection_t p_conn);               // 用户连入，我们accept4()时，得到的socket
-	                                                            // 在处理中产生失败，则资源用这个函数释放
-	                                                            // 【因为这里涉及到好几个要释放的资源，所以写成函数】
+	void EventAccept(gps_connection_t old_c);              // 建立新连接
+	void WaitRequestHandler(gps_connection_t p_c);         // 设置数据来时的读处理函数
+	void CloseConnection(gps_connection_t p_conn);         // 用户连入，我们accept4()时，得到的socket
+	                                                       // 在处理中产生失败，则资源用这个函数释放
+	                                                       // 【因为这里涉及到好几个要释放的资源，所以写成函数】
 
 
 	// 获取对端相关，
@@ -132,9 +132,9 @@ private:
 
     void ClearMsgRecvQueue();         // 清理接受收据的消息队列
 
-    ssize_t RecvProc(gp_connection_t p_conn,  char* p_buff, ssize_t len_buf);   // 接收从客户端来的数据专用函数
-	void WaitRequestHandlerProcPart1(gp_connection_t p_conn);            // 包头收完整后的处理                                                                   
-	void WaitRequestHandlerProcLast(gp_connection_t p_conn);             // 收到一个完整包后的处理
+    ssize_t RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_buf);   // 接收从客户端来的数据专用函数
+	void WaitRequestHandlerProcPart1(gps_connection_t p_conn);                   // 包头收完整后的处理                                                                   
+	void WaitRequestHandlerProcLast(gps_connection_t p_conn);                    // 收到一个完整包后的处理
 	void AddMsgRecvQueue(char* p_buf) ;           // 收到一个完整消息后，入消息队列
 	void TmpOutMsgRecvQueue();                    // 临时清除对列中消息函数，测试用，将来会删除该函数
 
@@ -151,7 +151,7 @@ public:
 		int read_event, int write_event,
 		uint32_t otherflag,
 		uint32_t event_type,
-		gp_connection_t p_c
+		gps_connection_t p_conn
 	);                                       // epoll 增加事件
 
 	int EpollProcessEvents(int timer);       // epoll等待接收和处理事件

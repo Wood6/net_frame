@@ -12,7 +12,7 @@
 	来数据时候的处理，当连接上有数据来的时候，
 	本函数会被EpollProcessEvents()所调用  ,官方的类似函数为ngx_http_wait_request_handler();
 
- * 输入参数：(gp_connection_t p_conn)
+ * 输入参数：(gps_connection_t p_conn)
 	p_conn
 
  * 返回值：
@@ -26,7 +26,7 @@
  * 例子说明：
 
  */
-void CSocket::WaitRequestHandler(gp_connection_t p_conn)
+void CSocket::WaitRequestHandler(gps_connection_t p_conn)
 {
     // 收包，注意我们用的第二个和第三个参数，我们用的始终是这两个参数，
     // 因此我们必须保证 p_conn->p_recvbuf_pos 指向正确的收包位置，保证 p_conn->len_recv 指向正确的收包宽度
@@ -113,7 +113,7 @@ void CSocket::WaitRequestHandler(gp_connection_t p_conn)
     这里直接 释放连接池中连接，然后直接关闭socket，以免在其他函数中
     还要重复的干这些事
     
- * 输入参数：(gp_connection_t p_conn,  char* p_buff, ssize_t len_buf) 
+ * 输入参数：(gps_connection_t p_conn,  char* p_buff, ssize_t len_buf) 
     p_conn 连接池中相关连接
     p_buff 接收数据的缓冲区
     len_buf  要接收的数据大小
@@ -131,7 +131,7 @@ void CSocket::WaitRequestHandler(gp_connection_t p_conn)
  * 例子说明：
 
  */
-ssize_t CSocket::RecvProc(gp_connection_t p_conn,  char* p_buff, ssize_t len_buf) 
+ssize_t CSocket::RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_buf) 
 {
     ssize_t recv_cnt = 0;
     recv_cnt = recv(p_conn->fd, p_buff, len_buf, 0);   // recv()系统函数， 最后一个参数flag，一般为0； 
@@ -209,7 +209,7 @@ ssize_t CSocket::RecvProc(gp_connection_t p_conn,  char* p_buff, ssize_t len_buf
  * 功能：
     包头收完整后的处理，我们称为包处理阶段1：写成函数，方便复用
     
- * 输入参数：(gp_connection_t p_conn)
+ * 输入参数：(gps_connection_t p_conn)
  	p_conn 指针，指向连接池中的一个连接
 
  * 返回值：
@@ -222,13 +222,13 @@ ssize_t CSocket::RecvProc(gp_connection_t p_conn,  char* p_buff, ssize_t len_buf
  * 例子说明：
 
  */
-void CSocket::WaitRequestHandlerProcPart1(gp_connection_t p_conn)
+void CSocket::WaitRequestHandlerProcPart1(gps_connection_t p_conn)
 {
     CMemory *p_memory = CMemory::GetInstance();		
 
-    gsp_comm_pkg_header_t p_pkg_header;
+    gps_comm_pkg_header_t p_pkg_header;
     // 正好收到包头时，包头信息肯定是在arr_pkghead_info里；
-    p_pkg_header = (gsp_comm_pkg_header_t)p_conn->arr_pkghead_info; 
+    p_pkg_header = (gps_comm_pkg_header_t)p_conn->arr_pkghead_info; 
 
     unsigned short len_pkg; 
     len_pkg = ntohs(p_pkg_header->len_pkg);   // 注意这里网络序转本机序，所有传输到网络上的2字节数据，
@@ -294,7 +294,7 @@ void CSocket::WaitRequestHandlerProcPart1(gp_connection_t p_conn)
  * 功能：
     收到一个完整包后的处理【Last表示最后阶段】，放到一个函数中，方便调用
 
- * 输入参数：(gp_connection_t p_conn)
+ * 输入参数：(gps_connection_t p_conn)
  	p_conn 指针，指向连接池中的一个连接
 
  * 返回值：
@@ -307,13 +307,15 @@ void CSocket::WaitRequestHandlerProcPart1(gp_connection_t p_conn)
  * 例子说明：
 
  */
-void CSocket::WaitRequestHandlerProcLast(gp_connection_t p_conn)
+void CSocket::WaitRequestHandlerProcLast(gps_connection_t p_conn)
 {
     // 把这段内存放到消息队列中来；
     AddMsgRecvQueue(p_conn->p_new_recvmem_pos);
     // ......这里可能考虑触发业务逻辑，怎么触发业务逻辑，这个代码以后再考虑扩充。。。。。。
     
-    p_conn->is_new_recvmem     = false;                      // 内存不再需要释放，因为你收完整了包，这个包被上边调用InMsgRecvQueue()移入消息队列，那么释放内存就属于业务逻辑去干，不需要回收连接到连接池中干了
+    p_conn->is_new_recvmem     = false;                      // 内存不再需要释放，因为你收完整了包，这个包被上边
+	                                                         // 调用InMsgRecvQueue()移入消息队列，那么释放内存就
+	                                                         // 属于业务逻辑去干，不需要回收连接到连接池中干了
     p_conn->p_new_recvmem_pos  = NULL;
     p_conn->pkg_cur_state      = PKG_HEAD_INIT;              // 收包状态机的状态恢复为原始态，为收下一个包做准备                    
     p_conn->p_recvbuf_pos      = p_conn->arr_pkghead_info;   // 设置好收包的位置

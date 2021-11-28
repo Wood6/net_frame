@@ -20,16 +20,16 @@ typedef struct
 // 在实际商业代码中，你能想到的要处理的信号，都弄进来
 gs_signal_t  gs_arr2_signals[] = {
 	// signo      signame             handler
-	{ SIGHUP,    "SIGHUP",           signal_handler },        //终端断开信号，对于守护进程常用于reload重载配置文件通知--标识1
-	{ SIGINT,    "SIGINT",           signal_handler },        //标识2   
-	{ SIGTERM,   "SIGTERM",          signal_handler },        //标识15
-	{ SIGCHLD,   "SIGCHLD",          signal_handler },        //子进程退出时，父进程会收到这个信号--标识17
-	{ SIGQUIT,   "SIGQUIT",          signal_handler },        //标识3
-	{ SIGIO,     "SIGIO",            signal_handler },        //指示一个异步I/O事件【通用异步I/O信号】
-	{ SIGSYS,    "SIGSYS, SIG_IGN",  NULL           },        //我们想忽略这个信号，SIGSYS表示收到了一个无效系统调用，如果我们不忽略，进程会被操作系统杀死，--标识31
-																  //所以我们把handler设置为NULL，代表 我要求忽略这个信号，请求操作系统不要执行缺省的该信号处理动作（杀掉我）
+	{ SIGHUP,    "SIGHUP",           signal_handler },        // 终端断开信号，对于守护进程常用于reload重载配置文件通知--标识1
+	{ SIGINT,    "SIGINT",           signal_handler },        // 标识2   
+	{ SIGTERM,   "SIGTERM",          signal_handler },        // 标识15
+	{ SIGCHLD,   "SIGCHLD",          signal_handler },        // 子进程退出时，父进程会收到这个信号--标识17
+	{ SIGQUIT,   "SIGQUIT",          signal_handler },        // 标识3
+	{ SIGIO,     "SIGIO",            signal_handler },        // 指示一个异步I/O事件【通用异步I/O信号】
+	{ SIGSYS,    "SIGSYS, SIG_IGN",  NULL           },        // 我们想忽略这个信号，SIGSYS表示收到了一个无效系统调用，如果我们不忽略，进程会被操作系统杀死，--标识31
+															  // 所以我们把handler设置为NULL，代表 我要求忽略这个信号，请求操作系统不要执行缺省的该信号处理动作（杀掉我）
 	//...日后根据需要再继续增加
-	{ 0,         NULL,               NULL               }         //信号对应的数字至少是1，所以可以用0作为一个特殊标记
+	{ 0,         NULL,               NULL               }     // 信号对应的数字至少是1，所以可以用0作为一个特殊标记
 };
 
 /**
@@ -69,12 +69,14 @@ bool InitSignals()
 		}
 		else
 		{
-			sa.sa_handler = SIG_IGN;             // sa_handler:这个标记SIG_IGN给到sa_handler成员，表示忽略信号的处理程序，否则操作系统的缺省信号处理程序很可能把这个进程杀掉；
-												 // 其实sa_handler和sa_sigaction都是一个函数指针用来表示信号处理程序。只不过这两个函数指针他们参数不一样， sa_sigaction带的参数多，信息量大，
-												 // 而sa_handler带的参数少，信息量少；如果你想用sa_sigaction，那么你就需要把sa_flags设置为SA_SIGINFO；                    
+			sa.sa_handler = SIG_IGN;             // sa_handler:这个标记SIG_IGN给到sa_handler成员，表示忽略信号的处理程序，
+			                                     // 否则操作系统的缺省信号处理程序很可能把这个进程杀掉；其实sa_handler和
+												 // sa_sigaction都是一个函数指针用来表示信号处理程序。只不过这两个函数指针
+			                                     // 他们参数不一样， sa_sigaction带的参数多，信息量大，而sa_handler带的参数少，
+												 // 信息量少；如果你想用sa_sigaction，那么你就需要把sa_flags设置为SA_SIGINFO；                    
 		}
 
-		sigemptyset(&sa.sa_mask);    // 信号集置空，不阻塞任何信号
+		sigemptyset(&sa.sa_mask);                // 信号集置空，不阻塞任何信号
 
 		// 注册信号
 		if (sigaction(s_sig->signo, &sa, NULL) == -1)   // 如果失败打日志并退出
