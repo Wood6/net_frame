@@ -85,13 +85,13 @@ void LogInit()
  */
 void LogStderr(int err, const char* fmt, ...)
 {
-	u_char arr_errstr[MAX_ERROR_STR + 1];
+	u_char arr_errstr[NGX_MAX_ERROR_STR + 1];
 	memset(arr_errstr, 0, sizeof(arr_errstr));
 
 	u_char* p_last_arr_errstr = NULL;
 	u_char* p_errstr = NULL;   // 实时指向串要输入的位置的指针
 
-	p_last_arr_errstr = arr_errstr + MAX_ERROR_STR;
+	p_last_arr_errstr = arr_errstr + NGX_MAX_ERROR_STR;
 	p_errstr = ngx_cpymem(arr_errstr, "nginx: ", 7);
 
 	va_list args;

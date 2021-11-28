@@ -1,4 +1,4 @@
-// 主文件
+﻿// 主文件
 
 #include "ngx_global.h"
 #include "ngx_c_conf.h"
@@ -13,9 +13,6 @@
 #include <iostream>
 #include <string>
 #endif 
-
-const char* CONFIG_FILE_PATH = "nginx.conf";
-const char LIYAO_TEST_ARR[] = "LIYAO";
 
 using namespace std;
 

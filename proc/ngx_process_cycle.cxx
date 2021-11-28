@@ -1,9 +1,10 @@
-
+﻿
 #include <signal.h>
 
 #include "ngx_global.h"
 #include "ngx_func.h"
 #include "ngx_c_conf.h"
+#include "ngx_macro.h"
 
 
 // 静态变量定义worker进程名字
