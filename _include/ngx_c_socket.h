@@ -108,6 +108,10 @@ private:
     size_t                        m_len_msg_header;      // sizeof(STRUC_MSG_HEADER);
     std::list<char *>             m_list_rece_msg_queue; // 接受数据消息队列
 
+    // 
+    int                           m_recv_msg_queue_n;     // 收消息队列大小
+    pthread_mutex_t               m_recv_msg_queue_mutex; // 收消息队列互斥量 
+
 
 private:
 	void ReadConf();                           // 专门用于读各种配置项
@@ -135,26 +139,31 @@ private:
     ssize_t RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_buf);   // 接收从客户端来的数据专用函数
 	void WaitRequestHandlerProcPart1(gps_connection_t p_conn);                   // 包头收完整后的处理                                                                   
 	void WaitRequestHandlerProcLast(gps_connection_t p_conn);                    // 收到一个完整包后的处理
-	void AddMsgRecvQueue(char* p_buf) ;           // 收到一个完整消息后，入消息队列
-	void TmpOutMsgRecvQueue();                    // 临时清除对列中消息函数，测试用，将来会删除该函数
+	void AddMsgRecvQueue(char* p_buf, int& ret_msgqueue_n);   // 收到一个完整消息后，入消息队列
+	//void TmpOutMsgRecvQueue();                            // 临时清除对列中消息函数，测试用，将来会删除该函数
 
 public:
 	CSocket();
 	virtual ~CSocket();
 
-	virtual bool InitSocket();              // 初始化函数
+	virtual bool InitSocket();                       // 初始化函数
 
 	/***** epoll 相关成员函数 ******/
-	int InitEpoll();                        // epoll 功能初始化
+	int InitEpoll();                                 // epoll 功能初始化
 
 	int EpollAddEvent(int fd,
 		int read_event, int write_event,
 		uint32_t otherflag,
 		uint32_t event_type,
 		gps_connection_t p_conn
-	);                                       // epoll 增加事件
+	);                                                // epoll 增加事件
 
-	int EpollProcessEvents(int timer);       // epoll等待接收和处理事件
+	int EpollProcessEvents(int timer);                // epoll等待接收和处理事件
+
+    // 
+    char* OutMsgRecvQueue();                          // 将一个消息出消息队列
+    virtual void ThreadRecvProcFunc(char* p_msgbuf);  // 处理客户端请求，这个将来会被设计为子类重写
+    
 };
 
 

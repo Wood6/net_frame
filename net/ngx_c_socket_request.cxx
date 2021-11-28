@@ -4,8 +4,10 @@
 #include "ngx_c_socket.h"
 #include "ngx_func.h"
 #include "ngx_c_memory.h"
+#include "ngx_c_lockmutex.h"  // 自动释放互斥量的一个类
 
-#include <arpa/inet.h>     // ntohs()
+#include <arpa/inet.h>        // ntohs()
+#include <pthread.h>          // pthread多线程相关
 
 /**
  * 功能：
@@ -301,7 +303,7 @@ void CSocket::WaitRequestHandlerProcPart1(gps_connection_t p_conn)
 	无
 
  * 调用了函数：
-
+    AddMsgRecvQueue()
  * 其他说明：
 
  * 例子说明：
@@ -309,9 +311,17 @@ void CSocket::WaitRequestHandlerProcPart1(gps_connection_t p_conn)
  */
 void CSocket::WaitRequestHandlerProcLast(gps_connection_t p_conn)
 {
+    int msgqueue_n = 0;     // 消息队列当前信息数量
     // 把这段内存放到消息队列中来；
-    AddMsgRecvQueue(p_conn->p_new_recvmem_pos);
+    AddMsgRecvQueue(p_conn->p_new_recvmem_pos, msgqueue_n);
     // ......这里可能考虑触发业务逻辑，怎么触发业务逻辑，这个代码以后再考虑扩充。。。。。。
+
+
+    // 上面拿到消息数，下面就知道有多少消息需要处理，
+    // 从而好直接告诉线程需要激活多个个线程来处理消息对应的业务逻辑了
+    
+    // 这里暂时还没实现，后面添加这个调用。。。。
+
     
     p_conn->is_new_recvmem     = false;                      // 内存不再需要释放，因为你收完整了包，这个包被上边
 	                                                         // 调用InMsgRecvQueue()移入消息队列，那么释放内存就
@@ -327,9 +337,10 @@ void CSocket::WaitRequestHandlerProcLast(gps_connection_t p_conn)
  * 功能：
     当收到一个完整包之后，将完整包入消息队列，这个包在服务器端应该是 消息头+包头+包体 格式
 
- * 输入参数：(char* p_buf)
+ * 输入参数：(char* p_buf, int& ret_msgqueue_n) 
  	p_buf 指针，指向一段内存=消息头 + 包头 + 包体
-
+    ret_msgqueue_n 引用，用来返回消息队列中消息的数量给调用者
+    
  * 返回值：
 	无
 
@@ -340,21 +351,88 @@ void CSocket::WaitRequestHandlerProcLast(gps_connection_t p_conn)
  * 例子说明：
 
  */
-void CSocket::AddMsgRecvQueue(char* p_buf) 
+void CSocket::AddMsgRecvQueue(char* p_buf, int& ret_msgqueue_n) 
 {
-    m_list_rece_msg_queue.push_back(p_buf);
+    // 利用CLock这个类的封装加解锁很方便，这里加锁，
+    // 函数退出时会自动调用析构函数解锁，就不需要手工去解锁了
+    CLock lock(&m_recv_msg_queue_mutex);    
+    
+    m_list_rece_msg_queue.push_back(p_buf); // 入消息队列
+    ++m_recv_msg_queue_n;                   // 收消息队列数字+1，用变量更方便一点，比 m_list_rece_msg_queue.size()高效
+    ret_msgqueue_n = m_recv_msg_queue_n;    // 接收消息队列当前消息数量保存到ret_msgqueue_n，给调用者
 
     // ....其他功能待扩充，这里要记住一点，这里的内存都是要释放的，否则。。。。。。。。。。日后增加释放这些内存的代码
     // ...而且逻辑处理应该要引入多线程，所以这里要考虑临界问题
     // ....
 
     // 临时在这里调用一下该函数，以防止接收消息队列过大
-    TmpOutMsgRecvQueue();   // .....临时，后续会取消这行代码
+    //TmpOutMsgRecvQueue();   // .....临时，后续会取消这行代码
 
     // 为了测试方便，因为本函数意味着收到了一个完整的数据包，所以这里打印一个信息
     LogStderr(0,"非常好，收到了一个完整的数据包【包头+包体】！");  
 }
 
+/**
+ * 功能：
+    从消息队列中把一个包提取出来以备后续处理
+    
+ * 输入参数：
+ 	无
+
+ * 返回值：
+	消息队列中一个消息，实质是一段内存首地址
+
+ * 调用了函数：
+
+ * 其他说明：
+
+ * 例子说明：
+
+ */
+char* CSocket::OutMsgRecvQueue()
+{
+    CLock lock(&m_recv_msg_queue_mutex);
+
+    if(m_list_rece_msg_queue.empty())
+    {
+        return NULL;  //  也许会存在这种情形： 消息本该有，但被干掉了，这里可能为NULL的？        
+    }
+    
+    char* p_retbuf = m_list_rece_msg_queue.front();  // 返回第一个元素但不检查元素存在与否,上面已经检测
+    m_list_rece_msg_queue.pop_front();               // 移除第一个元素但不返回	
+    --m_recv_msg_queue_n;                            // 消息队列数量-1
+    
+    return p_retbuf;
+}
+
+     
+/**
+ * 功能：
+    消息处理线程主函数，专门处理各种接收到的TCP消息
+    
+ * 输入参数：(char *p_msgbuf)
+ 	pMsgBuf 发送过来的消息缓冲区，消息本身是自解释的，通过包头可以计算整个包长
+
+ * 返回值：
+	消息队列中一个消息，实质是一段内存首地址
+
+ * 调用了函数：
+
+ * 其他说明：
+    消息本身格式【消息头+包头+包体】 
+
+ * 例子说明：
+
+ */
+void CSocket::ThreadRecvProcFunc(char *p_msgbuf)
+{
+	// 后面实现。。。
+
+    return;
+}
+
+// 这个函数不用了
+#if 0
 /**
  * 功能：
     临时函数，用于将Msg中消息干掉
@@ -398,4 +476,5 @@ void CSocket::TmpOutMsgRecvQueue()
     
     return;
 }
+#endif
 
