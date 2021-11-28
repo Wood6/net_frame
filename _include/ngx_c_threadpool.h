@@ -5,14 +5,23 @@
 
 #include <vector>
 #include <atomic>      // c++11里的原子操作
-#include <string>
-#include <iostream>
 
 #include <pthread.h>
 
 
 // 线程池所需创建线程的数量在配置文件中配置项名字
-const std::string CONFING_ITEMNAME_CREAT_THREAD_N  = "proc_recvmsg_work_thread_count";
+// 这个会报错，常量指针，是个指针值，不是常量(常量是修饰词，主语是指针)
+//const char* CONFING_ITEMNAME_CREAT_THREAD_N  = "proc_recvmsg_work_thread_count";     // 编译报错，重复定义
+// 这个编译正确，常量指针常量，是个常量（前面常量是修饰词，主语是指针常量，主语是个常量）
+const char* const CONFING_ITEMNAME_CREAT_THREAD_N  = "proc_recvmsg_work_thread_count"; // 编译正确
+
+// 关于const定义的常量可以放在头文件中这里解释一下
+// 是因为const将这个全局变量的作用域改变为文件作用域了，所以即使这个头文件有被多次包含，
+// 在其包含处过去后也是只在那个文件中作用，这样也是不会相互影响，所以编译不会报多次定义的错误
+
+// 这个编译也是可以通过，指针常量，是个常量
+//char* const CONFING_ITEMNAME_CREAT_THREAD_N  = "proc_recvmsg_work_thread_count";     // 编译正确
+
 
 
 // 线程池相关类

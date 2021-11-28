@@ -5,8 +5,6 @@
 #include "ngx_func.h"
 #include "ngx_c_conf.h"
 
-#include <string>
-
 
 // 静态变量定义worker进程名字
 static u_char  arr_master_process_name[] = "master process";
@@ -15,7 +13,6 @@ static void StartCreatWorkerProc(int cnt_workprocess);
 static int CreatWorkerProc(int inum, const char* p_procname);
 static void InitWorkerProcess(int inum);
 static void WorkerProcessCycle(int inum, const char* p_procname);
-
 
 /**
  * 功能：
@@ -267,7 +264,7 @@ static void InitWorkerProcess(int inum)
     // 线程池代码，率先创建，至少要比和socket相关的内容优先，因为socket起来可能立刻就有事件需要线程处理
     CConfig* p_config  = CConfig::GetInstance();
     // 读配置，若配置文件中没有指定则默认给创建5个线程
-    int creat_thread_n = p_config->GetIntDefault(CONFING_ITEMNAME_CREAT_THREAD_N.c_str(), 5);  
+    int creat_thread_n = p_config->GetIntDefault(CONFING_ITEMNAME_CREAT_THREAD_N, 5);  
     if(g_threadpool.Create(creat_thread_n) == false)
     {
         // 内存没释放，但是简单粗暴退出；
