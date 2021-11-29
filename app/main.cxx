@@ -18,19 +18,18 @@
 using namespace std;
 
 // global variable
-size_t g_argv_need_mem = 0;
-size_t g_env_need_mem = 0;
-int g_os_argc = 0;
-char** g_os_argv = NULL;
-char* gp_envmem = NULL;    // 指向自己分配的env环境变量的内存，在InitSetProcTitle()函数中会被分配内存
+size_t g_argv_need_mem  = 0;
+size_t g_env_need_mem   = 0;
+int    g_os_argc        = 0;
+char** g_os_argv        = NULL;
+char*  gp_envmem        = NULL;    // 指向自己分配的env环境变量的内存，在InitSetProcTitle()函数中会被分配内存
 
-
-int g_is_daemon = 0;       // 是否开启守护进程模式，0未启用，1启用
+int    g_is_daemon      = 0;       // 是否开启守护进程模式，0未启用，1启用
 
 // 和进程本身有关的全局变量
-pid_t g_pid;               // 当前进程的pid
-pid_t g_ppid;              // 父进程pid
-int g_process_type;        // 进程类型，用来标识是master进程还是worker进程
+pid_t  g_pid;                      // 当前进程的pid
+pid_t  g_ppid;                     // 父进程pid
+int    g_process_type;             // 进程类型，用来标识是master进程还是worker进程
 
 // 标记子进程状态变化[一般是子进程发来SIGCHLD信号表示退出],
 // sig_atomic_t:系统定义的类型：访问或改变这些变量需要在计算机的一条指令内完成
@@ -38,17 +37,16 @@ int g_process_type;        // 进程类型，用来标识是master进程还是wo
 sig_atomic_t g_flag_workproc_change;
 
 // socket相关
-//CSocket g_socket;           // socket全局对象
-CLogicSocket g_socket;        // socket全局对象
+//CSocket g_socket;                // socket全局对象
+CLogicSocket g_socket;             // socket全局对象
 
 // 线程池相关
-CThreadPool g_threadpool;     // 线程池全局对象
-
+CThreadPool g_threadpool;          // 线程池全局对象
 
 // 专门在程序执行末尾释放资源的函数【一系列的main返回前的释放动作函数】
-void FreeResource();
+static void FreeResource();
 
-// 程序入口函数
+// 程序入口函数 -----------------------------------------------------------
 int main(int argc, char **argv)
 {
 	int exit_code = 0;
@@ -174,8 +172,7 @@ lblexit:
 	return exit_code;
 }
 
-
-void FreeResource()
+static void FreeResource()
 {
 	// 关闭日志文件
 	if (gs_log.fd != STDERR_FILENO && gs_log.fd != -1)

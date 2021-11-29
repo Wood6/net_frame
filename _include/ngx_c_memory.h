@@ -4,7 +4,6 @@
 #ifndef __NGX_MEMORY_H__
 #define __NGX_MEMORY_H__
 
-
 #include <stddef.h>    // NULL
 
 // 内存相关类，以单例模式实现

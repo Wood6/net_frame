@@ -27,8 +27,8 @@ const unsigned char NGX_LOG_NOTICE    = 6;    // 注意 【notice】
 const unsigned char NGX_LOG_INFO      = 7;    // 信息 【info】
 const unsigned char NGX_LOG_DEBUG     = 8;    // 调试 【debug】：最低级别
 
-//进程相关----------------------
-//标记当前进程类型
+// 进程相关----------------------
+// 标记当前进程类型
 const unsigned char NGX_PROCESS_IS_MASTER  = 0;        // master 进程，管理进程
 const unsigned char NGX_PROCESS_IS_WORKER  = 1;        // worker 进程，工作进程
 

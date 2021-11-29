@@ -229,9 +229,9 @@ void CSocket::WaitRequestHandlerProcPart1(gps_connection_t p_conn)
 {
     CMemory *p_memory = CMemory::GetInstance();		
 
-    gps_comm_pkg_header_t p_pkg_header;
+    gps_pkg_header_t p_pkg_header;
     // 正好收到包头时，包头信息肯定是在arr_pkghead_info里；
-    p_pkg_header = (gps_comm_pkg_header_t)p_conn->arr_pkghead_info; 
+    p_pkg_header = (gps_pkg_header_t)p_conn->arr_pkghead_info; 
 
     unsigned short len_pkg; 
     len_pkg = ntohs(p_pkg_header->len_pkg);   // 注意这里网络序转本机序，所有传输到网络上的2字节数据，
@@ -275,7 +275,7 @@ void CSocket::WaitRequestHandlerProcPart1(gps_connection_t p_conn)
         gps_msg_header_t p_tmp_msgheader = (gps_msg_header_t)p_tmpbuff;
         p_tmp_msgheader->p_conn = p_conn;
         // 收到包时的连接池中连接序号记录到消息头里来，以备将来用；
-        p_tmp_msgheader->cnt_currse_quence = p_conn->cnt_currse_quence; 
+        p_tmp_msgheader->currse_quence_n = p_conn->currse_quence_n; 
         
         // b)再填写包头内容
         p_tmpbuff += m_len_msg_header;                     // 往后跳，跳过消息头，指向包头
@@ -329,7 +329,7 @@ void CSocket::WaitRequestHandlerProcLast(gps_connection_t p_conn)
 
     // 加个信息日志，方便调试
     LogErrorCore(NGX_LOG_INFO, 0, "包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = %ud!",\
-                                  ntohs( ((gps_comm_pkg_header_t)p_conn->arr_pkghead_info)->len_pkg ));     
+                                  ntohs( ((gps_pkg_header_t)p_conn->arr_pkghead_info)->len_pkg ));     
     
     g_threadpool.AddMsgRecvQueueAndSignal(p_conn->p_new_recvmem_pos);  // 入消息队列并触发线程处理消息
     

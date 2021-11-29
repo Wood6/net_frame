@@ -308,7 +308,7 @@ void* CThreadPool::ThreadFunc(void* thread_data)
         
         // 加个信息日志，方便调试
         LogErrorCore(NGX_LOG_INFO, 0, "线程[%ud]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = %ud!",\
-                                      pthread_self(), ntohs(((gps_comm_pkg_header_t)(jobbuf+sizeof(gs_msg_header_t)))->len_pkg ) );
+                                      pthread_self(), ntohs(((gps_pkg_header_t)(jobbuf+sizeof(gs_msg_header_t)))->len_pkg ) );
 
         // 能走到这里的，就是有消息可以处理，开始处理
         ++p_threadpool_obj->m_running_thread_n;    // 原子+1，这比互斥量要快很多，运行线程数+1
@@ -527,7 +527,7 @@ void CThreadPool::AddMsgRecvQueueAndSignal(char* p_buf)
 {
     // 加个信息日志，方便调试
     LogErrorCore(NGX_LOG_INFO, 0, "将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = %ud!",\
-                                  ntohs(((gps_comm_pkg_header_t)(p_buf+sizeof(gs_msg_header_t)))->len_pkg ) );  
+                                  ntohs(((gps_pkg_header_t)(p_buf+sizeof(gs_msg_header_t)))->len_pkg ) );  
 
 	//  互斥
 	int err = pthread_mutex_lock(&m_pthread_mutex);
@@ -549,7 +549,7 @@ void CThreadPool::AddMsgRecvQueueAndSignal(char* p_buf)
 
     // 加个信息日志，方便调试
     LogErrorCore(NGX_LOG_INFO, 0, "在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = %ud!",\
-                                  ntohs(((gps_comm_pkg_header_t)(m_list_rece_msg_queue.front()+sizeof(gs_msg_header_t)))->len_pkg ) );
+                                  ntohs(((gps_pkg_header_t)(m_list_rece_msg_queue.front()+sizeof(gs_msg_header_t)))->len_pkg ) );
 
 	// 可以激发一个线程来干活了
 	Call();

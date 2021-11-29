@@ -20,7 +20,7 @@ public:
 	bool _HandleLogIn(gps_connection_t p_conn, gps_msg_header_t p_msg_header, char* p_pkg_body, unsigned short len_body);
 
 public:
-	virtual void ThreadRecvProcFunc(char *p_msg_buf);
+	virtual void ThreadRecvProcFunc(char* p_msg_buf);
 };
 
 #endif

@@ -12,10 +12,10 @@
 // 已完成连接队列，nginx给511，我们也先按照这个来：不懂这个数字的5.4
 const int NGX_LISTEN_BACKLOG = 511;
 // epoll_wait一次最多接收这么多个事件，nginx中缺省是512，我们这里固定给成512就行，没太大必要修改
-const int NGX_MAX_EVENTS = 512;
+const int NGX_MAX_EVENTS     = 512;
 
-typedef struct gs_listening              gs_listening_t,  *gps_listening_t;
-typedef struct gs_connection             gs_connection_t, *gps_connection_t;
+typedef struct _gs_listening             gs_listening_t,  *gps_listening_t;
+typedef struct _gs_connection            gs_connection_t, *gps_connection_t;
 typedef struct _s_msg_header             gs_msg_header_t, *gps_msg_header_t;
 
 typedef class CSocket                    CSocket;
@@ -23,7 +23,7 @@ typedef class CSocket                    CSocket;
 typedef void (CSocket::*EpollEventHandlerPt)(gps_connection_t c);                 // 定义CSocket类的成员函数指针
 
 // 一些专用结构定义放在这里，暂时不考虑放ngx_global.h里了
-struct gs_listening
+struct _gs_listening
 {
 	int               port;            // 监听的端口号
 	int               fd;              // 套接字句柄socket
@@ -33,7 +33,7 @@ struct gs_listening
 
 /* 以下三个结构是非常重要的三个结构，我们遵从官方nginx的写法 */
 // (1)该结构表示一个TCP连接【客户端主动发起的、Nginx服务器被动接受的TCP连接】
-struct gs_connection
+struct _gs_connection
 {
 	int                       fd;                // 套接字句柄socket
 	gps_listening_t           p_listening;       // 如果这个链接被分配给了一个监听套接字，那么这个里边就指向监听套接字对应的
@@ -41,7 +41,7 @@ struct gs_connection
 
 	// ------------------------------------	
 	unsigned                  instance : 1;      // 【位域】失效标志位：0：有效，1：失效【这个是官方nginx提供，到底有什么用，ngx_epoll_process_events()中详解】  
-	uint64_t                  cnt_currse_quence; // 我引入的一个序号，每次分配出去时+1，此法也有可能在一定程度上检测错包废包，具体怎么用，用到了再说
+	uint64_t                  currse_quence_n;   // 我引入的一个序号，每次分配出去时+1，此法也有可能在一定程度上检测错包废包，具体怎么用，用到了再说
 	struct sockaddr           s_sockaddr;        // 保存对方地址信息用的
 	//char                    addr_text[100];    // 地址的文本信息，100足够，一般其实如果是ipv4地址，255.255.255.255，其实只需要20字节就够
 
@@ -74,8 +74,8 @@ struct gs_connection
 // 消息头，引入的目的是当收到数据包时，额外记录一些代码中需要用到的辅助信息，以备将来使用
 typedef struct _s_msg_header
 {
-    gps_connection_t   p_conn;             //  记录对应的链接，注意这是个指针
-    uint64_t          cnt_currse_quence;   //  收到数据包时记录对应连接的序号，将来能用于比较是否连接已经作废用
+    gps_connection_t  p_conn;              //  记录对应的链接，注意这是个指针
+    uint64_t          currse_quence_n;   //  收到数据包时记录对应连接的序号，将来能用于比较是否连接已经作废用
     // ......其他以后扩展	
 }gs_msg_header_t, *gps_msg_header_t;
 
@@ -140,7 +140,7 @@ private:
 	void WaitRequestHandlerProcPart1(gps_connection_t p_conn);                   // 包头收完整后的处理                                                                   
 	void WaitRequestHandlerProcLast(gps_connection_t p_conn);                    // 收到一个完整包后的处理
 	void AddMsgRecvQueue(char* p_buf, int& ret_msgqueue_n);   // 收到一个完整消息后，入消息队列
-	//void TmpOutMsgRecvQueue();                            // 临时清除对列中消息函数，测试用，将来会删除该函数
+	//void TmpOutMsgRecvQueue();                              // 临时清除对列中消息函数，测试用，将来会删除该函数
 
 public:
 	CSocket();
@@ -161,7 +161,7 @@ public:
 	int EpollProcessEvents(int timer);                // epoll等待接收和处理事件
 
     // 移到线程相关类中去
-    //char* OutMsgRecvQueue();                          // 将一个消息出消息队列
+    //char* OutMsgRecvQueue();                        // 将一个消息出消息队列
     virtual void ThreadRecvProcFunc(char* p_msgbuf);  // 处理客户端请求，这个将来会被设计为子类重写
     
 };

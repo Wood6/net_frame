@@ -44,7 +44,7 @@ CSocket::CSocket()
 	mp_free_connections = NULL;   // 连接池中空闲的连接链 
 
     // 一些和网络通讯有关的常用变量值，供后续频繁使用时提高效率
-    m_len_pkg_header = sizeof(gs_comm_pkg_header_t);   // 包头的sizeof值【占用的字节数】
+    m_len_pkg_header = sizeof(gs_pkg_header_t);   // 包头的sizeof值【占用的字节数】
     m_len_msg_header = sizeof(gs_msg_header_t);        // 消息头的sizeof值【占用的字节数】
 
     //m_recv_msg_queue_n = 0;                            //  收消息队列中消息数量初始化0
@@ -233,8 +233,8 @@ bool CSocket::OpenListeningSockets()
 		}
 
 		// 可以，放到vector里来
-		gps_listening_t p_listen_socket = new gs_listening;         // 千万不要写错，注意前边类型是指针，后边类型是一个结构体
-		memset(p_listen_socket, 0, sizeof(gs_listening));           // 注意后边用的是 ngx_listening_t而不是lpngx_listening_t
+		gps_listening_t p_listen_socket = new _gs_listening;         // 千万不要写错，注意前边类型是指针，后边类型是一个结构体
+		memset(p_listen_socket, 0, sizeof(_gs_listening));           // 注意后边用的是 ngx_listening_t而不是lpngx_listening_t
 		p_listen_socket->port = iport;                              // 记录下所监听的端口号
 		p_listen_socket->fd = isock;                                // 套接字木柄保存下来   
 		LogErrorCore(NGX_LOG_INFO, 0, "监听%d端口成功!", iport);    // 显示一些信息到日志中
@@ -388,7 +388,7 @@ int CSocket::InitEpoll()
 		(p_c[cnt_tmp]).data = p_next;          // 设置连接对象的next指针，注意第一次循环时next = NULL;
 		(p_c[cnt_tmp]).fd = -1;                // 初始化连接，使得socket和该连接池中的连接【对象】绑定
 		(p_c[cnt_tmp]).instance = 1;           // 失效标志位设置为1【失效】，此句抄自官方nginx，这句到底有啥用，后续再研究
-		(p_c[cnt_tmp]).cnt_currse_quence = 0;  // 当前序号统一从0开始
+		(p_c[cnt_tmp]).currse_quence_n = 0;  // 当前序号统一从0开始
 
 		p_next = &p_c[cnt_tmp];                // next指针前移          
 	} while (cnt_tmp);                         // 循环直至cnt_tmp为0，即数组首地址

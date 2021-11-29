@@ -48,50 +48,28 @@ typedef struct
 	int fd;             // 日志文件描述符
 }gs_log_t;
 
-/*
 
-// 特殊数字相关，如类型边界数字等
-extern const uint32_t MAX_UINT32_VALUE;      // 最大的32位无符号数：十进制是 ‭4294967295‬
 
-extern const int MAX_ERROR_STR;   //显示的错误信息最大数组长度
+// 外部全局变量声明 ---------------------------------------------
+extern pid_t           g_pid;                    // 子进程pid
+extern pid_t           g_ppid;                   // 父进程pid
+extern int             g_process_type;
+extern sig_atomic_t    g_flag_workproc_change;
 
-//日志相关--------------------
-//我们把日志一共分成八个等级【级别从高到低，数字最小的级别最高，数字大的级别最低】，以方便管理、显示、过滤等等
-extern const int LogStderr;    // 控制台错误【stderr】：最高级别日志，日志的内容不再写入log参数指定的文件，而是会直接将日志输出到标准错误设备比如控制台屏幕
-extern const int NGX_LOG_EMERG;     // 紧急 【emerg】
-extern const int NGX_LOG_ALERT;     // 警戒 【alert】
-extern const int NGX_LOG_CRIT;      // 严重 【crit】
-extern const int NGX_LOG_ERR;       // 错误 【error】：属于常用级别
-extern const int NGX_LOG_WARN;      // 警告 【warn】：属于常用级别
-extern const int NGX_LOG_NOTICE;    // 注意 【notice】
-extern const int NGX_LOG_INFO;      // 信息 【info】
-extern const int NGX_LOG_DEBUG;     // 调试 【debug】：最低级别
 
-// 缺省日志文件路径
-extern const char* NGX_ERROR_LOG_PATH;
+extern size_t          g_env_need_mem;
+extern size_t          g_argv_need_mem;
+extern char*           gp_envmem;
+extern int             g_os_argc;
+extern char**          g_os_argv;
 
-*/
 
-// 外部全局变量声明
-extern pid_t g_pid;
-extern pid_t g_ppid;   // 父进程pid
-extern int g_process_type;
-extern sig_atomic_t g_flag_workproc_change;
+extern gs_log_t        gs_log;
 
-extern gs_log_t gs_log;
 
-extern size_t g_env_need_mem;
-extern size_t g_argv_need_mem;
-extern char* gp_envmem;
-
-extern int g_os_argc;
-extern char** g_os_argv;
-
-extern gs_log_t gs_log;
-
-//extern CSocket g_socket;
-extern CLogicSocket g_socket;
-extern CThreadPool g_threadpool;
+//extern CSocket       g_socket;
+extern CLogicSocket    g_socket;
+extern CThreadPool     g_threadpool;
 
 
 #endif 

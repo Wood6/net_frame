@@ -36,7 +36,7 @@ gps_connection_t CSocket::GetElementOfConnection(int isock)
 
 	// (1)注意这里的操作,先把ret_p_c指向的对象中有用的东西搞出来保存成变量，因为这些数据可能有用
 	uintptr_t instance = ret_p_c->instance;               // 常规c->instance在刚构造连接池时这里是1【失效】
-	uint64_t currse_quence = ret_p_c->cnt_currse_quence;  //  序号也暂存，后续用于恢复
+	uint64_t currse_quence = ret_p_c->currse_quence_n;  //  序号也暂存，后续用于恢复
 	//....其他内容再增加
 
 	// (2)把以往有用的数据搞出来后，清空并给适当值
@@ -47,15 +47,15 @@ gps_connection_t CSocket::GetElementOfConnection(int isock)
     ret_p_c->pkg_cur_state = PKG_HEAD_INIT;               // 收包状态处于 初始状态，准备接收数据包头【状态机】
     ret_p_c->p_recvbuf_pos = ret_p_c->arr_pkghead_info;   // 收包我要先收到这里来，因为我要先收包头，
                                                           // 所以收数据的buff直接就是dataHeadInfo
-    ret_p_c->len_recv = sizeof(gs_comm_pkg_header_t);     // 这里指定收数据的长度，这里先要求收包头这么长字节的数据
+    ret_p_c->len_recv = sizeof(gs_pkg_header_t);     // 这里指定收数据的长度，这里先要求收包头这么长字节的数据
     ret_p_c->is_new_recvmem = false;                      // 标记我们并没有new内存，所以不用释放	 
     ret_p_c->p_new_recvmem_pos = NULL;                    // 既然没new内存，那自然指向的内存地址先给NULL
 
 	// (3)这个值有用，所以在上边(1)中被保留，没有被清空，这里又把这个值赋回来
 	ret_p_c->instance = !instance;   // 抄自官方nginx，到底有啥用，以后再说
 	                                 // 【分配内存时候，连接池里每个连接对象这个变量给的值都为1，所以这里取反应该是0【有效】；】
-	ret_p_c->cnt_currse_quence = currse_quence;   
-	++ret_p_c->cnt_currse_quence;    // 每次取用该值都增加1，这个值用处暂时不明白？？？？
+	ret_p_c->currse_quence_n = currse_quence;   
+	++ret_p_c->currse_quence_n;    // 每次取用该值都增加1，这个值用处暂时不明白？？？？
 
 	return ret_p_c;
 }
@@ -89,7 +89,7 @@ void CSocket::FreeConnection(gps_connection_t p_conn)
     
 	p_conn->data = mp_free_connections;  // 回收的节点指向原来串起来的空闲链的链头
 
-	++p_conn->cnt_currse_quence;         // 回收后，该值就增加1,以用于判断某些网络事件是否过期
+	++p_conn->currse_quence_n;         // 回收后，该值就增加1,以用于判断某些网络事件是否过期
 	                                     // 【一被释放就立即+1也是有必要的】
 	                                     // 暂时不明白这意思？？？
 

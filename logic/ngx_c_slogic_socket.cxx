@@ -125,10 +125,10 @@ void CLogicSocket::ThreadRecvProcFunc(char *p_msg_buf)
 {
     // 加个信息日志，方便调试
     LogErrorCore(NGX_LOG_INFO, 0, "线程[%ud]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = %ud!",\
-                                  pthread_self(), ntohs(((gps_comm_pkg_header_t)(p_msg_buf+sizeof(gs_msg_header_t)))->len_pkg ) );
+                                  pthread_self(), ntohs(((gps_pkg_header_t)(p_msg_buf+sizeof(gs_msg_header_t)))->len_pkg ) );
 
 	gps_msg_header_t p_msg_header = (gps_msg_header_t)p_msg_buf;                                 // 消息头
-	gps_comm_pkg_header_t  p_pkg_header = (gps_comm_pkg_header_t)(p_msg_buf + m_len_msg_header); // 包头
+	gps_pkg_header_t  p_pkg_header = (gps_pkg_header_t)(p_msg_buf + m_len_msg_header); // 包头
 	void  *p_pkg_body = NULL;                                                                    // 指向包体的指针
 	unsigned short len_pkg = ntohs(p_pkg_header->len_pkg);                                       // 客户端指明的包宽度【包头+包体】
 
@@ -167,7 +167,7 @@ void CLogicSocket::ThreadRecvProcFunc(char *p_msg_buf)
 	// 我们要做一些判断
 	// (1)如果从收到客户端发送来的包，到服务器释放一个线程池中的线程处理该包的过程中，客户端断开了，那显然，这种收到的包我们就不必处理了；
 	// 该连接池中连接以被其他tcp连接【其他socket】占用，这说明原来的 客户端和本服务器的连接断了，这种包直接丢弃不理
-	if (p_conn->cnt_currse_quence != p_msg_header->cnt_currse_quence)   
+	if (p_conn->currse_quence_n != p_msg_header->currse_quence_n)   
 	{
 		return;                                              // 丢弃不理这种包了【客户端断开了】
 	}
