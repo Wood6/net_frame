@@ -3,7 +3,6 @@
 #define __NGX_SOCKET_H__
 
 #include <vector>
-#include <list>
 
 #include <sys/epoll.h>
 #include <sys/socket.h>
@@ -86,7 +85,7 @@ class CSocket
 {
 private:
 	int                           m_lister_port_cnt;     // 默认监听端口数量
-	std::vector<gps_listening_t>   m_vec_listen_socket;  // 存储套接字的数据vector结构
+	std::vector<gps_listening_t>  m_vec_listen_socket;   // 存储套接字的数据vector结构
 
 	// epoll 相关成员变量
 	int                           m_handle_epoll;               // 系统函数 epoll_creat() 返回的句柄
@@ -103,15 +102,15 @@ private:
 	int                           m_connection_n;        // 当前进程中所有连接对象的总数【连接池大小】
 	int                           m_free_connections_n;  // 连接池中可用连接总数
 
+    // 将这些移到线程类中去了
+    //std::list<char *>             m_list_rece_msg_queue; // 接受数据消息队列
+    //int                           m_recv_msg_queue_n;     // 收消息队列大小
+    //pthread_mutex_t               m_recv_msg_queue_mutex; // 收消息队列互斥量 
+
+protected:
     // 一些和网络通讯有关的成员变量
     size_t                        m_len_pkg_header;      // sizeof(COMM_PKG_HEADER);		
     size_t                        m_len_msg_header;      // sizeof(STRUC_MSG_HEADER);
-    std::list<char *>             m_list_rece_msg_queue; // 接受数据消息队列
-
-    // 
-    int                           m_recv_msg_queue_n;     // 收消息队列大小
-    pthread_mutex_t               m_recv_msg_queue_mutex; // 收消息队列互斥量 
-
 
 private:
 	void ReadConf();                           // 专门用于读各种配置项
@@ -134,7 +133,8 @@ private:
 	// 根据参数1给定的信息，获取地址端口字符串，返回这个字符串的长度
 	size_t SocketNtop(struct sockaddr *sa, int port, u_char *text, size_t len);  
 
-    void ClearMsgRecvQueue();         // 清理接受收据的消息队列
+    // 移到线程类中去
+    //void ClearMsgRecvQueue();         // 清理接受收据的消息队列
 
     ssize_t RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_buf);   // 接收从客户端来的数据专用函数
 	void WaitRequestHandlerProcPart1(gps_connection_t p_conn);                   // 包头收完整后的处理                                                                   
@@ -160,8 +160,8 @@ public:
 
 	int EpollProcessEvents(int timer);                // epoll等待接收和处理事件
 
-    // 
-    char* OutMsgRecvQueue();                          // 将一个消息出消息队列
+    // 移到线程相关类中去
+    //char* OutMsgRecvQueue();                          // 将一个消息出消息队列
     virtual void ThreadRecvProcFunc(char* p_msgbuf);  // 处理客户端请求，这个将来会被设计为子类重写
     
 };

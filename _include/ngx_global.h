@@ -17,8 +17,8 @@
 #include <signal.h>
 
 #include "ngx_macro.h"
-#include "ngx_c_socket.h"
 #include "ngx_c_threadpool.h"
+#include "ngx_c_slogic_socket.h"
 
 // 调试宏开关,
 // 1只打开调试中LIYAO_DEBUG_ING的日志输出，
@@ -57,7 +57,7 @@ extern const int MAX_ERROR_STR;   //显示的错误信息最大数组长度
 
 //日志相关--------------------
 //我们把日志一共分成八个等级【级别从高到低，数字最小的级别最高，数字大的级别最低】，以方便管理、显示、过滤等等
-extern const int NGX_LOG_STDERR;    // 控制台错误【stderr】：最高级别日志，日志的内容不再写入log参数指定的文件，而是会直接将日志输出到标准错误设备比如控制台屏幕
+extern const int LogStderr;    // 控制台错误【stderr】：最高级别日志，日志的内容不再写入log参数指定的文件，而是会直接将日志输出到标准错误设备比如控制台屏幕
 extern const int NGX_LOG_EMERG;     // 紧急 【emerg】
 extern const int NGX_LOG_ALERT;     // 警戒 【alert】
 extern const int NGX_LOG_CRIT;      // 严重 【crit】
@@ -89,7 +89,8 @@ extern char** g_os_argv;
 
 extern gs_log_t gs_log;
 
-extern CSocket g_socket;
+//extern CSocket g_socket;
+extern CLogicSocket g_socket;
 extern CThreadPool g_threadpool;
 
 

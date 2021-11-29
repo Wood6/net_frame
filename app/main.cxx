@@ -1,12 +1,13 @@
-﻿// 主文件
+// 主文件
 
 #include "ngx_global.h"
 #include "ngx_c_conf.h"
 #include "ngx_macro.h"
 #include "ngx_func.h"
-#include "ngx_c_socket.h"
 #include "ngx_c_memory.h"
 #include "ngx_c_threadpool.h"
+#include "ngx_c_crc32.h"              // 和crc32校验算法有关 
+#include "ngx_c_slogic_socket.h"      // 和socket通讯相关
 
 
 #ifdef LIYAO_DEBUG
@@ -37,10 +38,11 @@ int g_process_type;        // 进程类型，用来标识是master进程还是wo
 sig_atomic_t g_flag_workproc_change;
 
 // socket相关
-CSocket g_socket;           // socket全局对象
+//CSocket g_socket;           // socket全局对象
+CLogicSocket g_socket;        // socket全局对象
 
 // 线程池相关
-CThreadPool g_threadpool;   // 线程池全局对象
+CThreadPool g_threadpool;     // 线程池全局对象
 
 
 // 专门在程序执行末尾释放资源的函数【一系列的main返回前的释放动作函数】
@@ -87,6 +89,8 @@ int main(int argc, char **argv)
 
     // (2.1)内存单例类可以在这里初始化，返回值不用保存
     //CMemory::GetInstance();
+	// (2.2)crc32校验算法单例类可以在这里初始化，返回值不用保存
+	CCRC32::GetInstance();
 
 #ifdef LIYAO_DEBUG_PASS
 	cout << "******************************** liyao debug start ********************************" << endl;

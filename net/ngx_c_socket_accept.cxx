@@ -39,7 +39,7 @@ void CSocket::EventAccept(gps_connection_t p_oldc)
 	static int         use_accept4 = 1;     // 我们先认为能够使用accept4()函数
 	gps_connection_t    p_newc;              // 代表连接池中的一个连接【注意这是指针】
 
-	// ngx_log_stderr(0,"这是几个\n"); 这里会惊群，也就是说，epoll技术本身有惊群的问题
+	// LogStderr(0,"这是几个\n"); 这里会惊群，也就是说，epoll技术本身有惊群的问题
 
 	len_socket = sizeof(my_sockaddr);
 	do   // 用do，跳到while后边去方便
@@ -62,7 +62,7 @@ void CSocket::EventAccept(gps_connection_t p_oldc)
 		// 大家可以写个简单的程序试下，在父进程中bind,listen，然后fork出子进程，
 		// 所有的子进程都accept这个监听句柄。这样，当新连接过来时，大家会发现，
 		// 仅有一个子进程返回新建的连接，其他子进程继续休眠在accept调用上，没有被唤醒。
-		// ngx_log_stderr(0,"测试惊群问题，看惊动几个worker进程%d\n",s); 
+		// LogStderr(0,"测试惊群问题，看惊动几个worker进程%d\n",s); 
 		// 【我的结论是：accept4可以认为基本解决惊群问题，但似乎并没有完全解决，有时候还会惊动其他的worker进程】
 
 		if (s == -1)
@@ -119,7 +119,7 @@ void CSocket::EventAccept(gps_connection_t p_oldc)
 		}  //end if(s == -1)
 
 		// 走到这里的，表示accept4()成功了        
-		// ngx_log_stderr(errno,"accept4成功s=%d",s); //s这里就是 一个句柄了
+		// LogStderr(errno,"accept4成功s=%d",s); //s这里就是 一个句柄了
 		p_newc = GetElementOfConnection(s); //这是针对新连入用户的连接，和监听套接字 所对应的连接是两个不同的东西，不要搞混
 		if (p_newc == NULL)
 		{
@@ -138,7 +138,7 @@ void CSocket::EventAccept(gps_connection_t p_oldc)
 		//    //测试将收到的地址弄成字符串，格式形如"192.168.1.126:40904"或者"192.168.1.126"
 		//    u_char ipaddr[100]; memset(ipaddr,0,sizeof(ipaddr));
 		//    ngx_sock_ntop(&p_newc->s_sockaddr,1,ipaddr,sizeof(ipaddr)-10); //宽度给小点
-		//    ngx_log_stderr(0,"ip信息为%s\n",ipaddr);
+		//    LogStderr(0,"ip信息为%s\n",ipaddr);
 		//}
 
 		if (!use_accept4)

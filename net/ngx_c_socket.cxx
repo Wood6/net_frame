@@ -47,8 +47,8 @@ CSocket::CSocket()
     m_len_pkg_header = sizeof(gs_comm_pkg_header_t);   // 包头的sizeof值【占用的字节数】
     m_len_msg_header = sizeof(gs_msg_header_t);        // 消息头的sizeof值【占用的字节数】
 
-    m_recv_msg_queue_n = 0;                            //  收消息队列中消息数量初始化0
-    pthread_mutex_init(&m_recv_msg_queue_mutex, NULL); // 互斥量初始化
+    //m_recv_msg_queue_n = 0;                            //  收消息队列中消息数量初始化0
+    //pthread_mutex_init(&m_recv_msg_queue_mutex, NULL); // 互斥量初始化
 }
 
 /**
@@ -85,48 +85,11 @@ CSocket::~CSocket()
 		delete[] mp_connections;
 
     // (3)接收消息队列中内容释放
-    ClearMsgRecvQueue();
+    //ClearMsgRecvQueue();
 
     // (4)多线程相关
-    pthread_mutex_destroy(&m_recv_msg_queue_mutex);  // 互斥量释放
+    //pthread_mutex_destroy(&m_recv_msg_queue_mutex);  // 互斥量释放
 }
-
-/**
- * 功能：
-    清理接收消息队列，注意这个函数的写法。
-
- * 输入参数：
- 	无
-
- * 返回值：
-	无
-
- * 调用了函数：
-
- * 其他说明：
-    注意清理队列结构实质就是清理其中中的每一个元素的这个思想
-
- * 例子说明：
-
- */
-void CSocket::ClearMsgRecvQueue()
-{
-    char* p_tmp = NULL;
-    
-    // 消息队列是个链表结构，清理这个结构实质是要清理掉这个链表上的每一个元素
-    // 所以这里定义一个队列上的元素指针，等会就是调用元素清理函数实现清理过程
-    CMemory* p_memory = CMemory::GetInstance();
-   
-    while(!m_list_rece_msg_queue.empty())
-    {
-        p_tmp = m_list_rece_msg_queue.front();
-        m_list_rece_msg_queue.pop_front();
-
-        // 每个元素经此清理，while循环遍历每个元素完后，整个链表队列也就清理完毕了
-        p_memory->FreeMemory(p_tmp);
-    }
-}
-
 
 /**
  * 功能：
@@ -323,13 +286,13 @@ bool CSocket::SetNonblocking(int sockfd)
 	int opts = fcntl(sockfd, F_GETFL);  //用F_GETFL先获取描述符的一些标志信息
 	if(opts < 0)
 	{
-		ngx_log_stderr(errno,"CSocekt::setnonblocking()中fcntl(F_GETFL)失败.");
+		LogStderr(errno,"CSocekt::setnonblocking()中fcntl(F_GETFL)失败.");
 		return false;
 	}
 	opts |= O_NONBLOCK; // 把非阻塞标记加到原来的标记上，标记这是个非阻塞套接字【如何关闭非阻塞呢？opts &= ~O_NONBLOCK,然后再F_SETFL一下即可】
 	if(fcntl(sockfd, F_SETFL, opts) < 0)
 	{
-		ngx_log_stderr(errno,"CSocekt::setnonblocking()中fcntl(F_SETFL)失败.");
+		LogStderr(errno,"CSocekt::setnonblocking()中fcntl(F_SETFL)失败.");
 		return false;
 	}
 	return true;
@@ -624,7 +587,7 @@ int CSocket::EpollProcessEvents(int timer)
 	}
 
 	// 会惊群，一个telnet上来，4个worker进程都会被惊动，都执行下边这个
-	// ngx_log_stderr(errno,"惊群测试1:%d",events); 
+	// LogStderr(errno,"惊群测试1:%d",events); 
 
 	// 走到这里，就是属于有事件收到了
 	gps_connection_t p_c;
@@ -687,7 +650,7 @@ int CSocket::EpollProcessEvents(int timer)
             // 我认为官方也是经过反复思考才加上着东西的，先放这里放着吧； 
 			revents |= EPOLLIN | EPOLLOUT;   // EPOLLIN：表示对应的链接上有数据可以读出（TCP链接的远端主动关闭连接，也相当于可读事件，因为本服务器小处理发送来的FIN包）
 										     // EPOLLOUT：表示对应的连接上可以写入数据发送【写准备好】
-			// ngx_log_stderr(errno,"2222222222222222222222222.");
+			// LogStderr(errno,"2222222222222222222222222.");
 		}
 		if (revents & EPOLLIN)  //如果是读事件
 		{

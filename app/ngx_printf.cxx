@@ -93,20 +93,20 @@ u_char * SnPrintf(u_char *p_buf, size_t max, const char *fmt, ...)
 
  * 其他说明：
 	args是上一个函数的参数...经过va_start指定后带到这个函数来的
-	对于：ngx_log_stderr(0, "invalid option: \"%s\",%d", "testinfo",123);
+	对于：LogStderr(0, "invalid option: \"%s\",%d", "testinfo",123);
 	  fmt = "invalid option: \"%s\",%d"
 	  args = "testinfo",123
 
  * 例子说明：
-	此函数由ngx_log_stderr()调用，这这个调用函数最后两个参数就是fmt，args，用例如下
-	ngx_log_stderr(0, "invalid option: \"%s\"", argv[0]);  //nginx: invalid option: "./nginx"
-	ngx_log_stderr(0, "invalid option: %10d", 21);         //nginx: invalid option:         21  ---21前面有8个空格
-	ngx_log_stderr(0, "invalid option: %.6f", 21.378);     //nginx: invalid option: 21.378000   ---%.这种只跟f配合有效，往末尾填充0
-	ngx_log_stderr(0, "invalid option: %.6f", 12.999);     //nginx: invalid option: 12.999000
-	ngx_log_stderr(0, "invalid option: %.2f", 12.999);     //nginx: invalid option: 13.00
-	ngx_log_stderr(0, "invalid option: %xd", 1678);        //nginx: invalid option: 68e
-	ngx_log_stderr(0, "invalid option: %Xd", 1678);        //nginx: invalid option: 68E
-	ngx_log_stderr(15, "invalid option: %s , %d", "testInfo",326);        //nginx: invalid option: testInfo , 326
+	此函数由LogStderr()调用，这这个调用函数最后两个参数就是fmt，args，用例如下
+	LogStderr(0, "invalid option: \"%s\"", argv[0]);  //nginx: invalid option: "./nginx"
+	LogStderr(0, "invalid option: %10d", 21);         //nginx: invalid option:         21  ---21前面有8个空格
+	LogStderr(0, "invalid option: %.6f", 21.378);     //nginx: invalid option: 21.378000   ---%.这种只跟f配合有效，往末尾填充0
+	LogStderr(0, "invalid option: %.6f", 12.999);     //nginx: invalid option: 12.999000
+	LogStderr(0, "invalid option: %.2f", 12.999);     //nginx: invalid option: 13.00
+	LogStderr(0, "invalid option: %xd", 1678);        //nginx: invalid option: 68e
+	LogStderr(0, "invalid option: %Xd", 1678);        //nginx: invalid option: 68E
+	LogStderr(15, "invalid option: %s , %d", "testInfo",326);        //nginx: invalid option: testInfo , 326
  */
 u_char* VslPrintf(u_char* p_buf, u_char* p_last, const char* fmt, va_list args)
 {

@@ -4,6 +4,7 @@
 #include <stdarg.h>
 #include <unistd.h>             // usleep
 #include <pthread.h>
+#include <arpa/inet.h>          // ntohs()
 
 #include "ngx_global.h"
 #include "ngx_func.h"
@@ -39,6 +40,8 @@ CThreadPool::CThreadPool()
     m_running_thread_n = 0;   // 正在运行的线程，开始给个0【注意这种写法：原子的对象给0也可以直接赋值，当整型变量来用】
     m_last_emg_time = 0;      // 上次报告线程不够用了的时间；
     //m_iPrintInfoTime = 0;   // 上次打印参考信息的时间；
+
+    m_recv_msg_queue_n = 0;   // 收消息队列
 }
 
 /**
@@ -60,9 +63,47 @@ CThreadPool::CThreadPool()
  */
 CThreadPool::~CThreadPool()
 {
-    //资源释放在StopAll()里统一进行
+    // 资源释放在StopAll()里统一进行，就不在这里进行了
+
+    // 接收消息队列中内容释放
+    ClearMsgRecvQueue();
 }
 
+/**
+ * 功能：
+    清理接收消息队列，注意这个函数的写法。
+
+ * 输入参数：
+ 	无
+
+ * 返回值：
+	无
+
+ * 调用了函数：
+
+ * 其他说明：
+    注意清理队列结构实质就是清理其中中的每一个元素的这个思想
+
+ * 例子说明：
+
+ */
+void CThreadPool::ClearMsgRecvQueue()
+{
+    char* p_tmp = NULL;
+    
+    // 消息队列是个链表结构，清理这个结构实质是要清理掉这个链表上的每一个元素
+    // 所以这里定义一个队列上的元素指针，等会就是调用元素清理函数实现清理过程
+    CMemory* p_memory = CMemory::GetInstance();
+   
+    while(!m_list_rece_msg_queue.empty())
+    {
+        p_tmp = m_list_rece_msg_queue.front();
+        m_list_rece_msg_queue.pop_front();
+
+        // 每个元素经此清理，while循环遍历每个元素完后，整个链表队列也就清理完毕了
+        p_memory->FreeMemory(p_tmp);
+    }
+}
 
 /**
  * 功能：
@@ -99,6 +140,8 @@ bool CThreadPool::Create(int thread_n)
 	int err = 0;
     for(int i = 0; i < m_creat_thread_n; ++i)
     {
+        // 这里有个编程技巧，就是在这里将类的this指针传递给了s_thread_item这个结构体保存
+        // 后面ThreadFunc()静态成员函数中就可以利用这个取到类的this指针了
 		p_thread = new s_thread_item_t(this);       // new 一个新线程对象 
         m_vec_thread.push_back(p_thread);           // 将新线程对象插入到容器中    
 
@@ -143,6 +186,7 @@ lblfor:
 /**
  * 功能：
     线程入口函数，当用pthread_create()创建线程后，这个ThreadFunc()函数都会被立即执行；
+    特别注意，这个函数是个静态成员函数，没有this指针
 
  * 输入参数：(void* thread_data)
  	thread_data 
@@ -166,15 +210,13 @@ lblfor:
  */
 void* CThreadPool::ThreadFunc(void* thread_data)
 {
-    // 这个是静态成员函数，是不存在this指针的；
+    // 这个是静态成员函数，是不存在this指针的,所以这里通过这种方式先拿到类的this指针，方便后面代码编码
     ps_thread_item_t p_thread = static_cast<ps_thread_item_t>(thread_data);
     CThreadPool* p_threadpool_obj = p_thread->_pThis;
     
     CMemory* p_memory = CMemory::GetInstance();	    
     
-    pthread_t tid = pthread_self(); // 获取线程自身id，以方便调试打印信息等
     int err;
-    char* jobbuf = NULL;    
     while(true)
     {
         // 线程用pthread_mutex_lock()函数去锁定指定的mutex变量，
@@ -194,7 +236,9 @@ void* CThreadPool::ThreadFunc(void* thread_data)
         
         // pthread_cond_wait()函数，如果只有一条消息 唤醒了两个线程干活，那么其中有一个线程拿不到消息，
         // 那如果不用while写，就会出问题，所以被惊醒后必须再次用while拿消息，拿到才走下来；
-        while( NULL == (jobbuf = g_socket.OutMsgRecvQueue()) && false == m_is_shutdown)
+        //while( NULL == (jobbuf = g_socket.OutMsgRecvQueue()) && false == m_is_shutdown)
+        //while ( (0 == p_threadpool_obj->m_list_rece_msg_queue.size() == 0) && (fasle == m_is_shutdown) )
+        while( (0 == p_threadpool_obj->m_recv_msg_queue_n) && (false == m_is_shutdown) )
         {
             // 如果这个pthread_cond_wait被唤醒【被唤醒后程序执行流程往下走的前提是拿到了锁--官方：pthread_cond_wait()返回时，互斥量再次被锁住】，
             // 那么会立即再次执行g_socket.OutMsgRecvQueue()，如果拿到了一个NULL，则继续在这里wait着();
@@ -204,7 +248,7 @@ void* CThreadPool::ThreadFunc(void* thread_data)
                                               // 所以每个线程必须执行到这里，才认为是启动成功了；
             
             // ngx_log_stderr(0,"执行了pthread_cond_wait-------------begin");
-            //  刚开始执行pthread_cond_wait()的时候，会卡在这里，而且m_pthread_mutex会被释放掉；
+            // 刚开始执行pthread_cond_wait()的时候，会卡在这里，而且m_pthread_mutex会被释放掉；
             pthread_cond_wait(&m_pthread_cond, &m_pthread_mutex);   // 整个服务器程序刚初始化的时候，所有线程必然是卡在这里等待的；
             //ngx_log_stderr(0,"执行了pthread_cond_wait-------------end");
         }
@@ -239,30 +283,41 @@ void* CThreadPool::ThreadFunc(void* thread_data)
         //if(!m_is_shutdown)        // 如果这个条件成立，表示肯定是拿到了真正消息队列中的数据，要去干活了，干活，则表示正在运行的线程数量要增加1；
         //    ++m_running_thread_n; // 因为这里是互斥的，所以这个+是OK的；
 
-        err = pthread_mutex_unlock(&m_pthread_mutex); // 先解锁mutex,让其他线程可以拿到锁
-        if(err != 0)  
-			LogStderr(err,"CThreadPool::ThreadFunc()pthread_cond_wait()失败，返回的错误码为%d!",err);// 有问题，要及时报告
+
+        //pthread_t tid = pthread_self();                                // 获取线程自身id，以方便调试打印信息等
+
+        // 走到这里时刻，互斥量肯定是锁着的。。。。。。
         
         // 先判断线程退出这个条件
         // 这个变量在stop()中会被设置ture
         if(m_is_shutdown)
         {            
-            if(jobbuf != NULL)
-            {
-                // 这个条件在这里应该不成立吧，不过加上也无所谓【后来又感觉也可能会成立尤其是当要退出的时候】
-                p_memory->FreeMemory(jobbuf);   
-            }
+            pthread_mutex_unlock(&m_pthread_mutex);                     // 解锁互斥量
             break; 
         }
 
-        // 能走到这里的，就是有数据可以处理
+        // 走到这里，可以取得消息进行处理了【消息队列中必然有消息】,注意，目前还是互斥着呢
+        char *jobbuf = p_threadpool_obj->m_list_rece_msg_queue.front();  // 返回第一个元素但不检查元素存在与否
+        p_threadpool_obj->m_list_rece_msg_queue.pop_front();             // 移除第一个元素但不返回	
+        --p_threadpool_obj->m_recv_msg_queue_n;                          // 收消息队列数字-1
+               
+        // 可以解锁互斥量了,让其他线程可以拿到锁
+        err = pthread_mutex_unlock(&m_pthread_mutex);
+        if(err != 0)  
+            LogStderr(err,"CThreadPool::ThreadFunc()pthread_cond_wait()失败，返回的错误码为%d!", err);            // 有问题，要及时报告
+        
+        // 加个信息日志，方便调试
+        LogErrorCore(NGX_LOG_INFO, 0, "线程[%ud]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = %ud!",\
+                                      pthread_self(), ntohs(((gps_comm_pkg_header_t)(jobbuf+sizeof(gs_msg_header_t)))->len_pkg ) );
+
+        // 能走到这里的，就是有消息可以处理，开始处理
         ++p_threadpool_obj->m_running_thread_n;    // 原子+1，这比互斥量要快很多，运行线程数+1
 
-        //g_socket.threadRecvProcFunc(jobbuf);     // 处理消息队列中来的消息
+        g_socket.ThreadRecvProcFunc(jobbuf);       // 处理消息队列中来的消息
 
-        LogStderr(0, "执行开始---begin, tid = %ud", tid);
-        sleep(5);                                  // 临时测试代码
-        LogStderr(0, "执行结束---end, tid = %ud", tid);
+        //LogStderr(0, "执行开始---begin, tid = %ud", tid);
+        //sleep(5);                                  // 临时测试代码
+        //LogStderr(0, "执行结束---end, tid = %ud", tid);
 
         p_memory->FreeMemory(jobbuf);              // 释放消息内存 
         --p_threadpool_obj->m_running_thread_n;    // 原子-1，运行线程数-1
@@ -357,8 +412,8 @@ void CThreadPool::StopAll()
  * 功能：
     来任务了，调一个线程池中的线程下来干活
     
- * 输入参数：(int irmqc)
- 	irmqc
+ * 输入参数：
+ 	无
 
  * 返回值：
 	无
@@ -382,7 +437,7 @@ void CThreadPool::StopAll()
  * 例子说明：
 
  */
-void CThreadPool::Call(int irmqc)
+void CThreadPool::Call()
 {
     //ngx_log_stderr(0,"m_pthreadCondbegin--------------=%ui!",m_pthread_cond);  // 数字5，此数字不靠谱
     //for(int i = 0; i <= 100; i++)
@@ -448,6 +503,58 @@ void CThreadPool::Call(int irmqc)
     
     return;
 }
+
+/**
+ * 功能：
+    当收到一个完整包之后，将完整包入消息队列，这个包在服务器端应该是 消息头+包头+包体 格式
+    
+ * 输入参数：(char* p_buf)
+    p_buf 指针，指向一段内存=消息头 + 包头 + 包体
+
+
+ * 返回值：
+	无
+
+ * 调用了函数：
+
+ * 其他说明：
+    注意清理队列结构实质就是清理其中中的每一个元素的这个思想
+
+ * 例子说明：
+
+ */
+void CThreadPool::AddMsgRecvQueueAndSignal(char* p_buf)
+{
+    // 加个信息日志，方便调试
+    LogErrorCore(NGX_LOG_INFO, 0, "将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = %ud!",\
+                                  ntohs(((gps_comm_pkg_header_t)(p_buf+sizeof(gs_msg_header_t)))->len_pkg ) );  
+
+	//  互斥
+	int err = pthread_mutex_lock(&m_pthread_mutex);
+	if (err != 0)
+	{
+		LogStderr(err, "CThreadPool::AddMsgRecvQueueAndSignal()中pthread_mutex_lock()失败，返回的错误码为%d!", err);
+	}
+
+	m_list_rece_msg_queue.push_back(p_buf);  // 入消息队列
+	++m_recv_msg_queue_n;                    // 收消息队列数字+1，个人认为用成员变量更方便一点，
+	                                         // 比 m_list_rece_msg_queue.size()高效
+
+	// 取消互斥
+	err = pthread_mutex_unlock(&m_pthread_mutex);
+	if (err != 0)
+	{
+		LogStderr(err, "CThreadPool::AddMsgRecvQueueAndSignal()中pthread_mutex_unlock()失败，返回的错误码为%d!", err);
+	}
+
+    // 加个信息日志，方便调试
+    LogErrorCore(NGX_LOG_INFO, 0, "在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = %ud!",\
+                                  ntohs(((gps_comm_pkg_header_t)(m_list_rece_msg_queue.front()+sizeof(gs_msg_header_t)))->len_pkg ) );
+
+	// 可以激发一个线程来干活了
+	Call();
+}
+
 
 // 唤醒丢失问题，sem_t sem_write;
 // 参考信号量解决方案：https://blog.csdn.net/yusiguyuan/article/details/20215591  linux多线程编程--信号量和条件变量 唤醒丢失事件

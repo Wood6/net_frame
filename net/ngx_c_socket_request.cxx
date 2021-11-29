@@ -142,7 +142,7 @@ ssize_t CSocket::RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_bu
     if(recv_cnt == 0)
     {
         // 客户端关闭【应该是正常完成了4次挥手】，我这边就直接回收连接连接，关闭socket即可 
-        // ngx_log_stderr(0,"连接被客户端正常关闭[4路挥手关闭]！");
+        // LogStderr(0,"连接被客户端正常关闭[4路挥手关闭]！");
         CloseConnection(p_conn);
         return -1;
     }
@@ -240,6 +240,9 @@ void CSocket::WaitRequestHandlerProcPart1(gps_connection_t p_conn)
                                               // ntohs/htons的目的就是保证不同操作系统数据之间收发的正确性，
                                               // 【不管客户端/服务器是什么操作系统，发送的数字是多少，收到的就是多少】
                                               // 直接百度搜索"网络字节序" "主机字节序" "p_conn++ 大端" "p_conn++ 小端"
+
+    LogErrorCore(NGX_LOG_INFO, 0, "包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = %ud!", len_pkg);
+
     // 恶意包或者错误包的判断
     if(len_pkg < m_len_pkg_header) 
     {
@@ -312,9 +315,9 @@ void CSocket::WaitRequestHandlerProcPart1(gps_connection_t p_conn)
  */
 void CSocket::WaitRequestHandlerProcLast(gps_connection_t p_conn)
 {
-    int msgqueue_n = 0;     // 消息队列当前信息数量
+    //int msgqueue_n = 0;     // 消息队列当前信息数量
     // 把这段内存放到消息队列中来；
-    AddMsgRecvQueue(p_conn->p_new_recvmem_pos, msgqueue_n);
+    //AddMsgRecvQueue(p_conn->p_new_recvmem_pos, msgqueue_n);
     // ......这里可能考虑触发业务逻辑，怎么触发业务逻辑，这个代码以后再考虑扩充。。。。。。
 
 
@@ -322,7 +325,13 @@ void CSocket::WaitRequestHandlerProcLast(gps_connection_t p_conn)
     // 从而好直接告诉线程需要激活多个个线程来处理消息对应的业务逻辑了
     
     // 通过全局线程变量直接调用线程来处理了
-    g_threadpool.Call(msgqueue_n);                           // 激发线程池中的某个线程来处理业务逻辑
+    //g_threadpool.Call(msgqueue_n);                           // 激发线程池中的某个线程来处理业务逻辑     
+
+    // 加个信息日志，方便调试
+    LogErrorCore(NGX_LOG_INFO, 0, "包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = %ud!",\
+                                  ntohs( ((gps_comm_pkg_header_t)p_conn->arr_pkghead_info)->len_pkg ));     
+    
+    g_threadpool.AddMsgRecvQueueAndSignal(p_conn->p_new_recvmem_pos);  // 入消息队列并触发线程处理消息
     
     p_conn->is_new_recvmem     = false;                      // 内存不再需要释放，因为你收完整了包，这个包被上边
 	                                                         // 调用InMsgRecvQueue()移入消息队列，那么释放内存就
@@ -334,6 +343,8 @@ void CSocket::WaitRequestHandlerProcLast(gps_connection_t p_conn)
     return;
 }
 
+// 这些消息队列数据的处理全部移到线程相关类中去了，这里就注释掉
+#if 0
 /**
  * 功能：
     当收到一个完整包之后，将完整包入消息队列，这个包在服务器端应该是 消息头+包头+包体 格式
@@ -405,6 +416,7 @@ char* CSocket::OutMsgRecvQueue()
     
     return p_retbuf;
 }
+#endif
 
      
 /**

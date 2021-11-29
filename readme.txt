@@ -1,3 +1,6 @@
+// 头文件包含记录
+#include <arpa/inet.h>      // ntohs()
+
 
 // 函数说明
 
