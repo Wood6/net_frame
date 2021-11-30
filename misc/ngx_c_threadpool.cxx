@@ -304,7 +304,7 @@ void* CThreadPool::ThreadFunc(void* thread_data)
         // 可以解锁互斥量了,让其他线程可以拿到锁
         err = pthread_mutex_unlock(&m_pthread_mutex);
         if(err != 0)  
-            LogStderr(err,"CThreadPool::ThreadFunc()pthread_cond_wait()失败，返回的错误码为%d!", err);            // 有问题，要及时报告
+            LogStderr(err,"CThreadPool::ThreadFunc()中pthread_mutex_unlock()失败，返回的错误码为%d!", err);            // 有问题，要及时报告
         
         // 加个信息日志，方便调试
         LogErrorCore(NGX_LOG_INFO, 0, "线程[%ud]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = %ud!",\

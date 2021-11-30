@@ -71,6 +71,8 @@ extern gs_log_t        gs_log;
 extern CLogicSocket    g_socket;
 extern CThreadPool     g_threadpool;
 
+extern bool            g_is_stop_programe;
+
 
 #endif 
 

@@ -31,8 +31,11 @@
  */
 void CSocket::WaitRequestHandler(gps_connection_t p_conn)
 {
+    LogErrorCoreAddPrintAddr(NGX_LOG_DEBUG, 0, "p_conn=%p, p_conn->p_recvbuf_pos=%p, p_conn->len_recv=%ud",\
+                                                p_conn, p_conn->p_recvbuf_pos, p_conn->len_recv);
+
     // 收包，注意我们用的第二个和第三个参数，我们用的始终是这两个参数，
-    // 因此我们必须保证 p_conn->p_recvbuf_pos 指向正确的收包位置，保证 p_conn->len_recv 指向正确的收包宽度
+    // 因此我们必须保证 p_conn->p_recvbuf_pos 指向正确的收包位置，保证 p_conn->len_recv 指向正确的收包宽度  
     ssize_t recv_cnt = RecvProc(p_conn, p_conn->p_recvbuf_pos, p_conn->len_recv); 
     if(recv_cnt <= 0)  
     {
@@ -106,10 +109,6 @@ void CSocket::WaitRequestHandler(gps_connection_t p_conn)
     return;
 }
 
-//
-
-//返回值：返回-1，则是有问题发生并且在这里把问题处理完毕了，调用本函数的调用者一般是可以直接return
-//        返回>0，则是表示实际收到的字节数
 /**
  * 功能：
     接收数据专用函数--引入这个函数是为了方便，如果断线，错误之类的，
@@ -136,14 +135,27 @@ void CSocket::WaitRequestHandler(gps_connection_t p_conn)
  */
 ssize_t CSocket::RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_buf) 
 {
+    LogErrorCoreAddPrintAddr(NGX_LOG_DEBUG, 0, "p_conn=%p, p_buff=%p, len_buf=%ud", p_conn, p_buff, len_buf);
+    
     ssize_t recv_cnt = 0;
     recv_cnt = recv(p_conn->fd, p_buff, len_buf, 0);   // recv()系统函数， 最后一个参数flag，一般为0； 
     
     if(recv_cnt == 0)
     {
         // 客户端关闭【应该是正常完成了4次挥手】，我这边就直接回收连接连接，关闭socket即可 
-        // LogStderr(0,"连接被客户端正常关闭[4路挥手关闭]！");
+        // LogStderrAddPrintAddr(0,"连接被客户端正常关闭[4路挥手关闭]！");
+
+#if 0
         CloseConnection(p_conn);
+#endif
+
+        if(close(p_conn->fd) == -1)
+        {
+            LogErrorCore(NGX_LOG_ALERT, errno, "CSocket::RecvProc()中close(%d)失败！", p_conn->fd);
+        }
+
+        AddRecyConnectList(p_conn);   // 加入延迟回收队列
+        
         return -1;
     }
     // 客户端没断，走这里 
@@ -156,7 +168,7 @@ ssize_t CSocket::RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_bu
         {
             // 我认为LT模式不该出现这个errno，而且这个其实也不是错误，所以不当做错误处理
             // epoll为LT模式不应该出现这个返回值，所以直接打印出来瞧瞧
-            LogStderr(errno,"CSocekt::recvproc()中errno == EAGAIN || errno == EWOULDBLOCK成立，出乎我意料！");
+            LogStderrAddPrintAddr(errno,"CSocekt::recvproc()中errno == EAGAIN || errno == EWOULDBLOCK成立，出乎我意料！");
             return -1;     // 不当做错误处理，只是简单返回
         }
         // EINTR错误的产生：当阻塞于某个慢系统调用的一个进程捕获某个信号
@@ -168,7 +180,7 @@ ssize_t CSocket::RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_bu
         {
             // 我认为LT模式不该出现这个errno，而且这个其实也不是错误，所以不当做错误处理
             // epoll为LT模式不应该出现这个返回值，所以直接打印出来瞧瞧
-            LogStderr(errno,"CSocekt::recvproc()中errno == EINTR成立，出乎我意料！");
+            LogStderrAddPrintAddr(errno,"CSocekt::recvproc()中errno == EINTR成立，出乎我意料！");
             return -1;       // 不当做错误处理，只是简单返回
         }
 
@@ -190,13 +202,20 @@ ssize_t CSocket::RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_bu
         {
             // 能走到这里的，都表示错误，我打印一下日志，希望知道一下是啥错误，我准备打印到屏幕上
             // 正式运营时可以考虑这些日志打印去掉
-            LogStderr(errno,"CSocekt::recvproc()中发生错误，我打印出来看看是啥错误！"); 
+            LogStderrAddPrintAddr(errno,"CSocekt::recvproc()中发生错误，我打印出来看看是啥错误！"); 
         } 
         
-        //LogStderr(0,"连接被客户端 非 正常关闭！");
+        //LogStderrAddPrintAddr(0,"连接被客户端 非 正常关闭！");
 
         //这种真正的错误就要，直接关闭套接字，释放连接池中连接了
+#if 0
         CloseConnection(p_conn);
+#endif
+        if(close(p_conn->fd) == -1)
+        {
+            LogErrorCore(NGX_LOG_ALERT, errno, "CSocket::RecvProc()中第二处close(%d)失败！", p_conn->fd);
+        }
+        AddRecyConnectList(p_conn);   // 加入延迟回收队列
         
         return -1;
     }
@@ -227,7 +246,7 @@ ssize_t CSocket::RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_bu
  */
 void CSocket::WaitRequestHandlerProcPart1(gps_connection_t p_conn)
 {
-    CMemory *p_memory = CMemory::GetInstance();		
+    CMemory* p_memory = CMemory::GetInstance();		
 
     gps_pkg_header_t p_pkg_header;
     // 正好收到包头时，包头信息肯定是在arr_pkghead_info里；
@@ -268,7 +287,10 @@ void CSocket::WaitRequestHandlerProcPart1(gps_connection_t p_conn)
         // 我现在要分配内存开始收包体，因为包体长度并不是固定的，所以内存肯定要new出来；
         // 分配内存【长度是 消息头长度  + 包头长度 + 包体长度】，最后参数先给false，表示内存不需要memset;
         char *p_tmpbuff  = (char *)p_memory->AllocMemory(m_len_msg_header + len_pkg, false); 
+
+#if 0
         p_conn->is_new_recvmem   = true;        // 标记我们new了内存，将来在FreeConnection()要回收的
+#endif
         p_conn->p_new_recvmem_pos = p_tmpbuff;  // 内存开始指针
 
         // a)先填写消息头内容
@@ -332,10 +354,11 @@ void CSocket::WaitRequestHandlerProcLast(gps_connection_t p_conn)
                                   ntohs( ((gps_pkg_header_t)p_conn->arr_pkghead_info)->len_pkg ));     
     
     g_threadpool.AddMsgRecvQueueAndSignal(p_conn->p_new_recvmem_pos);  // 入消息队列并触发线程处理消息
-    
+#if 0 
     p_conn->is_new_recvmem     = false;                      // 内存不再需要释放，因为你收完整了包，这个包被上边
 	                                                         // 调用InMsgRecvQueue()移入消息队列，那么释放内存就
 	                                                         // 属于业务逻辑去干，不需要回收连接到连接池中干了
+#endif
     p_conn->p_new_recvmem_pos  = NULL;
     p_conn->pkg_cur_state      = PKG_HEAD_INIT;              // 收包状态机的状态恢复为原始态，为收下一个包做准备                    
     p_conn->p_recvbuf_pos      = p_conn->arr_pkghead_info;   // 设置好收包的位置
@@ -381,7 +404,7 @@ void CSocket::AddMsgRecvQueue(char* p_buf, int& ret_msgqueue_n)
     //TmpOutMsgRecvQueue();   // .....临时，后续会取消这行代码
 
     // 为了测试方便，因为本函数意味着收到了一个完整的数据包，所以这里打印一个信息
-    LogStderr(0,"非常好，收到了一个完整的数据包【包头+包体】！");  
+    LogStderrAddPrintAddr(0,"非常好，收到了一个完整的数据包【包头+包体】！");  
 }
 
 /**

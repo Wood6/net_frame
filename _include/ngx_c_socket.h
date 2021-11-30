@@ -3,9 +3,13 @@
 #define __NGX_SOCKET_H__
 
 #include <vector>
+#include <list>
+#include <atomic>
 
 #include <sys/epoll.h>
 #include <sys/socket.h>
+#include <pthread.h>
+#include <semaphore.h>      // 信号量
 
 #include "ngx_comm.h"
 
@@ -35,6 +39,16 @@ struct _gs_listening
 // (1)该结构表示一个TCP连接【客户端主动发起的、Nginx服务器被动接受的TCP连接】
 struct _gs_connection
 {
+    _gs_connection();                            // 构造函数
+	virtual ~_gs_connection();                   // 析构函数
+	void GetOneToUse();                          // 分配出去的时候初始化一些内容
+	void PutOneToFree();                         // 回收回来的时候做一些事情
+
+    pthread_mutex_t           mutex_logic_porc;  // 逻辑处理相关的互斥量
+    
+    //和回收有关
+	time_t                    add_recyList_time; // 入到资源回收站里去的时间
+
 	int                       fd;                // 套接字句柄socket
 	gps_listening_t           p_listening;       // 如果这个链接被分配给了一个监听套接字，那么这个里边就指向监听套接字对应的
 											     // 那个 gps_listening_t 的内存首地址,用此指针与上面监听套接字的结构体联系起来了
@@ -52,7 +66,7 @@ struct _gs_connection
 	EpollEventHandlerPt        read_handler;     // 读事件的相关处理方法
 	EpollEventHandlerPt        write_handler;    // 写事件的相关处理方法
 
-    // 和收包有关
+    // 和收包有关----------------------------
     unsigned char              pkg_cur_state;                          // 当前收包的状态
     char                       arr_pkghead_info[PKG_HEAD_BUFSIZE];     // 用于保存收到的数据的包头信息			
     char*                      p_recvbuf_pos;     // 接收数据的缓冲区的头指针，对收到不全的包非常有用，看具体应用的代码
@@ -61,11 +75,20 @@ struct _gs_connection
     bool                       is_new_recvmem;    // 如果我们成功的收到了包头，
                                                   // 那么我们就要分配内存开始保存 包头+消息头+包体内容，
                                                   // 这个标记用来标记是否我们new过内存，因为new过是需要释放的
-    char*                      p_new_recvmem_pos; //  new出来的用于收包的内存首地址，和 is_new_recvmem  配对使用
+    char*                      p_new_recvmem_pos; // new出来的用于收包的内存首地址，和 is_new_recvmem  配对使用
+
+    // 和发包有关-----------------------------
+	std::atomic<bool>          is_full_sendbuf_atomic;     // 发送消息，如果发送缓冲区满了，则需要通过epoll事件
+	                                                       // 来驱动消息的继续发送，所以如果发送缓冲区满，则用这个变量标记
+	                                                       // true满了，false没满
+
+	char*                      p_sendbuf_mem;              // 发送完成后释放用的，整个数据的头指针，其实是 消息头 + 包头 + 包体
+
+    // 和epoll事件有关------------------------
+    uint32_t                   epoll_events_type;          // 和epoll事件有关 
 
 
-
-	// --------------------------------------------------
+	// ----------------------------------------
 	gps_connection_t            data;             // 这是个指针【等价于传统链表里的next成员：后继指针】，
 	                                              // 指向下一个本类型对象，用于把空闲的连接池对象串起来
 											      // 构成一个单向链表，方便取用
@@ -74,7 +97,7 @@ struct _gs_connection
 // 消息头，引入的目的是当收到数据包时，额外记录一些代码中需要用到的辅助信息，以备将来使用
 typedef struct _s_msg_header
 {
-    gps_connection_t  p_conn;              //  记录对应的链接，注意这是个指针
+    gps_connection_t  p_conn;            //  记录对应的链接，注意这是个指针
     uint64_t          currse_quence_n;   //  收到数据包时记录对应连接的序号，将来能用于比较是否连接已经作废用
     // ......其他以后扩展	
 }gs_msg_header_t, *gps_msg_header_t;
@@ -84,6 +107,22 @@ typedef struct _s_msg_header
 class CSocket
 {
 private:
+	struct _thread_item
+	{
+		pthread_t   _Handle;              // 线程句柄
+		CSocket     *_pThis;              // 记录线程池的指针	
+		bool        is_running;           // 标记是否正式启动起来，启动起来后，才允许调用StopAll()来释放
+
+		// 构造函数
+		_thread_item(CSocket* pthis) :_pThis(pthis), is_running(false) {}
+		// 析构函数
+		~_thread_item() {}
+	};
+
+	// 多线程相关
+	std::vector<_thread_item*>     m_vec_thread;                    // 线程 容器，容器里就是各个线程了 	
+	//pthread_mutex_t                m_mutex_sendMessageQueueMutex;  //发消息队列互斥量 
+
 	int                           m_lister_port_cnt;     // 默认监听端口数量
 	std::vector<gps_listening_t>  m_vec_listen_socket;   // 存储套接字的数据vector结构
 
@@ -94,8 +133,8 @@ private:
 	
 
 	// 连接池相关
-	gps_connection_t               mp_connections;       // 注意这是个指针，其实这是个连接池的首地址
-	gps_connection_t               mp_free_connections;  // 空闲连接链表头，连接池中总是有某些连接被占用，
+	//gps_connection_t               mp_connections;       // 注意这是个指针，其实这是个连接池的首地址
+	//gps_connection_t               mp_free_connections;  // 空闲连接链表头，连接池中总是有某些连接被占用，
 	                                                     // 为了快速在池中找到一个空闲的连接，我把空闲的
 	                                                     // 连接专门用该成员记录;【串成一串，其实这里
 	                                                     // 指向的都是m_pconnections连接池里的没有被使用的成员】
@@ -103,9 +142,28 @@ private:
 	int                           m_free_connections_n;  // 连接池中可用连接总数
 
     // 将这些移到线程类中去了
-    //std::list<char *>             m_list_rece_msg_queue; // 接受数据消息队列
+    //std::list<char *>             m_list_rece_msg_queue;  // 接受数据消息队列
     //int                           m_recv_msg_queue_n;     // 收消息队列大小
     //pthread_mutex_t               m_recv_msg_queue_mutex; // 收消息队列互斥量 
+
+    // 和连接池有关的 ------------------------------
+	std::list<gps_connection_t>  m_list_connection;             // 连接列表【连接池】
+	std::list<gps_connection_t>  m_list_free_connection;        // 空闲连接列表【这里边装的全是空闲的连接】
+	std::atomic<int>             m_total_connection_n;          // 连接池中总连接数
+	std::atomic<int>             m_free_connection_n;           // 连接池空闲连接数
+	pthread_mutex_t              m_mutex_connection;            // 连接相关互斥量，互斥m_list_connection和m_list_free_connectiont的
+	pthread_mutex_t              m_mutex_recyList_connection;   // 连接回收队列相关的互斥量
+	std::list<gps_connection_t>  m_list_recy_connection;        // 将要释放的连接放这里
+	std::atomic<int>             m_totol_recy_connection_n;     // 待释放连接总数，实际也是 m_list_free_connection.size()
+	int                          m_recy_connection_wait_time;   // 等待这么些秒后才回收连接
+
+    //  消息队列
+	std::list<char*>              m_list_send_msg;              // 发送数据消息队列
+	std::atomic<int>              m_send_msg_list_n;            // 发消息队列大小
+	// 多线程相关
+	std::vector<_thread_item*>    m_vec_pthread;                // 线程 容器，容器里就是各个线程了 	
+	pthread_mutex_t               m_mutex_send_msg;             // 发消息队列互斥量 
+	sem_t                         m_sem_send_event;             // 处理发消息线程相关的信号量
 
 protected:
     // 一些和网络通讯有关的成员变量
@@ -118,8 +176,14 @@ private:
 	void CloseListeningSockets();              // 关闭监听套接字
 	bool SetNonblocking(int sockfd);           // 设置非阻塞套接字
 
-	gps_connection_t GetElementOfConnection(int isock);    // 从连接池中获取一个空闲连接
-	void FreeConnection(gps_connection_t p_c);             // 将 p_conn 归还进连接池
+	//gps_connection_t GetElementOfConnection(int isock);    // 从连接池中获取一个空闲连接
+	//void FreeConnection(gps_connection_t p_c);             // 将 p_conn 归还进连接池
+    // 连接池 或 连接相关 -----------------
+    void InitConnectionPool();                                     // 初始化连接池
+    void ClearConnectionPool();                                    // 回收连接池
+    gps_connection_t GetConnectionFromCPool(int fdsock);           // 从连接池中获取一个空闲连接
+    void FreeConnectionToCPool(gps_connection_t p_conn);           // 归还参数pConn所代表的连接到到连接池中 
+    void AddRecyConnectList(gps_connection_t p_conn);              // 将要回收的连接放到一个队列中来
 
 
 	void EventAccept(gps_connection_t old_c);              // 建立新连接
@@ -142,21 +206,36 @@ private:
 	void AddMsgRecvQueue(char* p_buf, int& ret_msgqueue_n);   // 收到一个完整消息后，入消息队列
 	//void TmpOutMsgRecvQueue();                              // 临时清除对列中消息函数，测试用，将来会删除该函数
 
+	static void* ServerRecyConnectionThread(void* thread_data);            // 专门用来回收连接的线程
+
+    ssize_t SendProc(gps_connection_t p_conn,char *p_buf,ssize_t size);    //  将数据发送到客户端
+    void ClearSendMsgList();                                             // 处理发送消息队列  
+
+protected:
+    void SendMsg(char *p_send_buf);                            // 把数据扔到待发送对列中 
+
 public:
 	CSocket();
 	virtual ~CSocket();
 
-	virtual bool InitSocket();                       // 初始化函数
+	virtual bool InitSocket();                       // 初始化函数[父进程中执行]
+	virtual bool InitSubproc();                      // 初始化函数[子进程中执行]
+	virtual void ShutdownSubproc();                  // 关闭退出函数[子进程中执行]
 
 	/***** epoll 相关成员函数 ******/
 	int InitEpoll();                                 // epoll 功能初始化
-
+#if 0
 	int EpollAddEvent(int fd,
 		int read_event, int write_event,
 		uint32_t otherflag,
 		uint32_t event_type,
 		gps_connection_t p_conn
 	);                                                // epoll 增加事件
+#endif
+    // epoll操作事件,取代原来的EpollAddEvent()
+    int EpollOperEvent(int fd, uint32_t event_type, 
+                            uint32_t flag,int otherflag,
+                            gps_connection_t p_conn);   
 
 	int EpollProcessEvents(int timer);                // epoll等待接收和处理事件
 

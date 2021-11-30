@@ -229,7 +229,8 @@ static void WorkerProcessCycle(int inum, const char* p_procname)
 	}
 
     // 如果从上面for循环跳出来，考虑在这里停止线程池
-    g_threadpool.StopAll();
+    g_threadpool.StopAll();            
+    g_socket.ShutdownSubproc();  // socket需要释放的东西考虑释放；
 }
 
 /**
@@ -272,6 +273,12 @@ static void InitWorkerProcess(int inum)
         exit(-2);
     }
     sleep(1);        // 再休息1秒；
+
+    if(g_socket.InitSubproc() == false) // 初始化子进程需要具备的一些多线程能力相关的信息
+    {
+        // 内存没释放，但是简单粗暴退出；
+        exit(-2);
+    }
     
 	// 如下这些代码参照官方nginx里的ngx_event_process_init()函数中的代码
 	g_socket.InitEpoll();           // 初始化epoll相关内容，同时 往监听socket上增加监听事件，从而开始让监听端口履行其职责

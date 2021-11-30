@@ -2,6 +2,7 @@
 #include <arpa/inet.h>      // ntohs()
 #include <stddef.h>         // NULL
 #include <atomic>           // c++11里的原子操作
+#include <semaphore.h>      // 信号量 
 
 
 // 函数说明

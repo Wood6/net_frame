@@ -30,6 +30,7 @@ int    g_is_daemon      = 0;       // 是否开启守护进程模式，0未启�
 pid_t  g_pid;                      // 当前进程的pid
 pid_t  g_ppid;                     // 父进程pid
 int    g_process_type;             // 进程类型，用来标识是master进程还是worker进程
+bool   g_is_stop_programe;         // 标志程序退出,false不退出,true退出
 
 // 标记子进程状态变化[一般是子进程发来SIGCHLD信号表示退出],
 // sig_atomic_t:系统定义的类型：访问或改变这些变量需要在计算机的一条指令内完成
@@ -43,6 +44,8 @@ CLogicSocket g_socket;             // socket全局对象
 // 线程池相关
 CThreadPool g_threadpool;          // 线程池全局对象
 
+// 
+
 // 专门在程序执行末尾释放资源的函数【一系列的main返回前的释放动作函数】
 static void FreeResource();
 
@@ -51,6 +54,8 @@ int main(int argc, char **argv)
 {
 	int exit_code = 0;
     //CMemory* p_memory;
+    // (0)先初始化的变量
+    g_is_stop_programe = false;            // 标记程序是否退出，0不退出   
 
 	// 第一部分：无伤大雅也不需要释放的放最上面
 	g_pid = getpid();
@@ -109,6 +114,7 @@ int main(int argc, char **argv)
 
 	// 第三部分：一些必须事先准备好的资源，先初始化
 	LogInit();
+
 #ifdef LIYAO_DEBUG_PASS
 	LogStderr(0, "黎瑶开始测试了。。。!");
 	LogStderr(0, "输入888，希望整型数显示，实际显示了%d", 888);

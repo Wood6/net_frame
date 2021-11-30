@@ -15,6 +15,9 @@
 #include <signal.h>
 
 
+
+
+
 // 字符串相关函数 ----------------------------------------------------------------
 void LeftTrim(char* s);
 void RightTrim(char* s);
@@ -22,6 +25,14 @@ void RightTrim(char* s);
 
 
 // 和日志，打印输出有关 ----------------------------------------------------------
+// 给打印日志时，输出原子数用的
+#include <atomic>           // c++11里的原子操作
+template<typename BaseType> 
+struct atomic 
+{ 
+    operator BaseType() const volatile; 
+};
+
 // 加上log输出的地方（即哪个地方输出的log，把这个代码地方也打印出来）
 #define LogErrorCoreAddPrintAddr(level, err, fmt, ...)  \
 	do {\
