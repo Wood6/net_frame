@@ -110,10 +110,10 @@ void _gs_connection::GetOneToUse()
 void _gs_connection::PutOneToFree()
 {
 	++currse_quence_n;
-	if (p_recvbuf_pos != NULL)  // 我们曾经给这个连接分配过接收数据的内存，则要释放内存
+	if (p_new_recvmem_pos != NULL)  // 我们曾经给这个连接分配过接收数据的内存，则要释放内存
 	{
-		CMemory::GetInstance()->FreeMemory(p_recvbuf_pos);
-		p_recvbuf_pos = NULL;
+		CMemory::GetInstance()->FreeMemory(p_new_recvmem_pos);
+		p_new_recvmem_pos = NULL;
 	}  
 
     if(p_sendbuf_mem != NULL)       // 如果发送数据的缓冲区里有内容，则要释放内存
