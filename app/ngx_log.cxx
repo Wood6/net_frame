@@ -24,8 +24,6 @@ static u_char arr2_err_levels[][20] =
 	{"debug"}           // 8: 调试
 };
 
-static u_char* LogPrintAddrInfo(u_char* p_buf, u_char* p_last);
-
 gs_log_t gs_log;
 
 /**
@@ -107,9 +105,6 @@ void LogStderr(int err, const char* fmt, ...)
 		p_errstr = LogErrno(p_errstr, p_last_arr_errstr, err);
 	}
 
-    // 加上log输出的地方给打印出来
-    p_errstr = LogPrintAddrInfo(p_errstr, p_last_arr_errstr);
-
 	if (p_errstr >= p_last_arr_errstr)
 	{
 		// 最后一个有'\0',不能破坏
@@ -137,11 +132,14 @@ void LogStderr(int err, const char* fmt, ...)
 
 /**
  * 功能：
-	输出打印这条log所在的代码地方，方便定位用的
+	给一段内存p_buf，一个错误编号err，我要组合出一个字符串,形如
+	(错误编号: 错误原因)
+	将组合好后上行中这种字符串放到给的p_buf内存中去
 
- * 输入参数：(u_char* p_buf, u_char* p_last)
+ * 输入参数：(u_char* p_buf, u_char* p_last, int err)
 	p_buf 往这里放按格式转换后的数据
 	p_last 放的数据不要超过这里
+	err 错误编码
 
  * 返回值：
 	转换放好的数据后面一个指针位
@@ -154,38 +152,6 @@ void LogStderr(int err, const char* fmt, ...)
  * 例子说明：
 
  */
-static u_char* LogPrintAddrInfo(u_char* p_buf, u_char* p_last)
-{
-	char arr_tmp[500] = {0};
-	char * p_arr = arr_tmp;
-
-	strcat(arr_tmp, ",【");
-	strcat(arr_tmp + strlen(p_arr) - 1, __FILE__);
-	strcat(arr_tmp + strlen(p_arr) - 1,  ": ");
-	sprintf(arr_tmp + strlen(p_arr) - 1, "%d", __LINE__);    // 需要将int转换位char *
-	strcat(arr_tmp + strlen(p_arr) - 1, " ");
-	strcat(arr_tmp + strlen(p_arr) - 1, __FUNCTION__);
-	strcat(arr_tmp + strlen(p_arr) - 1, "()】");
-    
-    size_t len_arr = strlen(arr_tmp);
-
-	// 保证整个我装得下，我就装，否则我全部抛弃 
-	// nginx的做法是 如果位置不够，就硬留出50个位置
-	// 【哪怕覆盖掉以往的有效内容】，也要硬往后边塞，这样当然也可以；
-	if ((p_buf + len_arr) < p_last)
-	{
-		p_buf = ngx_cpymem(p_buf, arr_tmp, len_arr);
-	}
-    else
-    {
-        size_t len_space = (p_last - p_buf - 1);
-        arr_tmp[len_space - 1] = '\0';
-        p_buf = ngx_cpymem(p_buf, arr_tmp, len_space);
-    }
-
-	return p_buf;
-}
-    
 u_char* LogErrno(u_char* p_buf, u_char* p_last, int err)
 {
 	char* perror_info = strerror(err);
@@ -286,9 +252,6 @@ void LogErrorCore(int level, int err, const char* fmt, ...)
 	{
 		p_arr_errstr = LogErrno(p_arr_errstr, p_last, err);  // 错误代码和错误信息也要显示出来
 	}
-
-    // 加上log输出的地方给打印出来
-    p_arr_errstr = LogPrintAddrInfo(p_arr_errstr, p_last);
 
 	if (p_arr_errstr >= p_last)
 	{

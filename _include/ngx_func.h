@@ -15,33 +15,55 @@
 #include <signal.h>
 
 
-// 字符串相关函数
+// 字符串相关函数 ----------------------------------------------------------------
 void LeftTrim(char* s);
 void RightTrim(char* s);
 
-// 和日志，打印输出有关
+
+
+// 和日志，打印输出有关 ----------------------------------------------------------
+// 加上log输出的地方（即哪个地方输出的log，把这个代码地方也打印出来）
+#define LogErrorCoreAddPrintAddr(level, err, fmt, ...)  \
+	do {\
+		LogErrorCore(level, err, "[%s %s:%ud]," fmt, __func__, __FILE__, __LINE__, ##__VA_ARGS__);\
+	} while (0);
+
+#define LogStderrAddPrintAddr(err, fmt, ...)  \
+	do {\
+		LogStderr(err, "[%s() %s:%ud]," fmt, __func__, __FILE__, __LINE__, ##__VA_ARGS__);\
+	} while (0);
+
+// 原始log接口，没有加上打log地方的输出
 void LogInit();
 void LogStderr(int err, const char* fmt, ...);
 u_char* LogErrno(u_char* p_buf, u_char* p_last, int err);
 void LogErrorCore(int level, int err, const char* fmt, ...);
 
-// 日志字符串格式化处理相关
+
+// 日志字符串格式化处理相关 
 u_char* SlPrintf(u_char* p_buf, u_char* p_last, const char* fmt, ...);
 u_char* SnPrintf(u_char* p_buf, size_t max, const char* fmt, ...);
 u_char* VslPrintf(u_char* p_buf, u_char* p_last, const char* fmt, va_list args);
 
-// 信号相关代码
+
+
+// 信号相关代码 ----------------------------------------------------------------
 bool InitSignals();
 
 
-// 设备进程标题相关
+
+// 设备进程标题相关 ------------------------------------------------------------
 void InitSetProcTitle();
 void SetProcTitle(const char* title);
 
-// 创建出守护进程
+
+
+// 创建出守护进程 --------------------------------------------------------------
 int CreatDaemon();
 
-// 和主流程相关
+
+
+// 和主流程相关 ----------------------------------------------------------------
 void MasterProcessCycle();
 void ProcessEventsAndTimers();
 
