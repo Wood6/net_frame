@@ -240,7 +240,7 @@ void LogErrorCore(int level, int err, const char* fmt, ...)
 
 	p_arr_errstr = ngx_cpymem(arr_errstr, arr_curr_time, strlen((const char*)arr_curr_time));  // 时间，得到形如：2019/01/08 20:26:07
 	p_arr_errstr = SlPrintf(p_arr_errstr, p_last, " [%s] ", arr2_err_levels[level]);            // 日志等级，得到形如：2019/01/08 20:26:07 [crit] 
-	p_arr_errstr = SlPrintf(p_arr_errstr, p_last, "%P: ", g_pid);                               // 进程号，得到形如：2019/01/08 20:50:15 [crit] 2037:
+	p_arr_errstr = SlPrintf(p_arr_errstr, p_last, "pid_%P: ", g_pid);                               // 进程号，得到形如：2019/01/08 20:50:15 [crit] 2037:
 
 	va_list args;
 	va_start(args, fmt);        // 这行不能没有，否则走到VslPrintf中会报段错误

@@ -34,15 +34,18 @@ struct atomic
 };
 
 // 加上log输出的地方（即哪个地方输出的log，把这个代码地方也打印出来）
+// 去除 __FILE__ 显示的出的文件路径，只留下文件名
+#define FILE_NAME      ( strrchr(__FILE__,'/') ? (strrchr(__FILE__, '/') + 1) : __FILE__ )
 #define LogErrorCoreAddPrintAddr(level, err, fmt, ...)  \
 	do {\
-		LogErrorCore(level, err, "[%s %s:%ud]," fmt, __func__, __FILE__, __LINE__, ##__VA_ARGS__);\
+		LogErrorCore(level, err, "[%s(), %s: %ud]," fmt, __func__, FILE_NAME, __LINE__, ##__VA_ARGS__);\
 	} while (0);
 
 #define LogStderrAddPrintAddr(err, fmt, ...)  \
 	do {\
-		LogStderr(err, "[%s() %s:%ud]," fmt, __func__, __FILE__, __LINE__, ##__VA_ARGS__);\
+		LogStderr(err, "[%s(), %s: %ud]," fmt, __func__, FILE_NAME, __LINE__, ##__VA_ARGS__);\
 	} while (0);
+
 
 // 原始log接口，没有加上打log地方的输出
 void LogInit();
