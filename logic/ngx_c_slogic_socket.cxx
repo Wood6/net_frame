@@ -10,6 +10,7 @@
 #include "ngx_logiccomm.h" 
 #include "ngx_func.h"
 #include "ngx_macro.h"
+#include "ngx_c_lockmutex.h"
 
 // 定义成员函数指针
 typedef bool (CLogicSocket::*handler)(gps_connection_t p_conn,       // 连接池中连接的指针
@@ -220,8 +221,99 @@ void CLogicSocket::ThreadRecvProcFunc(char *p_msg_buf)
  */
 bool CLogicSocket::_HandleRegister(gps_connection_t p_conn, gps_msg_header_t p_msg_header, char* p_pkg_body, unsigned short len_body)
 {
-	LogStderr(0, "线程[%ud]执行了CLogicSocket::_HandleRegister()!", pthread_self());
+	// (1)首先判断包体的合法性
+	if (NULL == p_pkg_body)     // 具体看客户端服务器约定，如果约定这个命令[msg_type]必须带包体，那么如果不带包体，就认为是恶意包直接不处理    
+	{
+        LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "收到的数据包没有包体，视为恶意包丢弃，程序对此包不作处理！");
+		return false;
+	}
+
+	int len_recved = sizeof(gs_register_t);
+	if (len_recved != len_body) // 发送过来的结构大小不对，认为是恶意包，直接不处理
+	{
+        LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "收到的数据包长度与约定不符，视为恶意包丢弃，程序对此包不作处理！");
+		return false;
+	}
+
+	// (2)对于同一个用户，可能同时发送来多个请求过来，造成多个线程同时为该 用户服务，
+	//  比如以网游为例，用户要在商店中买A物品，又买B物品，而用户的钱 只够买A或者B，不够同时买A和B呢？
+	//  那如果用户发送购买命令过来买了一次A，又买了一次B，如果是两个线程来执行同一个用户的这两次不同的购买命令，
+	//  很可能造成这个用户购买成功了 A，又购买成功了 B
+	//  所以，为了稳妥起见，针对某个用户的命令，我们一般都要互斥,我们需要增加临界的变量于ngx_connection_s结构中
+	CLock lock(&p_conn->mutex_logic_porc); // 凡是和本用户有关的访问都互斥
+
+	// (3)取得了整个发送过来的数据
+	//gps_register_t p_RecvInfo = (gps_register_t)p_pkg_body;
+
+	// (4)这里可能要考虑 根据业务逻辑，进一步判断收到的数据的合法性，
+	//  当前该玩家的状态是否适合收到这个数据等等【比如如果用户没登陆，它就不适合购买物品等等】
+	//  这里大家自己发挥，自己根据业务需要来扩充代码，这里就不扩充了。。。。。。。。。。。。
+	//  。。。。。。。。
+
+	// (5)给客户端返回数据时，一般也是返回一个结构，这个结构内容具体由客户端/服务器协商，
+	// 这里我们就以给客户端也返回同样的 gs_register_t 结构来举例    
+	// gps_register_t pFromPkgHeader =  (gps_register_t)(((char *)pMsgHeader)+m_len_msg_header);
+	
+	gps_pkg_header_t p_pkg_header = NULL;                           // 指向收到的包的包头，其中数据后续可能要用到
+	CMemory  *p_memory = CMemory::GetInstance();
+	CCRC32   *p_crc32 = CCRC32::GetInstance();
+	int len_sending = sizeof(gs_register_t);
     
+	// a)分配要发送出去的包的内存
+	len_sending = 65000;                                            // unsigned short最大65535也就差不多是这个值
+	
+	// 准备发送的格式，这里是 消息头+包头+包体
+	char *p_sendbuf = (char *)p_memory->AllocMemory(m_len_msg_header + m_len_pkg_header + len_sending, false);
+
+    //  b)填充消息头
+	memcpy(p_sendbuf, p_msg_header, m_len_msg_header);                // 消息头直接拷贝到这里来
+
+    // c)填充包头
+	p_pkg_header = (gps_pkg_header_t)(p_sendbuf + m_len_msg_header);  // 指向包头
+	p_pkg_header->msg_type = _CMD_REGISTER;	                          // 消息代码，可以统一在ngx_logiccomm.h中定义
+	p_pkg_header->msg_type = htons(p_pkg_header->msg_type);	          // htons主机序转网络序 
+	// 这里每次收到客户端"register"请求的业务包后，这里就给填充个65008字节(约65M)的数据包，准备会发给客户端
+	// 也就是将协定的数据包中包头的len_pkg信息设置为65008，
+	// 这里是做发包测试目的，所以等会测试时测试工具客服端没有对来自服务的包长做检测，会收下这个65008的包作显示
+	p_pkg_header->len_pkg = htons(static_cast<unsigned short>(m_len_pkg_header + len_sending));    // 整个包的尺寸【包头+包体尺寸】 
+
+    // d)填充包体
+	gps_register_t p_send_info = (gps_register_t)(p_sendbuf + m_len_msg_header + m_len_pkg_header);	// 跳过消息头，跳过包头，就是包体了
+	//。。。。。这里根据需要，填充要发回给客户端的内容,int类型要使用htonl()转，short类型要使用htons()转；
+
+	// e)包体内容全部确定好后，计算包体的crc32值
+	p_pkg_header->crc32 = p_crc32->GetCRC((unsigned char *)p_send_info, len_sending);
+	p_pkg_header->crc32 = htonl(p_pkg_header->crc32);
+
+	// f)发送数据包
+	SendMsg(p_sendbuf);
+	/*if(ngx_epoll_oper_event(
+								p_conn->fd,         // socekt句柄
+								EPOLL_CTL_MOD,      // 事件类型，这里是增加
+								EPOLLOUT,           // 标志，这里代表要增加的标志,EPOLLOUT：可写
+								0,                  // 对于事件类型为增加的，EPOLL_CTL_MOD需要这个参数, 0：增加   1：去掉 2：完全覆盖
+								p_conn              // 连接池中的连接
+								) == -1)
+	{
+		LogStderr(0,"1111111111111111111111111111111111111111111111111111111111111!");
+	} */
+
+	/*
+	sleep(100);  //休息这么长时间
+	//如果连接回收了，则肯定是currse_quence_n不等了
+	if(pMsgHeader->currse_quence_n != p_conn->currse_quence_n)
+	{
+		//应该是不等，因为这个插座已经被回收了
+		LogStderr(0,"插座不等,%L--%L",pMsgHeader->currse_quence_n,p_conn->currse_quence_n);
+	}
+	else
+	{
+		LogStderr(0,"插座相等哦,%L--%L",pMsgHeader->currse_quence_n,p_conn->currse_quence_n);
+	}
+
+	*/
+	//LogStderr(0,"执行了CLogicSocket::_HandleRegister()!");
+
 	return true;
 }
 
