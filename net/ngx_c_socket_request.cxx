@@ -29,7 +29,7 @@
  * 例子说明：
 
  */
-void CSocket::WaitRequestHandler(gps_connection_t p_conn)
+void CSocket::ReadRequestHandler(gps_connection_t p_conn)
 {
     LogErrorCoreAddPrintAddr(NGX_LOG_DEBUG, 0, "p_conn=%p, p_conn->p_recvbuf_pos=%p, p_conn->len_recv=%ud",\
                                                 p_conn, p_conn->p_recvbuf_pos, p_conn->len_recv);
@@ -168,7 +168,7 @@ ssize_t CSocket::RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_bu
         {
             // 我认为LT模式不该出现这个errno，而且这个其实也不是错误，所以不当做错误处理
             // epoll为LT模式不应该出现这个返回值，所以直接打印出来瞧瞧
-            LogStderrAddPrintAddr(errno,"CSocekt::recvproc()中errno == EAGAIN || errno == EWOULDBLOCK成立，出乎我意料！");
+            LogStderrAddPrintAddr(errno,"CSocket::recvproc()中errno == EAGAIN || errno == EWOULDBLOCK成立，出乎我意料！");
             return -1;     // 不当做错误处理，只是简单返回
         }
         // EINTR错误的产生：当阻塞于某个慢系统调用的一个进程捕获某个信号
@@ -180,7 +180,7 @@ ssize_t CSocket::RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_bu
         {
             // 我认为LT模式不该出现这个errno，而且这个其实也不是错误，所以不当做错误处理
             // epoll为LT模式不应该出现这个返回值，所以直接打印出来瞧瞧
-            LogStderrAddPrintAddr(errno,"CSocekt::recvproc()中errno == EINTR成立，出乎我意料！");
+            LogStderrAddPrintAddr(errno,"CSocket::recvproc()中errno == EINTR成立，出乎我意料！");
             return -1;       // 不当做错误处理，只是简单返回
         }
 
@@ -202,7 +202,7 @@ ssize_t CSocket::RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_bu
         {
             // 能走到这里的，都表示错误，我打印一下日志，希望知道一下是啥错误，我准备打印到屏幕上
             // 正式运营时可以考虑这些日志打印去掉
-            LogStderrAddPrintAddr(errno,"CSocekt::recvproc()中发生错误，我打印出来看看是啥错误！"); 
+            LogStderrAddPrintAddr(errno,"CSocket::recvproc()中发生错误，我打印出来看看是啥错误！"); 
         } 
         
         //LogStderrAddPrintAddr(0,"连接被客户端 非 正常关闭！");
@@ -291,7 +291,7 @@ void CSocket::WaitRequestHandlerProcPart1(gps_connection_t p_conn)
 #if 0
         p_conn->is_new_recvmem   = true;        // 标记我们new了内存，将来在FreeConnection()要回收的
 #endif
-        p_conn->p_new_recvmem_pos = p_tmpbuff;  // 内存开始指针
+        p_conn->p_recvbuf_array_mem_addr = p_tmpbuff;  // 内存开始指针
 
         // a)先填写消息头内容
         gps_msg_header_t p_tmp_msgheader = (gps_msg_header_t)p_tmpbuff;
@@ -312,8 +312,8 @@ void CSocket::WaitRequestHandlerProcPart1(gps_connection_t p_conn)
         {
             // 开始收包体，注意我的写法
             p_conn->pkg_cur_state = PKG_BODY_INIT;                // 当前状态发生改变，包头刚好收完，准备接收包体	    
-            p_conn->p_recvbuf_pos = p_tmpbuff + m_len_pkg_header; // p_tmpbuff指向包头，这里 + m_iLenPkgHeader后指向包体 weizhi
-            p_conn->len_recv = len_pkg - m_len_pkg_header;        // len_pkg是整个包【包头+包体】大小，-m_iLenPkgHeader【包头】  = 包体
+            p_conn->p_recvbuf_pos = p_tmpbuff + m_len_pkg_header; // p_tmpbuff指向包头，这里 + m_len_pkg_header后指向包体 weizhi
+            p_conn->len_recv = len_pkg - m_len_pkg_header;        // len_pkg是整个包【包头+包体】大小，-m_len_pkg_header【包头】  = 包体
         }                       
     } 
 }
@@ -339,7 +339,7 @@ void CSocket::WaitRequestHandlerProcLast(gps_connection_t p_conn)
 {
     //int msgqueue_n = 0;     // 消息队列当前信息数量
     // 把这段内存放到消息队列中来；
-    //AddMsgRecvQueue(p_conn->p_new_recvmem_pos, msgqueue_n);
+    //AddMsgRecvQueue(p_conn->p_recvbuf_array_mem_addr, msgqueue_n);
     // ......这里可能考虑触发业务逻辑，怎么触发业务逻辑，这个代码以后再考虑扩充。。。。。。
 
 
@@ -353,13 +353,13 @@ void CSocket::WaitRequestHandlerProcLast(gps_connection_t p_conn)
     LogErrorCore(NGX_LOG_INFO, 0, "包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = %ud!",\
                                   ntohs( ((gps_pkg_header_t)p_conn->arr_pkghead_info)->len_pkg ));     
     
-    g_threadpool.AddMsgRecvQueueAndSignal(p_conn->p_new_recvmem_pos);  // 入消息队列并触发线程处理消息
+    g_threadpool.AddMsgRecvQueueAndSignal(p_conn->p_recvbuf_array_mem_addr);  // 入消息队列并触发线程处理消息
 #if 0 
     p_conn->is_new_recvmem     = false;                      // 内存不再需要释放，因为你收完整了包，这个包被上边
 	                                                         // 调用InMsgRecvQueue()移入消息队列，那么释放内存就
 	                                                         // 属于业务逻辑去干，不需要回收连接到连接池中干了
 #endif
-    p_conn->p_new_recvmem_pos  = NULL;
+    p_conn->p_recvbuf_array_mem_addr  = NULL;
     p_conn->pkg_cur_state      = PKG_HEAD_INIT;              // 收包状态机的状态恢复为原始态，为收下一个包做准备                    
     p_conn->p_recvbuf_pos      = p_conn->arr_pkghead_info;   // 设置好收包的位置
     p_conn->len_recv           = m_len_pkg_header;           // 设置好要接收数据的大小
@@ -441,7 +441,162 @@ char* CSocket::OutMsgRecvQueue()
 }
 #endif
 
-     
+// 
+
+/**
+ * 功能：
+    发送数据专用函数，返回本次发送的字节数
+    
+ * 输入参数：(gps_connection_t p_conn, char* p_buf, ssize_t size)  
+ 	
+
+ * 返回值：
+	返回 > 0，成功发送了一些字节
+         > 0，成功发送了一些字节
+         =0， 估计对方断了
+         -1， errno == EAGAIN ，本方发送缓冲区满了
+         -2， errno != EAGAIN != EWOULDBLOCK != EINTR ，一般我认为都是对端断开的错误
+
+ * 调用了函数：
+    系统函数：send()
+
+ * 其他说明：
+    ssize_t是有符号整型，在32位机器上等同与int，
+    在64位机器上等同与long int，size_t就是无符号型的ssize_t
+
+ * 例子说明：
+
+ */
+ssize_t CSocket::SendProc(gps_connection_t p_conn, char* p_buf, ssize_t size) 
+{
+    // 这里参考借鉴了官方nginx函数ngx_unix_send()的写法
+    ssize_t n = 0;
+
+    for ( ;; )
+    {
+        n = send(p_conn->fd, p_buf, size, 0); // send()系统函数， 最后一个参数flag，一般为0； 
+        if(n > 0) //成功发送了一些数据
+        {
+            LogErrorCoreAddPrintAddr(NGX_LOG_INFO, errno, "send()成功发送了[%d]字节的数据", n);
+            // 发送成功一些数据，但发送了多少，我们这里不关心，也不需要再次send
+            // 这里有两种情况
+            // (1) n == size也就是想发送多少都发送成功了，这表示完全发完毕了
+            // (2) n < size 没发送完毕，那肯定是发送缓冲区满了，所以也不必要重试发送，直接返回吧
+            return n; // 返回本次发送的字节数
+        }
+        if(n == 0)
+        {
+            LogErrorCoreAddPrintAddr(NGX_LOG_NOTICE, errno, "send()返回值为0，可能是连接断开了，注意处理！");
+            // send()返回0？ 一般recv()返回0表示断开,send()返回0，我这里就直接返回0吧【让调用者处理】
+            // 我个人认为send()返回0，要么你发送的字节是0，要么对端可能断开。
+            // 网上找资料：send=0表示超时，对方主动关闭了连接过程
+            // 我们写代码要遵循一个原则，连接断开，我们并不在send动作里处理诸如关闭socket这种动作，
+            // 集中到recv那里处理，否则send,recv都处理都处理连接断开关闭socket则会乱套
+            // 连接断开epoll会通知并且 RecvProc()里会处理，不在这里处理
+            return 0;
+        }
+
+        if(errno == EAGAIN)  // 这东西应该等于EWOULDBLOCK，内核缓冲区满这个不算错误
+        {
+            LogErrorCoreAddPrintAddr(NGX_LOG_INFO, errno, "条件errno == EAGAIN成立，发送缓存区满了！");
+            return -1;       // 表示发送缓冲区满了
+        }
+
+        if(errno == EINTR) 
+        {
+            // 这个应该也不算错误 ，收到某个信号导致send产生这个错误？
+            // 参考官方的写法，打印个日志，其他啥也没干，那就是等下次for循环重新send试一次了
+            // 打印个日志看看啥时候出这个错误
+            LogErrorCoreAddPrintAddr(NGX_LOG_NOTICE, errno, "条件errno == EINTR成立，收到异常信号，send()失败！");
+            //其他不需要做什么，等下次for循环吧            
+        }
+        else
+        {
+            // 走到这里表示是其他错误码，都表示错误，错误我也不断开socket，
+            // 我也依然等待recv()来统一处理断开，因为我是多线程，
+            // send()也处理断开，recv()也处理断开，很难处理好
+            LogErrorCoreAddPrintAddr(NGX_LOG_ERR, errno, "send()返回值错误判断到最后杂项错误集合分支，send()失败！");
+            return -2;    
+        }
+    } 
+}
+
+
+// 
+/**
+ * 功能：
+    设置数据发送时的写处理函数,当数据可写时 epoll 通知我们，
+    在 int CSocket::EpollProcessEvents(int timer)  中调用此函数
+    能走到这里，数据就是没法送完毕，要继续发送
+    
+ * 输入参数：(gps_connection_t p_conn)
+    p_conn  	
+
+ * 返回值：
+	无
+
+ * 调用了函数：
+    系统函数：send()
+
+ * 其他说明：
+
+ * 例子说明：
+
+ */
+void CSocket::WriteRequestHandler(gps_connection_t p_conn)
+{      
+    CMemory *p_memory = CMemory::GetInstance();
+    
+    // 这些代码的书写可以参照 void* CSocket::ServerSendQueueThread(void* threadData)
+    ssize_t sendsize = SendProc(p_conn,p_conn->p_sendbuf,p_conn->len_send);
+
+    if(sendsize > 0 && sendsize != static_cast<ssize_t>(p_conn->len_send) )
+    {        
+        // 没有全部发送完毕，数据只发出去了一部分，那么发送到了哪里，
+        // 剩余多少，继续记录，方便下次SendProc()时使用
+        p_conn->p_sendbuf = p_conn->p_sendbuf + sendsize;
+		p_conn->len_send = p_conn->len_send - sendsize;	
+        
+        return;
+    }
+    else if(sendsize == -1)
+    {
+        // 这不太可能，可以发送数据时通知我发送数据，我发送时你却通知我发送缓冲区满？//打印个日志，别的先不干啥
+        LogErrorCoreAddPrintAddr(NGX_LOG_WARN, errno, "可以发送数据时通知我发送数据，我发送时你却通知我发送缓冲区满？这很怪异！"); 
+        return;
+    }
+
+    if(sendsize > 0 && sendsize == static_cast<ssize_t>(p_conn->len_send)) // 成功发送完毕，做个通知是可以的；
+    {
+        // 如果是成功的发送完毕数据，则把写事件通知从epoll中干掉吧；
+        // 其他情况，那就是断线了，等着系统内核把连接从红黑树中干掉即可；
+        if(EpollOperEvent(
+                p_conn->fd,         // socket句柄
+                EPOLL_CTL_MOD,      // 事件类型，这里是修改【因为我们准备减去写通知】
+                EPOLLOUT,           // 标志，这里代表要减去的标志,EPOLLOUT：可写【可写的时候通知我】
+                1,                  // 对于事件类型为增加的，EPOLL_CTL_MOD需要这个参数, 0增加，  1去掉，2完全覆盖
+			    p_conn              // 连接池中的连接
+                ) == -1)
+        {
+            //  有这情况发生？这可比较麻烦，不过先do nothing
+            LogErrorCoreAddPrintAddr(NGX_LOG_WARN, errno, "EpollOperEvent()失败！"); 
+        }    
+
+        LogErrorCoreAddPrintAddr(NGX_LOG_INFO, errno, "系统epoll通知可写后，数据发送完毕，epoll写事件也成功移除，很好！"); // 做个提示吧，商用时可以干掉        
+    }
+
+    // 能走下来的，要么数据发送完毕了，要么对端断开了，那么执行收尾工作吧；
+
+    // 数据发送完毕，或者把需要发送的数据干掉，都说明发送缓冲区可能有地方了，让发送线程往下走判断能否发送新数据
+    if(sem_post(&m_sem_send_event)==-1)       
+        LogErrorCoreAddPrintAddr(NGX_LOG_ERR, errno, "sem_post()失败！"); 
+
+
+    p_memory->FreeMemory(p_conn->p_sendbuf_array_mem_addr);  // 释放内存
+    p_conn->p_sendbuf_array_mem_addr = NULL;        
+    --p_conn->atomi_sendbuf_full_flag_n;                     // 建议放在最后执行
+}
+   
 /**
  * 功能：
     消息处理线程主函数，专门处理各种接收到的TCP消息

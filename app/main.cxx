@@ -77,7 +77,7 @@ int main(int argc, char **argv)
 	g_os_argv = argv;
 
 	// 全局变量有必要初始化的，在这第一部分后面给其先初始化以供后用
-	gs_log.fd = -1;                             // -1：表示日志文件尚未打开；因为后边ngx_log_stderr要用所以这里先给-1
+	gs_log.fd = -1;                             // -1：表示日志文件尚未打开；因为后边LogStderr要用所以这里先给-1
 	g_process_type = NGX_PROCESS_IS_MASTER;     // 先标记本进程是master进程
 	g_flag_workproc_change = 0;                 // 标记子进程没有发生变化
 

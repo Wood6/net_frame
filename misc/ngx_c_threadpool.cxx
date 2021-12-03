@@ -247,10 +247,10 @@ void* CThreadPool::ThreadFunc(void* thread_data)
                                               // 如果Create()和StopAll()紧挨着调用，就会导致线程混乱，
                                               // 所以每个线程必须执行到这里，才认为是启动成功了；
             
-            // ngx_log_stderr(0,"执行了pthread_cond_wait-------------begin");
+            // LogStderr(0,"执行了pthread_cond_wait-------------begin");
             // 刚开始执行pthread_cond_wait()的时候，会卡在这里，而且m_pthread_mutex会被释放掉；
             pthread_cond_wait(&m_pthread_cond, &m_pthread_mutex);   // 整个服务器程序刚初始化的时候，所有线程必然是卡在这里等待的；
-            //ngx_log_stderr(0,"执行了pthread_cond_wait-------------end");
+            //LogStderr(0,"执行了pthread_cond_wait-------------end");
         }
 
         // 能走下来的，必然是 拿到了真正的 消息队列中的数据   或者 m_is_shutdown == true
@@ -265,7 +265,7 @@ void* CThreadPool::ThreadFunc(void* thread_data)
             // 在信号被发送，线程被激活后，互斥量会自动被锁定，当线程结束时，由程序员负责解锁互斥量。  
             // 说白了，某个地方调用了pthread_cond_signal(&m_pthread_cond);，这个pthread_cond_wait就会走下来；
 
-            ngx_log_stderr(0,"--------------即将调用pthread_cond_wait,tid=%d--------------",tid);
+            LogStderr(0,"--------------即将调用pthread_cond_wait,tid=%d--------------",tid);
 
 
             if(p_thread->is_running == false)
@@ -439,7 +439,7 @@ void CThreadPool::StopAll()
  */
 void CThreadPool::Call()
 {
-    //ngx_log_stderr(0,"m_pthreadCondbegin--------------=%ui!",m_pthread_cond);  // 数字5，此数字不靠谱
+    //LogStderr(0,"m_pthreadCondbegin--------------=%ui!",m_pthread_cond);  // 数字5，此数字不靠谱
     //for(int i = 0; i <= 100; i++)
     //{
     int err = pthread_cond_signal(&m_pthread_cond); // 唤醒一个等待该条件的线程，也就是可以唤醒卡在pthread_cond_wait()的线程
@@ -450,7 +450,7 @@ void CThreadPool::Call()
     }
     //}
     //唤醒完100次，试试打印下m_pthread_cond值;
-    //ngx_log_stderr(0,"m_pthreadCondend--------------=%ui!",m_pthread_cond);  // 数字1
+    //LogStderr(0,"m_pthreadCondend--------------=%ui!",m_pthread_cond);  // 数字1
 
     
     // (1)如果当前的工作线程全部都忙，则要报警
@@ -480,7 +480,7 @@ void CThreadPool::Call()
         {
             // 如果有空闲线程，并且 接收消息队列中超过5条信息没有被处理，则我总感觉可能真的是 唤醒丢失
             //  唤醒如果真丢失，我是否考虑这里多唤醒一次？以尝试逐渐补偿回丢失的唤醒？此法是否可行，我尚不可知，我打印一条日志【其实后来仔细相同：唤醒如果真丢失，也无所谓，因为ThreadFunc()会一直处理直到整个消息队列为空】
-            ngx_log_stderr(0,"CThreadPool::Call()中感觉有唤醒丢失发生，irmqc = %d!",irmqc);
+            LogStderr(0,"CThreadPool::Call()中感觉有唤醒丢失发生，irmqc = %d!",irmqc);
 
             int err = pthread_cond_signal(&m_pthread_cond); //唤醒一个等待该条件的线程，也就是可以唤醒卡在pthread_cond_wait()的线程
             if(err != 0 )

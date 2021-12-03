@@ -260,8 +260,9 @@ bool CLogicSocket::_HandleRegister(gps_connection_t p_conn, gps_msg_header_t p_m
 	int len_sending = sizeof(gs_register_t);
     
 	// a)分配要发送出去的包的内存
-	len_sending = 65000;                                            // unsigned short最大65535也就差不多是这个值
-	
+	//len_sending = 65000;                                            // unsigned short最大65535也就差不多是这个值
+	len_sending = 25000;
+
 	// 准备发送的格式，这里是 消息头+包头+包体
 	char *p_sendbuf = (char *)p_memory->AllocMemory(m_len_msg_header + m_len_pkg_header + len_sending, false);
 

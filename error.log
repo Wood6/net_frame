@@ -87,3 +87,1370 @@
  121/12/01 16:43:45 [info] pid_25406: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 224],套接字[socket=5]来连接池取一个连接了...
  121/12/01 16:43:45 [info] pid_25406: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 239],连接池中有空闲连接，从这些空闲连接中取到一个连接[5]
  121/12/01 16:43:45 [notice] pid_25406: worker process 25406 启动并开始运行......!
+ 121/12/03 11:09:03 [stderr] pid_25406: nginx: -------------- 来信号15，开始进入信号处理流程 --------------------
+ 121/12/03 11:09:03 [stderr] pid_25406: nginx: 信号15(SIGTERM)已经注册处理...
+ 121/12/03 11:09:03 [notice] pid_25406: signal 15(SIGTERM) received from 5341
+ 121/12/03 11:09:03 [stderr] pid_25406: nginx: -------------- 信号处理流程结束退出了--------------------
+ 121/12/03 11:09:03 [stderr] pid_25405: nginx: -------------- 来信号15，开始进入信号处理流程 --------------------
+ 121/12/03 11:09:03 [stderr] pid_25405: nginx: 信号15(SIGTERM)已经注册处理...
+ 121/12/03 11:09:03 [notice] pid_25405: signal 15(SIGTERM) received from 5341
+ 121/12/03 11:09:03 [stderr] pid_25405: nginx: -------------- 信号处理流程结束退出了--------------------
+ 121/12/03 11:09:03 [info] pid_25406: CSocket::ngx_epoll_process_events()中epoll_wait()失败! (4: Interrupted system call) 
+ 121/12/03 11:11:13 [info] pid_5869: 监听80端口成功!
+ 121/12/03 11:11:13 [info] pid_5869: 监听443端口成功!
+ 121/12/03 11:11:13 [notice] pid_5870: master process ./bin/x86/Debug/net_frame 5870 【master进程】启动并开始运行......!
+ 121/12/03 11:11:13 [info] pid_5870: 进入了StartCreatWorkerProc()
+ 121/12/03 11:11:13 [info] pid_5870: 进入了CreatWorkerProc()
+ 121/12/03 11:11:13 [info] pid_5871: 进入了WorkerProcessCycle()
+ 121/12/03 11:11:13 [info] pid_5871: 进入了InitWorkerProcess()
+ 121/12/03 11:11:13 [stderr] pid_5871: nginx: CThreadPool::Create()创建线程0成功,线程id = 3074849600
+ 121/12/03 11:11:13 [stderr] pid_5871: nginx: CThreadPool::Create()创建线程1成功,线程id = 3064986432
+ 121/12/03 11:11:14 [info] pid_5871: 进入了CSocket::InitEpoll()
+ 121/12/03 11:11:14 [info] pid_5871: [ServerRecyConnectionThread(), ngx_c_socket_conn.cxx: 446],进入到连接回收线程[3048201024]中...
+ 121/12/03 11:11:14 [info] pid_5871: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 224],套接字[socket=4]来连接池取一个连接了...
+ 121/12/03 11:11:14 [info] pid_5871: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 239],连接池中有空闲连接，从这些空闲连接中取到一个连接[4]
+ 121/12/03 11:11:14 [info] pid_5871: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 224],套接字[socket=5]来连接池取一个连接了...
+ 121/12/03 11:11:14 [info] pid_5871: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 239],连接池中有空闲连接，从这些空闲连接中取到一个连接[5]
+ 121/12/03 11:11:14 [notice] pid_5871: worker process 5871 启动并开始运行......!
+ 121/12/03 11:11:40 [info] pid_5871: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 224],套接字[socket=7]来连接池取一个连接了...
+ 121/12/03 11:11:40 [info] pid_5871: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 239],连接池中有空闲连接，从这些空闲连接中取到一个连接[7]
+ 121/12/03 11:11:44 [debug] pid_5871: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E68740, p_conn->p_recvbuf_pos=09E68799, p_conn->len_recv=8
+ 121/12/03 11:11:44 [debug] pid_5871: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E68740, p_buff=09E68799, len_buf=8
+ 121/12/03 11:11:44 [info] pid_5871: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:11:44 [debug] pid_5871: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E68740, p_conn->p_recvbuf_pos=09E985C4, p_conn->len_recv=100
+ 121/12/03 11:11:44 [debug] pid_5871: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E68740, p_buff=09E985C4, len_buf=100
+ 121/12/03 11:11:44 [info] pid_5871: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:11:44 [info] pid_5871: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:11:44 [info] pid_5871: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:11:44 [info] pid_5871: 线程[3074849600]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:11:44 [info] pid_5871: 线程[3074849600]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:11:44 [info] pid_5871: 线程[3074849600]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:11:44 [stderr] pid_5871: nginx: 即将发送数据65008。
+ 121/12/03 11:11:44 [info] pid_5871: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[28960]字节的数据
+ 121/12/03 11:11:44 [stderr] pid_5871: nginx: CSocket::ServerSendQueueThread()中数据没发送完毕【发送缓冲区满】，整个要发送36048，实际发送了28960。
+ 121/12/03 11:11:44 [info] pid_5871: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[36048]字节的数据
+ 121/12/03 11:11:44 [info] pid_5871: [WriteRequestHandler(), ngx_c_socket_request.cxx: 585],系统epoll通知可写后，数据发送完毕，epoll写事件也成功移除，很好！
+ 121/12/03 11:12:02 [debug] pid_5871: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E68740, p_conn->p_recvbuf_pos=09E68799, p_conn->len_recv=8
+ 121/12/03 11:12:02 [debug] pid_5871: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E68740, p_buff=09E68799, len_buf=8
+ 121/12/03 11:12:02 [info] pid_5871: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:12:02 [debug] pid_5871: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E68740, p_conn->p_recvbuf_pos=09E985C4, p_conn->len_recv=100
+ 121/12/03 11:12:02 [debug] pid_5871: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E68740, p_buff=09E985C4, len_buf=100
+ 121/12/03 11:12:02 [info] pid_5871: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:12:02 [info] pid_5871: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:12:02 [info] pid_5871: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:12:02 [info] pid_5871: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:12:02 [info] pid_5871: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:12:02 [info] pid_5871: 线程[3064986432]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:12:02 [stderr] pid_5871: nginx: 即将发送数据65008。
+ 121/12/03 11:12:02 [info] pid_5871: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[46336]字节的数据
+ 121/12/03 11:12:02 [stderr] pid_5871: nginx: CSocket::ServerSendQueueThread()中数据没发送完毕【发送缓冲区满】，整个要发送18672，实际发送了46336。
+ 121/12/03 11:12:02 [info] pid_5871: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[18672]字节的数据
+ 121/12/03 11:12:02 [info] pid_5871: [WriteRequestHandler(), ngx_c_socket_request.cxx: 585],系统epoll通知可写后，数据发送完毕，epoll写事件也成功移除，很好！
+ 121/12/03 11:14:18 [info] pid_6009: 监听80端口成功!
+ 121/12/03 11:14:18 [info] pid_6009: 监听443端口成功!
+ 121/12/03 11:14:18 [notice] pid_6010: master process ./bin/x86/Debug/net_frame 6010 【master进程】启动并开始运行......!
+ 121/12/03 11:14:18 [info] pid_6010: 进入了StartCreatWorkerProc()
+ 121/12/03 11:14:18 [info] pid_6010: 进入了CreatWorkerProc()
+ 121/12/03 11:14:18 [info] pid_6011: 进入了WorkerProcessCycle()
+ 121/12/03 11:14:18 [info] pid_6011: 进入了InitWorkerProcess()
+ 121/12/03 11:14:18 [stderr] pid_6011: nginx: CThreadPool::Create()创建线程0成功,线程id = 3074476864
+ 121/12/03 11:14:18 [stderr] pid_6011: nginx: CThreadPool::Create()创建线程1成功,线程id = 3064986432
+ 121/12/03 11:14:19 [info] pid_6011: 进入了CSocket::InitEpoll()
+ 121/12/03 11:14:19 [info] pid_6011: [ServerRecyConnectionThread(), ngx_c_socket_conn.cxx: 446],进入到连接回收线程[3048201024]中...
+ 121/12/03 11:14:19 [info] pid_6011: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 224],套接字[socket=4]来连接池取一个连接了...
+ 121/12/03 11:14:19 [info] pid_6011: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 239],连接池中有空闲连接，从这些空闲连接中取到一个连接[4]
+ 121/12/03 11:14:19 [info] pid_6011: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 224],套接字[socket=5]来连接池取一个连接了...
+ 121/12/03 11:14:19 [info] pid_6011: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 239],连接池中有空闲连接，从这些空闲连接中取到一个连接[5]
+ 121/12/03 11:14:19 [notice] pid_6011: worker process 6011 启动并开始运行......!
+ 121/12/03 11:14:30 [info] pid_6011: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 224],套接字[socket=7]来连接池取一个连接了...
+ 121/12/03 11:14:30 [info] pid_6011: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 239],连接池中有空闲连接，从这些空闲连接中取到一个连接[7]
+ 121/12/03 11:14:33 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:14:33 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:14:33 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:33 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:14:33 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:14:33 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:33 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:33 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:33 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:33 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:33 [info] pid_6011: 线程[3064986432]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:33 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:14:33 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:14:33 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:14:38 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:14:38 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:14:38 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:38 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:14:38 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:14:38 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:38 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:38 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:38 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:38 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:38 [info] pid_6011: 线程[3074476864]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:38 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:14:38 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:14:38 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:14:42 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:14:42 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:14:42 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:42 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:14:42 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:14:42 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:42 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:42 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:42 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:42 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:42 [info] pid_6011: 线程[3064986432]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:42 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:14:42 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:14:42 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:14:44 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:14:44 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:14:44 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:44 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:14:44 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:14:44 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:44 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:44 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:44 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:44 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:44 [info] pid_6011: 线程[3074476864]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:44 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:14:44 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:14:44 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:14:47 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:14:47 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:14:47 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:47 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:14:47 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:14:47 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:47 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:47 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:47 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:47 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:47 [info] pid_6011: 线程[3064986432]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:47 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:14:47 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:14:47 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:14:49 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:14:49 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:14:49 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:49 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:14:49 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:14:49 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:49 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:49 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:49 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:49 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:49 [info] pid_6011: 线程[3074476864]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:49 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:14:49 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:14:49 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:14:52 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:14:52 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:14:52 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:52 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:14:52 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:14:52 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:52 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:52 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:52 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:52 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:52 [info] pid_6011: 线程[3064986432]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:52 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:14:52 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:14:52 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:14:55 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:14:55 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:14:55 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:55 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:14:55 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:14:55 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:55 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:55 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:55 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:55 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:55 [info] pid_6011: 线程[3074476864]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:55 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:14:55 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:14:55 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:14:57 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:14:57 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:14:57 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:57 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:14:57 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:14:57 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:57 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:57 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:57 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:57 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:57 [info] pid_6011: 线程[3064986432]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:57 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:14:57 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:14:57 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:14:59 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:14:59 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:14:59 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:59 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:14:59 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:14:59 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:59 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:59 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:59 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:59 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:59 [info] pid_6011: 线程[3074476864]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:14:59 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:14:59 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:14:59 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:01 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:01 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:01 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:01 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:01 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:01 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:01 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:01 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:01 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:01 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:01 [info] pid_6011: 线程[3064986432]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:01 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:01 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:01 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:03 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:03 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:03 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:03 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:03 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:03 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:03 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:03 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:03 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:03 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:03 [info] pid_6011: 线程[3074476864]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:03 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:03 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:03 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:04 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:04 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:04 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:04 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:04 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:04 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:04 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:04 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:04 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:04 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:04 [info] pid_6011: 线程[3064986432]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:04 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:04 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:04 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:06 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:06 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:06 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:06 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:06 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:06 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:06 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:06 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:06 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:06 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:06 [info] pid_6011: 线程[3074476864]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:06 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:06 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:06 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:07 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:07 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:07 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:07 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:07 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:07 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:07 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:07 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:07 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:07 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:07 [info] pid_6011: 线程[3064986432]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:07 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:07 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:07 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:09 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:09 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:09 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:09 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:09 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:09 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:09 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:09 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:09 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:09 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:09 [info] pid_6011: 线程[3074476864]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:09 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:09 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:09 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:10 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:10 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:10 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:10 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:10 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:10 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:10 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:10 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:10 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:10 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:10 [info] pid_6011: 线程[3064986432]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:10 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:10 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:10 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:12 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:12 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:12 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:12 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:12 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:12 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:12 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:12 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:12 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:12 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:12 [info] pid_6011: 线程[3074476864]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:12 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:12 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:12 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:13 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:13 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:13 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:13 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:13 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:13 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:13 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:13 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:13 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:13 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:13 [info] pid_6011: 线程[3064986432]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:13 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:13 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:13 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:15 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:15 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:15 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:15 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:15 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:15 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:15 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:15 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:15 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:15 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:15 [info] pid_6011: 线程[3074476864]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:15 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:15 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:15 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:17 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:17 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:17 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:17 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:17 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:17 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:17 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:17 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:17 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:17 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:17 [info] pid_6011: 线程[3064986432]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:17 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:17 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:17 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:18 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:18 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:18 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:18 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:18 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:18 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:18 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:18 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:18 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:18 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:18 [info] pid_6011: 线程[3074476864]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:18 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:18 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:18 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:20 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:20 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:20 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:20 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:20 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:20 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:20 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:20 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:20 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:20 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:20 [info] pid_6011: 线程[3064986432]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:20 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:20 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:20 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:21 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:21 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:21 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:21 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:21 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:21 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:21 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:21 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:21 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:21 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:21 [info] pid_6011: 线程[3074476864]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:21 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:21 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:21 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:22 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:22 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:22 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:22 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:22 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:22 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:22 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:22 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:22 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:22 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:22 [info] pid_6011: 线程[3064986432]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:22 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:22 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:22 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:24 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:24 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:24 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:24 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:24 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:24 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:24 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:24 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:24 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:24 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:24 [info] pid_6011: 线程[3074476864]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:24 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:24 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:24 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:25 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:25 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:25 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:25 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:25 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:25 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:25 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:25 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:25 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:25 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:25 [info] pid_6011: 线程[3064986432]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:25 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:25 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:25 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:27 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:27 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:27 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:27 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:27 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:27 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:27 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:27 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:27 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:27 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:27 [info] pid_6011: 线程[3074476864]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:27 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:27 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:27 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:28 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:28 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:28 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:28 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:28 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:28 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:28 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:28 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:28 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:28 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:28 [info] pid_6011: 线程[3064986432]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:28 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:28 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:28 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:30 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:30 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:30 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:30 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:30 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:30 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:30 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:30 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:30 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:30 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:30 [info] pid_6011: 线程[3074476864]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:30 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:30 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:30 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:31 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:31 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:31 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:31 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:31 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:31 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:31 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:31 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:31 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:31 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:31 [info] pid_6011: 线程[3064986432]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:31 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:31 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:31 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:33 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:33 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:33 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:33 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:33 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:33 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:33 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:33 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:33 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:33 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:33 [info] pid_6011: 线程[3074476864]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:33 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:33 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:33 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:34 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:34 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:34 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:34 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:34 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:34 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:34 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:34 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:34 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:34 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:34 [info] pid_6011: 线程[3064986432]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:34 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:34 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:34 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:35 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:35 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:35 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:35 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:35 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:35 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:35 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:35 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:35 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:35 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:35 [info] pid_6011: 线程[3074476864]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:35 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:35 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:35 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:36 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:36 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:36 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:36 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:36 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:36 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:36 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:36 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:36 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:36 [info] pid_6011: 线程[3064986432]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:36 [info] pid_6011: 线程[3064986432]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:36 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:36 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:36 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:15:38 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0836C799, p_conn->len_recv=8
+ 121/12/03 11:15:38 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0836C799, len_buf=8
+ 121/12/03 11:15:38 [info] pid_6011: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:38 [debug] pid_6011: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0836C740, p_conn->p_recvbuf_pos=0839C5C4, p_conn->len_recv=100
+ 121/12/03 11:15:38 [debug] pid_6011: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0836C740, p_buff=0839C5C4, len_buf=100
+ 121/12/03 11:15:38 [info] pid_6011: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:38 [info] pid_6011: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:38 [info] pid_6011: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:38 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:38 [info] pid_6011: 线程[3074476864]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:38 [info] pid_6011: 线程[3074476864]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:15:38 [stderr] pid_6011: nginx: 即将发送数据10008。
+ 121/12/03 11:15:38 [info] pid_6011: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[10008]字节的数据
+ 121/12/03 11:15:38 [stderr] pid_6011: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:16:12 [info] pid_6145: 监听80端口成功!
+ 121/12/03 11:16:12 [info] pid_6145: 监听443端口成功!
+ 121/12/03 11:16:12 [notice] pid_6146: master process ./bin/x86/Debug/net_frame 6146 【master进程】启动并开始运行......!
+ 121/12/03 11:16:12 [info] pid_6146: 进入了StartCreatWorkerProc()
+ 121/12/03 11:16:12 [info] pid_6146: 进入了CreatWorkerProc()
+ 121/12/03 11:16:12 [info] pid_6147: 进入了WorkerProcessCycle()
+ 121/12/03 11:16:12 [info] pid_6147: 进入了InitWorkerProcess()
+ 121/12/03 11:16:12 [stderr] pid_6147: nginx: CThreadPool::Create()创建线程0成功,线程id = 3074280256
+ 121/12/03 11:16:12 [stderr] pid_6147: nginx: CThreadPool::Create()创建线程1成功,线程id = 3065887552
+ 121/12/03 11:16:14 [info] pid_6147: 进入了CSocket::InitEpoll()
+ 121/12/03 11:16:14 [info] pid_6147: [ServerRecyConnectionThread(), ngx_c_socket_conn.cxx: 446],进入到连接回收线程[3045059392]中...
+ 121/12/03 11:16:14 [info] pid_6147: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 224],套接字[socket=4]来连接池取一个连接了...
+ 121/12/03 11:16:14 [info] pid_6147: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 239],连接池中有空闲连接，从这些空闲连接中取到一个连接[4]
+ 121/12/03 11:16:14 [info] pid_6147: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 224],套接字[socket=5]来连接池取一个连接了...
+ 121/12/03 11:16:14 [info] pid_6147: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 239],连接池中有空闲连接，从这些空闲连接中取到一个连接[5]
+ 121/12/03 11:16:14 [notice] pid_6147: worker process 6147 启动并开始运行......!
+ 121/12/03 11:16:18 [info] pid_6147: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 224],套接字[socket=7]来连接池取一个连接了...
+ 121/12/03 11:16:18 [info] pid_6147: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 239],连接池中有空闲连接，从这些空闲连接中取到一个连接[7]
+ 121/12/03 11:16:19 [debug] pid_6147: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0896D740, p_conn->p_recvbuf_pos=0896D799, p_conn->len_recv=8
+ 121/12/03 11:16:19 [debug] pid_6147: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0896D740, p_buff=0896D799, len_buf=8
+ 121/12/03 11:16:19 [info] pid_6147: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:16:19 [debug] pid_6147: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0896D740, p_conn->p_recvbuf_pos=0899D5C4, p_conn->len_recv=100
+ 121/12/03 11:16:19 [debug] pid_6147: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0896D740, p_buff=0899D5C4, len_buf=100
+ 121/12/03 11:16:19 [info] pid_6147: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:16:19 [info] pid_6147: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:16:19 [info] pid_6147: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:16:19 [info] pid_6147: 线程[3065887552]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:16:19 [info] pid_6147: 线程[3065887552]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:16:19 [info] pid_6147: 线程[3065887552]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:16:19 [stderr] pid_6147: nginx: 即将发送数据50008。
+ 121/12/03 11:16:19 [info] pid_6147: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[28960]字节的数据
+ 121/12/03 11:16:19 [stderr] pid_6147: nginx: CSocket::ServerSendQueueThread()中数据没发送完毕【发送缓冲区满】，整个要发送21048，实际发送了28960。
+ 121/12/03 11:16:19 [info] pid_6147: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[21048]字节的数据
+ 121/12/03 11:16:19 [info] pid_6147: [WriteRequestHandler(), ngx_c_socket_request.cxx: 585],系统epoll通知可写后，数据发送完毕，epoll写事件也成功移除，很好！
+ 121/12/03 11:16:45 [info] pid_6279: 监听80端口成功!
+ 121/12/03 11:16:45 [info] pid_6279: 监听443端口成功!
+ 121/12/03 11:16:45 [notice] pid_6280: master process ./bin/x86/Debug/net_frame 6280 【master进程】启动并开始运行......!
+ 121/12/03 11:16:45 [info] pid_6280: 进入了StartCreatWorkerProc()
+ 121/12/03 11:16:45 [info] pid_6280: 进入了CreatWorkerProc()
+ 121/12/03 11:16:45 [info] pid_6281: 进入了WorkerProcessCycle()
+ 121/12/03 11:16:45 [info] pid_6281: 进入了InitWorkerProcess()
+ 121/12/03 11:16:45 [stderr] pid_6281: nginx: CThreadPool::Create()创建线程0成功,线程id = 3075009344
+ 121/12/03 11:16:45 [stderr] pid_6281: nginx: CThreadPool::Create()创建线程1成功,线程id = 3066616640
+ 121/12/03 11:16:46 [info] pid_6281: 进入了CSocket::InitEpoll()
+ 121/12/03 11:16:46 [info] pid_6281: [ServerRecyConnectionThread(), ngx_c_socket_conn.cxx: 446],进入到连接回收线程[3048205120]中...
+ 121/12/03 11:16:46 [info] pid_6281: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 224],套接字[socket=4]来连接池取一个连接了...
+ 121/12/03 11:16:46 [info] pid_6281: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 239],连接池中有空闲连接，从这些空闲连接中取到一个连接[4]
+ 121/12/03 11:16:46 [info] pid_6281: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 224],套接字[socket=5]来连接池取一个连接了...
+ 121/12/03 11:16:46 [info] pid_6281: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 239],连接池中有空闲连接，从这些空闲连接中取到一个连接[5]
+ 121/12/03 11:16:46 [notice] pid_6281: worker process 6281 启动并开始运行......!
+ 121/12/03 11:16:56 [info] pid_6281: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 224],套接字[socket=7]来连接池取一个连接了...
+ 121/12/03 11:16:56 [info] pid_6281: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 239],连接池中有空闲连接，从这些空闲连接中取到一个连接[7]
+ 121/12/03 11:16:58 [debug] pid_6281: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0824B740, p_conn->p_recvbuf_pos=0824B799, p_conn->len_recv=8
+ 121/12/03 11:16:58 [debug] pid_6281: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0824B740, p_buff=0824B799, len_buf=8
+ 121/12/03 11:16:58 [info] pid_6281: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:16:58 [debug] pid_6281: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=0824B740, p_conn->p_recvbuf_pos=0827B5C4, p_conn->len_recv=100
+ 121/12/03 11:16:58 [debug] pid_6281: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=0824B740, p_buff=0827B5C4, len_buf=100
+ 121/12/03 11:16:58 [info] pid_6281: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:16:58 [info] pid_6281: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:16:58 [info] pid_6281: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:16:58 [info] pid_6281: 线程[3066616640]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:16:58 [info] pid_6281: 线程[3066616640]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:16:58 [info] pid_6281: 线程[3066616640]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:16:58 [stderr] pid_6281: nginx: 即将发送数据30008。
+ 121/12/03 11:16:58 [info] pid_6281: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[28960]字节的数据
+ 121/12/03 11:16:58 [stderr] pid_6281: nginx: CSocket::ServerSendQueueThread()中数据没发送完毕【发送缓冲区满】，整个要发送1048，实际发送了28960。
+ 121/12/03 11:16:58 [info] pid_6281: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[1048]字节的数据
+ 121/12/03 11:16:58 [info] pid_6281: [WriteRequestHandler(), ngx_c_socket_request.cxx: 585],系统epoll通知可写后，数据发送完毕，epoll写事件也成功移除，很好！
+ 121/12/03 11:17:16 [info] pid_6417: 监听80端口成功!
+ 121/12/03 11:17:16 [info] pid_6417: 监听443端口成功!
+ 121/12/03 11:17:16 [notice] pid_6418: master process ./bin/x86/Debug/net_frame 6418 【master进程】启动并开始运行......!
+ 121/12/03 11:17:16 [info] pid_6418: 进入了StartCreatWorkerProc()
+ 121/12/03 11:17:16 [info] pid_6418: 进入了CreatWorkerProc()
+ 121/12/03 11:17:16 [info] pid_6419: 进入了WorkerProcessCycle()
+ 121/12/03 11:17:16 [info] pid_6419: 进入了InitWorkerProcess()
+ 121/12/03 11:17:16 [stderr] pid_6419: nginx: CThreadPool::Create()创建线程0成功,线程id = 3074829120
+ 121/12/03 11:17:16 [stderr] pid_6419: nginx: CThreadPool::Create()创建线程1成功,线程id = 3066436416
+ 121/12/03 11:17:17 [info] pid_6419: 进入了CSocket::InitEpoll()
+ 121/12/03 11:17:17 [info] pid_6419: [ServerRecyConnectionThread(), ngx_c_socket_conn.cxx: 446],进入到连接回收线程[3046107968]中...
+ 121/12/03 11:17:17 [info] pid_6419: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 224],套接字[socket=4]来连接池取一个连接了...
+ 121/12/03 11:17:17 [info] pid_6419: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 239],连接池中有空闲连接，从这些空闲连接中取到一个连接[4]
+ 121/12/03 11:17:17 [info] pid_6419: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 224],套接字[socket=5]来连接池取一个连接了...
+ 121/12/03 11:17:17 [info] pid_6419: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 239],连接池中有空闲连接，从这些空闲连接中取到一个连接[5]
+ 121/12/03 11:17:17 [notice] pid_6419: worker process 6419 启动并开始运行......!
+ 121/12/03 11:17:21 [info] pid_6419: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 224],套接字[socket=7]来连接池取一个连接了...
+ 121/12/03 11:17:21 [info] pid_6419: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx: 239],连接池中有空闲连接，从这些空闲连接中取到一个连接[7]
+ 121/12/03 11:17:23 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:17:23 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:17:23 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:23 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:17:23 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:17:23 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:23 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:23 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:23 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:23 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:23 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:23 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:17:23 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:17:23 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:17:26 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:17:26 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:17:26 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:26 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:17:26 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:17:26 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:26 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:26 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:26 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:26 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:26 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:26 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:17:26 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:17:26 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:17:29 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:17:29 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:17:29 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:29 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:17:29 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:17:29 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:29 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:29 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:29 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:29 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:29 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:29 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:17:29 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:17:29 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:17:31 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:17:31 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:17:31 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:31 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:17:31 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:17:31 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:31 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:31 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:31 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:31 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:31 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:31 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:17:31 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:17:31 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:17:32 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:17:32 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:17:32 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:32 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:17:32 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:17:32 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:32 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:32 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:32 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:32 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:32 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:32 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:17:32 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:17:32 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:17:33 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:17:33 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:17:33 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:33 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:17:33 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:17:33 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:33 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:33 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:33 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:33 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:33 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:33 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:17:33 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:17:33 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:17:35 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:17:35 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:17:35 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:35 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:17:35 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:17:35 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:35 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:35 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:35 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:35 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:35 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:35 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:17:35 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:17:35 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:17:37 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:17:37 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:17:37 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:37 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:17:37 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:17:37 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:37 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:37 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:37 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:37 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:37 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:37 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:17:37 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:17:37 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:17:38 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:17:38 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:17:38 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:38 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:17:38 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:17:38 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:38 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:38 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:38 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:38 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:38 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:38 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:17:38 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:17:38 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:17:42 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:17:42 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:17:42 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:42 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:17:42 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:17:42 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:42 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:42 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:42 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:42 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:42 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:42 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:17:42 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:17:42 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:17:43 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:17:43 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:17:43 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:43 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:17:43 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:17:43 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:43 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:43 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:43 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:43 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:43 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:43 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:17:43 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:17:43 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:17:45 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:17:45 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:17:45 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:45 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:17:45 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:17:45 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:45 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:45 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:45 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:45 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:45 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:45 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:17:45 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:17:45 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:17:47 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:17:47 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:17:47 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:47 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:17:47 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:17:47 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:47 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:47 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:47 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:47 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:47 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:47 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:17:47 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:17:47 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:17:48 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:17:48 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:17:48 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:48 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:17:48 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:17:48 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:48 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:48 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:48 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:48 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:48 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:48 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:17:48 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:17:48 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:17:49 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:17:49 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:17:49 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:49 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:17:49 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:17:49 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:49 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:49 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:49 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:49 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:49 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:49 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:17:49 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:17:49 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:17:50 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:17:50 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:17:50 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:50 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:17:50 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:17:50 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:50 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:50 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:50 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:50 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:50 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:50 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:17:50 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:17:50 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:17:53 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:17:53 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:17:53 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:53 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:17:53 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:17:53 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:53 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:53 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:53 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:53 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:53 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:53 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:17:53 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:17:53 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:17:54 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:17:54 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:17:54 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:54 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:17:54 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:17:54 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:54 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:54 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:54 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:54 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:54 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:54 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:17:54 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:17:54 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:17:55 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:17:55 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:17:55 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:55 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:17:55 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:17:55 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:55 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:55 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:55 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:55 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:55 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:55 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:17:55 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:17:55 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:17:56 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:17:56 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:17:56 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:56 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:17:56 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:17:56 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:56 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:56 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:56 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:56 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:56 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:56 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:17:56 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:17:56 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:17:58 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:17:58 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:17:58 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:58 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:17:58 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:17:58 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:58 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:58 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:58 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:58 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:58 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:58 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:17:58 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:17:58 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:17:59 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:17:59 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:17:59 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:59 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:17:59 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:17:59 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:59 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:59 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:59 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:59 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:59 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:17:59 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:17:59 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:17:59 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:18:01 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:18:01 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:18:01 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:01 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:18:01 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:18:01 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:01 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:01 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:01 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:01 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:01 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:01 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:18:01 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:18:01 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:18:02 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:18:02 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:18:02 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:02 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:18:02 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:18:02 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:02 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:02 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:02 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:02 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:02 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:02 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:18:02 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:18:02 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:18:04 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:18:04 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:18:04 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:04 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:18:04 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:18:04 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:04 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:04 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:04 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:04 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:04 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:04 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:18:04 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:18:04 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:18:06 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:18:06 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:18:06 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:06 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:18:06 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:18:06 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:06 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:06 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:06 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:06 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:06 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:06 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:18:06 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[2112]字节的数据
+ 121/12/03 11:18:06 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据没发送完毕【发送缓冲区满】，整个要发送22896，实际发送了2112。
+ 121/12/03 11:18:08 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:18:08 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:18:08 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:08 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:18:08 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:18:08 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:08 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:08 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:08 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:08 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:08 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:09 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:18:09 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:18:09 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:09 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:18:09 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:18:09 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:09 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:09 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:09 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:09 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:09 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:11 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:18:11 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:18:11 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:11 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:18:11 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:18:11 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:11 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:11 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:11 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:11 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:11 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:13 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:18:13 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:18:13 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:13 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:18:13 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:18:13 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:13 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:13 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:13 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:13 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:13 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:15 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:18:15 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:18:15 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:15 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:18:15 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:18:15 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:15 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:15 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:15 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:15 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:15 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:16 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:18:16 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:18:16 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:16 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:18:16 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:18:16 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:16 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:16 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:16 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:16 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:16 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:17 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:18:17 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:18:17 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:17 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:18:17 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:18:17 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:17 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:17 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:17 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:17 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:17 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:19 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:18:19 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:18:19 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:19 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:18:19 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:18:19 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:19 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:19 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:19 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:19 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:19 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:20 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:18:20 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:18:20 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:20 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:18:20 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:18:20 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:20 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:20 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:20 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:20 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:20 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:24 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:18:24 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:18:24 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:24 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:18:24 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:18:24 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:24 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:24 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:24 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:24 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:24 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:26 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:18:26 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:18:26 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:26 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:18:26 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:18:26 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:26 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:26 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:26 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:26 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:26 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:32 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:18:32 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:18:32 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:32 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:18:32 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:18:32 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:32 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:32 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:32 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:32 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:32 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:35 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:18:35 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:18:35 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:35 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:18:35 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:18:35 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:35 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:35 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:35 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:35 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:35 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:37 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:18:37 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:18:37 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:37 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:18:37 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:18:37 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:37 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:37 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:37 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:37 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:37 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:38 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:18:38 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:18:38 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:38 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:18:38 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:18:38 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:38 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:38 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:38 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:38 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:18:38 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:20:07 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:20:07 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:20:07 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:20:07 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:20:07 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:20:07 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:20:07 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:20:07 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:20:07 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:20:07 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:20:07 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:20:42 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[11584]字节的数据
+ 121/12/03 11:20:42 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[11312]字节的数据
+ 121/12/03 11:20:42 [info] pid_6419: [WriteRequestHandler(), ngx_c_socket_request.cxx: 585],系统epoll通知可写后，数据发送完毕，epoll写事件也成功移除，很好！
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:20:42 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:20:42 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:20:42 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:20:42 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[23168]字节的数据
+ 121/12/03 11:20:42 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[1840]字节的数据
+ 121/12/03 11:20:42 [info] pid_6419: [WriteRequestHandler(), ngx_c_socket_request.cxx: 585],系统epoll通知可写后，数据发送完毕，epoll写事件也成功移除，很好！
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据没发送完毕【发送缓冲区满】，整个要发送1840，实际发送了23168。
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:20:42 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:20:42 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:20:42 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:20:42 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:20:42 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:20:42 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:20:42 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:20:42 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:20:42 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:20:42 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:20:42 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:20:42 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:20:42 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:21:14 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:21:14 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:21:14 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:14 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:21:14 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:21:14 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:14 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:14 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:14 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:14 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:14 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:14 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:21:14 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:21:14 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:21:16 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:21:16 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:21:16 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:16 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:21:16 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:21:16 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:16 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:16 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:16 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:16 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:16 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:16 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:21:16 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:21:16 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:21:19 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:21:19 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:21:19 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:19 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:21:19 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:21:19 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:19 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:19 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:19 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:19 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:19 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:19 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:21:19 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:21:19 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:21:20 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:21:20 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:21:20 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:20 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:21:20 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:21:20 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:20 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:20 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:20 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:20 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:20 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:20 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:21:20 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:21:20 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:21:21 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:21:21 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:21:21 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:21 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:21:21 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:21:21 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:21 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:21 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:21 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:21 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:21 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:21 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:21:21 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:21:21 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:21:22 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:21:22 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:21:22 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:22 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:21:22 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:21:22 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:22 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:22 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:22 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:22 [info] pid_6419: 线程[3066436416]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:22 [info] pid_6419: 线程[3066436416]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:22 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:21:22 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[16592]字节的数据
+ 121/12/03 11:21:22 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据没发送完毕【发送缓冲区满】，整个要发送8416，实际发送了16592。
+ 121/12/03 11:21:24 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:21:24 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:21:24 [info] pid_6419: 包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:24 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09EC15C4, p_conn->len_recv=100
+ 121/12/03 11:21:24 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09EC15C4, len_buf=100
+ 121/12/03 11:21:24 [info] pid_6419: 包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:24 [info] pid_6419: 将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:24 [info] pid_6419: 在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:24 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:24 [info] pid_6419: 线程[3074829120]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:21:24 [info] pid_6419: 线程[3074829120]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = 108!
+ 121/12/03 11:22:56 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[8416]字节的数据
+ 121/12/03 11:22:56 [info] pid_6419: [WriteRequestHandler(), ngx_c_socket_request.cxx: 585],系统epoll通知可写后，数据发送完毕，epoll写事件也成功移除，很好！
+ 121/12/03 11:22:56 [stderr] pid_6419: nginx: 即将发送数据25008。
+ 121/12/03 11:22:56 [info] pid_6419: [SendProc(), ngx_c_socket_request.cxx: 480],send()成功发送了[25008]字节的数据
+ 121/12/03 11:22:56 [stderr] pid_6419: nginx: CSocket::ServerSendQueueThread()中数据发送完毕，很好。
+ 121/12/03 11:23:42 [debug] pid_6419: [ReadRequestHandler(), ngx_c_socket_request.cxx: 35],p_conn=09E91740, p_conn->p_recvbuf_pos=09E91799, p_conn->len_recv=8
+ 121/12/03 11:23:42 [debug] pid_6419: [RecvProc(), ngx_c_socket_request.cxx: 138],p_conn=09E91740, p_buff=09E91799, len_buf=8
+ 121/12/03 11:23:42 [info] pid_6419: [AddRecyConnectList(), ngx_c_socket_conn.cxx: 414],连接加到延迟回收队列(list)中，连接[7]在[80]秒后将被回收
+ 121/12/03 11:25:02 [info] pid_6419: [ServerRecyConnectionThread(), ngx_c_socket_conn.cxx: 496],已经延时[80]秒了，此时待回收连接数有[1]个
+ 121/12/03 11:25:02 [info] pid_6419: [ServerRecyConnectionThread(), ngx_c_socket_conn.cxx: 497],现在对连接[7]开始走回收流程...
+ 121/12/03 11:25:02 [info] pid_6419: [FreeConnectionToCPool(), ngx_c_socket_conn.cxx: 351],归还连接[7]到连接池中完成，此时连接池中空闲连接有[m_list_free_connection.size()=1022]
+ 121/12/03 11:25:02 [info] pid_6419: [ServerRecyConnectionThread(), ngx_c_socket_conn.cxx: 507],连接[7]回收完成!

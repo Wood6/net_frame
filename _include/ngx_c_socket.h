@@ -75,12 +75,14 @@ struct _gs_connection
     bool                       is_new_recvmem;    // 如果我们成功的收到了包头，
                                                   // 那么我们就要分配内存开始保存 包头+消息头+包体内容，
                                                   // 这个标记用来标记是否我们new过内存，因为new过是需要释放的
-    char*                      p_new_recvmem_pos; // new出来的用于收包的内存首地址，和 is_new_recvmem  配对使用
+    char*                      p_recvbuf_array_mem_addr; // new出来的用于收包的内存首地址，和 is_new_recvmem  配对使用
 
     // 和发包有关-----------------------------
-	std::atomic<bool>          is_full_sendbuf_atomic;     // 发送消息，如果发送缓冲区满了，则需要通过epoll事件
+	std::atomic<int>          atomi_sendbuf_full_flag_n;   // 发送消息，如果发送缓冲区满了，则需要通过epoll事件
 	                                                       // 来驱动消息的继续发送，所以如果发送缓冲区满，则用这个变量标记
-	                                                       // true满了，false没满
+	char*                     p_sendbuf_array_mem_addr;    // 发送完成后释放用的，整个数据的头指针，其实是 消息头 + 包头 + 包体
+	char*                      p_sendbuf;                  // 发送数据的缓冲区的头指针，开始 其实是包头+包体
+	unsigned int              len_send;                    // 要发送多少数据
 
 	char*                      p_sendbuf_mem;              // 发送完成后释放用的，整个数据的头指针，其实是 消息头 + 包头 + 包体
 
@@ -157,9 +159,10 @@ private:
 	std::atomic<int>             m_totol_recy_connection_n;     // 待释放连接总数，实际也是 m_list_free_connection.size()
 	int                          m_recy_connection_wait_time;   // 等待这么些秒后才回收连接
 
-    //  消息队列
+    // 消息队列
 	std::list<char*>              m_list_send_msg;              // 发送数据消息队列
 	std::atomic<int>              m_send_msg_list_n;            // 发消息队列大小
+
 	// 多线程相关
 	std::vector<_thread_item*>    m_vec_pthread;                // 线程 容器，容器里就是各个线程了 	
 	pthread_mutex_t               m_mutex_send_msg;             // 发消息队列互斥量 
@@ -186,8 +189,10 @@ private:
     void AddRecyConnectList(gps_connection_t p_conn);              // 将要回收的连接放到一个队列中来
 
 
-	void EventAccept(gps_connection_t old_c);              // 建立新连接
-	void WaitRequestHandler(gps_connection_t p_c);         // 设置数据来时的读处理函数
+	void EventAccept(gps_connection_t old_c);                // 建立新连接
+	void ReadRequestHandler(gps_connection_t p_conn);        //设置数据来时的读处理函数
+	void WriteRequestHandler(gps_connection_t p_conn);       // 设置数据发送时的写处理函数
+	//void WaitRequestHandler(gps_connection_t p_c);         // 设置数据来时的读处理函数
 	void CloseConnection(gps_connection_t p_conn);         // 用户连入，我们accept4()时，得到的socket
 	                                                       // 在处理中产生失败，则资源用这个函数释放
 	                                                       // 【因为这里涉及到好几个要释放的资源，所以写成函数】
@@ -200,19 +205,21 @@ private:
     // 移到线程类中去
     //void ClearMsgRecvQueue();         // 清理接受收据的消息队列
 
-    ssize_t RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_buf);   // 接收从客户端来的数据专用函数
+    ssize_t RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_buf);  // 接收从客户端来的数据专用函数
 	void WaitRequestHandlerProcPart1(gps_connection_t p_conn);                   // 包头收完整后的处理                                                                   
 	void WaitRequestHandlerProcLast(gps_connection_t p_conn);                    // 收到一个完整包后的处理
-	void AddMsgRecvQueue(char* p_buf, int& ret_msgqueue_n);   // 收到一个完整消息后，入消息队列
+	void AddMsgRecvQueue(char* p_buf, int& ret_msgqueue_n);                      // 收到一个完整消息后，入消息队列
 	//void TmpOutMsgRecvQueue();                              // 临时清除对列中消息函数，测试用，将来会删除该函数
 
+    //线程相关函数
+    static void* ServerSendListThread(void *threadData);                   // 专门用来发送数据的线程
 	static void* ServerRecyConnectionThread(void* thread_data);            // 专门用来回收连接的线程
 
     ssize_t SendProc(gps_connection_t p_conn,char *p_buf,ssize_t size);    //  将数据发送到客户端
-    void ClearSendMsgList();                                             // 处理发送消息队列  
+    void ClearSendMsgList();                                               // 处理发送消息队列  
 
 protected:
-    void SendMsg(char *p_send_buf);                            // 把数据扔到待发送对列中 
+    void SendMsg(char *p_send_buf);                                        // 把数据扔到待发送对列中 
 
 public:
 	CSocket();
@@ -230,18 +237,18 @@ public:
 		uint32_t otherflag,
 		uint32_t event_type,
 		gps_connection_t p_conn
-	);                                                // epoll 增加事件
+	);                                                    // epoll 增加事件
 #endif
     // epoll操作事件,取代原来的EpollAddEvent()
     int EpollOperEvent(int fd, uint32_t event_type, 
                             uint32_t flag,int otherflag,
                             gps_connection_t p_conn);   
 
-	int EpollProcessEvents(int timer);                // epoll等待接收和处理事件
+	int EpollProcessEvents(int timer);                    // epoll等待接收和处理事件
 
     // 移到线程相关类中去
-    //char* OutMsgRecvQueue();                        // 将一个消息出消息队列
-    virtual void ThreadRecvProcFunc(char* p_msgbuf);  // 处理客户端请求，这个将来会被设计为子类重写
+    //char* OutMsgRecvQueue();                            // 将一个消息出消息队列
+    virtual void ThreadRecvProcFunc(char* p_msgbuf);   // 处理客户端请求，这个将来会被设计为子类重写
     
 };
 

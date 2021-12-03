@@ -82,8 +82,8 @@ void _gs_connection::GetOneToUse()
 	p_recvbuf_pos = arr_pkghead_info;        // 收包我要先收到这里来，因为我要先收包头，所以收数据的buff直接就是arr_pkghead_info
 	len_recv = sizeof(gs_pkg_header_t);      // 这里指定收数据的长度，这里先要求收包头这么长字节的数据
 
-	p_new_recvmem_pos  = NULL;               // 既然没new内存，那自然指向的内存地址先给NULL
-	is_full_sendbuf_atomic = false;          // 原子的
+	p_recvbuf_array_mem_addr  = NULL;        // 既然没new内存，那自然指向的内存地址先给NULL
+	atomi_sendbuf_full_flag_n = false;       // 原子的
 	p_sendbuf_mem = NULL;                    // 发送数据头指针记录
 	epoll_events_type    = 0;                // epoll事件先给0 
 }
@@ -110,19 +110,19 @@ void _gs_connection::GetOneToUse()
 void _gs_connection::PutOneToFree()
 {
 	++currse_quence_n;
-	if (p_new_recvmem_pos != NULL)  // 我们曾经给这个连接分配过接收数据的内存，则要释放内存
+	if (p_recvbuf_array_mem_addr != NULL)  // 我们曾经给这个连接分配过接收数据的内存，则要释放内存
 	{
-		CMemory::GetInstance()->FreeMemory(p_new_recvmem_pos);
-		p_new_recvmem_pos = NULL;
+		CMemory::GetInstance()->FreeMemory(p_recvbuf_array_mem_addr);
+		p_recvbuf_array_mem_addr = NULL;
 	}  
 
-    if(p_sendbuf_mem != NULL)       // 如果发送数据的缓冲区里有内容，则要释放内存
+    if(p_sendbuf_mem != NULL)                  // 如果发送数据的缓冲区里有内容，则要释放内存
     {
         CMemory::GetInstance()->FreeMemory(p_sendbuf_mem);
         p_sendbuf_mem = NULL;
     }
 
-    is_full_sendbuf_atomic = false;         // 设置不设置感觉都行  
+    atomi_sendbuf_full_flag_n = 0;            // 设置不设置感觉都行  
 }
 
 
@@ -282,7 +282,7 @@ gps_connection_t CSocket::GetElementOfConnection(int isock)
 	if (NULL == ret_p_c)
 	{
 		// 系统应该控制连接数量，防止空闲连接被耗尽，能走到这里，都不正常
-		LogStderr(0, "CSocekt::ngx_get_connection()中空闲链表为空,这不应该!");
+		LogStderr(0, "CSocket::ngx_get_connection()中空闲链表为空,这不应该!");
 		return NULL;
 	}
 
@@ -304,7 +304,7 @@ gps_connection_t CSocket::GetElementOfConnection(int isock)
                                                           // 所以收数据的buff直接就是dataHeadInfo
     ret_p_c->len_recv = sizeof(gs_pkg_header_t);     // 这里指定收数据的长度，这里先要求收包头这么长字节的数据
     ret_p_c->is_new_recvmem = false;                      // 标记我们并没有new内存，所以不用释放	 
-    ret_p_c->p_new_recvmem_pos = NULL;                    // 既然没new内存，那自然指向的内存地址先给NULL
+    ret_p_c->p_recvbuf_array_mem_addr = NULL;                    // 既然没new内存，那自然指向的内存地址先给NULL
 
 	// (3)这个值有用，所以在上边(1)中被保留，没有被清空，这里又把这个值赋回来
 	ret_p_c->instance = !instance;   // 抄自官方nginx，到底有啥用，以后再说
@@ -375,8 +375,8 @@ void CSocket::FreeConnection(gps_connection_t p_conn)
 	if(p_conn->is_new_recvmem == true)
     {
         // 我们曾经给这个连接分配过内存，则要释放内存        
-        CMemory::GetInstance()->FreeMemory(p_conn->p_new_recvmem_pos);
-        p_conn->p_new_recvmem_pos = NULL;
+        CMemory::GetInstance()->FreeMemory(p_conn->p_recvbuf_array_mem_addr);
+        p_conn->p_recvbuf_array_mem_addr = NULL;
         p_conn->is_new_recvmem = false;  // 这行有用
     }
     
@@ -413,7 +413,7 @@ void CSocket::AddRecyConnectList(gps_connection_t p_conn)
 {
     LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "连接加到延迟回收队列(list)中，连接[%d]在[%ud]秒后将被回收", p_conn->fd, m_recy_connection_wait_time);
     
-    //LogStderr(0,"CSocekt::inRecyConnectQueue()执行，连接入到回收队列中.");  
+    //LogStderr(0,"CSocket::inRecyConnectQueue()执行，连接入到回收队列中.");  
     // 针对连接回收列表的互斥量，因为线程ServerRecyConnectionThread()也有要用到这个回收列表；
     CLock lock(&m_mutex_recyList_connection); 
     
@@ -467,7 +467,7 @@ void* CSocket::ServerRecyConnectionThread(void* p_thread_data)
             currtime = time(NULL);
             err = pthread_mutex_lock(&p_socket_obj->m_mutex_recyList_connection);
             if(err != 0) 
-				LogStderr(err,"CSocekt::ServerRecyConnectionThread()中pthread_mutex_lock()失败，返回的错误码为%d!",err);
+				LogStderr(err,"CSocket::ServerRecyConnectionThread()中pthread_mutex_lock()失败，返回的错误码为%d!",err);
 			
 lblRRTD:
             pos    = p_socket_obj->m_list_recy_connection.begin();
@@ -484,6 +484,13 @@ lblRRTD:
                 // 到释放的时间了: 
                 // ......这将来可能还要做一些是否能释放的判断[在我们写完发送数据代码之后吧]，先预留位置
                 // ....
+                //我认为，凡是到释放时间的，atomi_sendbuf_full_flag_n都应该为0；这里我们加点日志判断下
+                if(p_conn->atomi_sendbuf_full_flag_n != 0)
+                {
+                    // 这确实不应该，打印个日志吧；
+                    LogStderr(0,"CSocket::ServerRecyConnectionThread()中到释放时间却发现p_Conn.atomi_sendbuf_full_flag_n!=0，这个不该发生");
+                    // 其他先暂时啥也不干，路程继续往下走，继续去释放吧。
+                }
 
                 LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "已经延时[%ud]秒了，此时待回收连接数有[%ud]个",\
                                          p_socket_obj->m_recy_connection_wait_time, int(p_socket_obj->m_totol_recy_connection_n) );
@@ -493,7 +500,7 @@ lblRRTD:
                 --p_socket_obj->m_totol_recy_connection_n;          // 待释放连接队列大小-1
                 p_socket_obj->m_list_recy_connection.erase(pos);    // 迭代器已经失效，但pos所指内容在p_conn里保存着呢
 
-                // ngx_log_stderr(0,"CSocekt::ServerRecyConnectionThread()执行，连接%d被归还.",p_conn->fd);
+                // LogStderr(0,"CSocket::ServerRecyConnectionThread()执行，连接%d被归还.",p_conn->fd);
 
                 p_socket_obj->FreeConnectionToCPool(p_conn);	    // 归还参数p_conn所代表的连接到到连接池中
 
@@ -502,7 +509,7 @@ lblRRTD:
                 goto lblRRTD; 
             } 
             err = pthread_mutex_unlock(&p_socket_obj->m_mutex_recyList_connection);
-            if(err != 0)  LogStderr(err,"CSocekt::ServerRecyConnectionThread()pthread_mutex_unlock()失败，返回的错误码为%d!",err);
+            if(err != 0)  LogStderr(err,"CSocket::ServerRecyConnectionThread()pthread_mutex_unlock()失败，返回的错误码为%d!",err);
         } 
 
         if(true == g_is_stop_programe) // 要退出整个程序，那么肯定要先退出这个循环
@@ -514,7 +521,7 @@ lblRRTD:
                 //因为要退出，所以就得硬释放了【不管到没到时间，不管有没有其他不 允许释放的需求，都得硬释放】
                 err = pthread_mutex_lock(&p_socket_obj->m_mutex_recyList_connection);
                 if(err != 0) 
-					LogStderr(err,"CSocekt::ServerRecyConnectionThread()中pthread_mutex_lock2()失败，返回的错误码为%d!",err);
+					LogStderr(err,"CSocket::ServerRecyConnectionThread()中pthread_mutex_lock2()失败，返回的错误码为%d!",err);
 
         lblRRTD2:
                 pos    = p_socket_obj->m_list_recy_connection.begin();
@@ -533,7 +540,7 @@ lblRRTD:
                 
                 err = pthread_mutex_unlock(&p_socket_obj->m_mutex_recyList_connection);
                 if(err != 0)  
-                    LogStderr(err,"CSocekt::ServerRecyConnectionThread()pthread_mutex_unlock2()失败，返回的错误码为%d!",err);
+                    LogStderr(err,"CSocket::ServerRecyConnectionThread()pthread_mutex_unlock2()失败，返回的错误码为%d!",err);
             } 
             
             break; // 整个程序要退出了，所以break;
@@ -576,7 +583,7 @@ void CSocket::CloseConnection(gps_connection_t p_conn)
 	FreeConnectionToCPool(p_conn);    // 把释放代码放在最后边，更合适  
 	if (close(p_conn->fd) == -1)
 	{
-		LogErrorCore(NGX_LOG_ALERT, errno, "CSocekt::CloseConnection()中close(%d)失败!", p_conn->fd);
+		LogErrorCore(NGX_LOG_ALERT, errno, "CSocket::CloseConnection()中close(%d)失败!", p_conn->fd);
 	}
 
 }

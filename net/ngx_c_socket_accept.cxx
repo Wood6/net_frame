@@ -95,7 +95,7 @@ void CSocket::EventAccept(gps_connection_t p_oldc)
 			{
 				level = NGX_LOG_CRIT;
 			}
-			LogErrorCoreAddPrintAddr(level, errno, "CSocekt::ngx_event_accept()中accept4()失败!");
+			LogErrorCoreAddPrintAddr(level, errno, "CSocket::ngx_event_accept()中accept4()失败!");
 
 			if (use_accept4 && err == ENOSYS) //accept4()函数没实现，坑爹？
 			{
@@ -127,7 +127,7 @@ void CSocket::EventAccept(gps_connection_t p_oldc)
 			//连接池中连接不够用，那么就得把这个socekt直接关闭并返回了，因为在ngx_get_connection()中已经写日志了，所以这里不需要写日志了
 			if (close(s) == -1)
 			{
-				LogErrorCoreAddPrintAddr(NGX_LOG_ALERT, errno, "CSocekt::ngx_event_accept()中close(%d)失败!", s);
+				LogErrorCoreAddPrintAddr(NGX_LOG_ALERT, errno, "CSocket::ngx_event_accept()中close(%d)失败!", s);
 			}
 			return;
 		}
@@ -154,11 +154,12 @@ void CSocket::EventAccept(gps_connection_t p_oldc)
 			}
 		}
 
-		p_newc->p_listening = p_oldc->p_listening;            // 连接对象 和监听对象关联，方便通过连接对象找监听对象【关联到监听端口】
+		p_newc->p_listening = p_oldc->p_listening;             // 连接对象 和监听对象关联，方便通过连接对象找监听对象【关联到监听端口】
 #if 0
-        p_newc->write_ready = 1;                              // 标记可以写，新连接写事件肯定是ready的；【从连接池拿出一个连接时这个连接的所有成员都是0】            
+        p_newc->write_ready = 1;                               // 标记可以写，新连接写事件肯定是ready的；【从连接池拿出一个连接时这个连接的所有成员都是0】            
 #endif
-		p_newc->read_handler = &CSocket::WaitRequestHandler;  // 设置数据来时的读处理函数，其实官方nginx中是ngx_http_wait_request_handler()
+		p_newc->read_handler = &CSocket::ReadRequestHandler;   // 设置数据来时的读处理函数，其实官方nginx中是ngx_http_wait_request_handler()
+		p_newc->write_handler = &CSocket::WriteRequestHandler; // 设置数据发送时的写处理函数。
 		// 客户端应该主动发送第一次的数据，这里将读事件加入epoll监控
 #if 0
 		if (EpollAddEvent(s,    // socket句柄
@@ -174,18 +175,43 @@ void CSocket::EventAccept(gps_connection_t p_oldc)
 			return;                  // 直接返回
 		}
 #endif
-        if(EpollOperEvent(s,                  // socekt句柄
-                          EPOLL_CTL_ADD,      // 事件类型，这里是增加
-                          EPOLLIN|EPOLLRDHUP, // 标志，这里代表要增加的标志,EPOLLIN：可读，EPOLLRDHUP：TCP连接的远端关闭或者半关闭
-                          0,                  // 对于事件类型为增加的，不需要这个参数
-			              p_newc              // 连接池中的连接
+        if(EpollOperEvent(s,                    // socekt句柄
+                          EPOLL_CTL_ADD,        // 事件类型，这里是增加
+                          EPOLLIN | EPOLLRDHUP, // 标志，这里代表要增加的标志,EPOLLIN可读，EPOLLRDHUP表示TCP连接的远端关闭或者半关闭，
+                                                // 如果边缘触发模式可以增加，EPOLLET对于事件类型为增加的
+                          0,                    // 不需要这个参数 
+			              p_newc                // 连接池中的连接
                           ) == -1)         
                {
                    // 增加事件失败，失败日志在ngx_epoll_add_event中写过了，因此这里不多写啥；
-                   CloseConnection(p_newc); // 关闭socket,这种可以立即回收这个连接，无需延迟，因为其上还没有数据收发，谈不到业务逻辑因此无需延迟；
+                   CloseConnection(p_newc);      // 关闭socket,这种可以立即回收这个连接，无需延迟，因为其上还没有数据收发，谈不到业务逻辑因此无需延迟；
 
                    return;  // 直接返回
                }
+                /*
+                else
+                {
+                    //打印下发送缓冲区大小
+                    int           n;
+                    socklen_t     len;
+                    len = sizeof(int);
+                    getsockopt(s,SOL_SOCKET,SO_SNDBUF, &n, &len);
+                    LogStderr(0,"发送缓冲区的大小为%d!",n); //87040
+
+                    n = 0;
+                    getsockopt(s,SOL_SOCKET,SO_RCVBUF, &n, &len);
+                    LogStderr(0,"接收缓冲区的大小为%d!",n); //374400
+
+                    int sendbuf = 2048;
+                    if (setsockopt(s, SOL_SOCKET, SO_SNDBUF,(const void *) &sendbuf,n) == 0)
+                    {
+                        LogStderr(0,"发送缓冲区大小成功设置为%d!",sendbuf); 
+                    }
+
+                     getsockopt(s,SOL_SOCKET,SO_SNDBUF, &n, &len);
+                    LogStderr(0,"发送缓冲区的大小为%d!",n); //87040
+                }
+                */
 
 
 		break;                       // 一般就是循环一次就跳出去
