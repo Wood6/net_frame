@@ -10,11 +10,6 @@
 #include "ngx_c_slogic_socket.h"      // 和socket通讯相关
 
 
-#ifdef LIYAO_DEBUG
-#include <iostream>
-#include <string>
-#endif 
-
 using namespace std;
 
 // global variable
@@ -68,9 +63,6 @@ int main(int argc, char **argv)
 	g_env_need_mem = 0;
 	for (int i = 0; environ[i]; ++i)
 	{
-#ifdef LIYAO_DEBUG_PASS
-		string debugStr = environ[i];
-#endif
 		g_env_need_mem += strlen(environ[i]) + 1;
 	}
 	g_os_argc = argc;
@@ -95,44 +87,8 @@ int main(int argc, char **argv)
 	// (2.2)crc32校验算法单例类可以在这里初始化，返回值不用保存
 	CCRC32::GetInstance();
 
-#ifdef LIYAO_DEBUG_PASS
-	cout << "******************************** liyao debug start ********************************" << endl;
-	cout << "m_vec_config_item.size() = " << p_config->m_vec_config_item.size() << endl;
-	for (std::vector<gps_stru_conf_item_t>::iterator iter = p_config->m_vec_config_item.begin(); iter != p_config->m_vec_config_item.end(); ++iter)
-	{
-		string strName = (*iter)->c_arr_item_name;
-		string strContent = (*iter)->c_arr_iter_content;
-
-		// 输出配置项到标准输出显示
-		cout << strName << "=" << strContent << endl;
-	}
-	cout << endl;
-	cout << "log_file_path = " << p_config->GetString("log_file_path") << endl;
-	cout << "log_level = " << p_config->GetIntDefault("log_level", 888) << endl;
-	cout << "******************************** liyao debug end ********************************" << endl;
-#endif
-
 	// 第三部分：一些必须事先准备好的资源，先初始化
 	LogInit();
-
-#ifdef LIYAO_DEBUG_PASS
-	LogStderr(0, "黎瑶开始测试了。。。!");
-	LogStderr(0, "输入888，希望整型数显示，实际显示了%d", 888);
-	LogStderr(0, "输入888.888，希望以三位小数位显示，实际显示了%.3f", 888.888);
-	LogStderr(0, "输入888.888，希望以两位小数位显示，实际显示了%.2f", 888.888);
-	LogStderr(0, "输入888.8，希望以一位小数位显示，实际显示了%.1f", 888.888);
-	LogStderr(0, "输入888.8，希望以八位正式位，八位小数位显示，实际显示了%8.8f", 888.888);
-	LogStderr(0, "测试结束了。。。!");
-#endif
-#ifdef LIYAO_DEBUG_PASS
-	do
-	{
-		LogStderr(0, "黎瑶开始测试了写日志文件了。。。!");
-		LogErrorCore(NGX_LOG_INFO, 7, "%s第一个写日志来了，后面几行要去看日志文件了哦", " LIYAO ");
-		LogErrorCore(NGX_LOG_DEBUG, 8, "调试错误号%d", NGX_LOG_DEBUG);
-		LogStderr(0, "测试结束了。。。!");
-	} while (0);
-#endif
 
 	// 第四部分：一些初始化函数，准备放这里
 	if (InitSignals() == false)          // 信号注册

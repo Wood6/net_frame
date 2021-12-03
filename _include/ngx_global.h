@@ -20,18 +20,6 @@
 #include "ngx_c_threadpool.h"
 #include "ngx_c_slogic_socket.h"
 
-// 调试宏开关,
-// 1只打开调试中LIYAO_DEBUG_ING的日志输出，
-// 0全调试模式，调试中ING和调试通过PASS的全部输出日志
-#define LIYAO_DEBUG		1
-
-#if LIYAO_DEBUG
-#define LIYAO_DEBUG_ING    1            // 调试中
-#else
-#define LIYAO_DEBUG_ING    1            // 调试中
-#define LIYAO_DEBUG_PASS   1            // 调试通过
-#endif
-
 
 // 配置文件相关结构定义
 typedef struct

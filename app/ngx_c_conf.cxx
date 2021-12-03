@@ -9,12 +9,6 @@
 #include <string.h>
 
 
-#ifdef LIYAO_DEBUG
-#include <iostream>
-#include <string>
-using namespace std;
-#endif
-
 CConfig* CConfig::mp_instance = NULL;
 
 /**
@@ -35,9 +29,6 @@ bool CConfig::Load(const char * p_config_name)
 	fp = fopen(p_config_name, "r");
 	if (NULL == fp)
 	{
-#ifdef LIYAO_DEBUG_PASS
-		cout << "errno = " << errno << ", [" << strerror(errno) << "]" << endl;
-#endif
 		return ret = false;
 	}
 
@@ -87,17 +78,6 @@ bool CConfig::Load(const char * p_config_name)
 	}
 
 	fclose(fp);
-
-#ifdef LIYAO_DEBUG_PASS
-	for (auto iter = m_vec_config_item.begin(); iter != m_vec_config_item.end(); ++iter)
-	{
-		string strName = (*iter)->c_arr_item_name;
-		string strContent = (*iter)->c_arr_iter_content;
-
-		// 输出配置项到标准输出显示
-		cout << strName << "=" << strContent << endl;
-	}
-#endif
 
 	return ret;
 }
