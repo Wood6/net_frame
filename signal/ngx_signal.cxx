@@ -28,8 +28,14 @@ gs_signal_t  gs_arr2_signals[] = {
 	{ SIGIO,     "SIGIO",            signal_handler },        // 指示一个异步I/O事件【通用异步I/O信号】
 	{ SIGSYS,    "SIGSYS, SIG_IGN",  NULL           },        // 我们想忽略这个信号，SIGSYS表示收到了一个无效系统调用，如果我们不忽略，进程会被操作系统杀死，--标识31
 															  // 所以我们把handler设置为NULL，代表 我要求忽略这个信号，请求操作系统不要执行缺省的该信号处理动作（杀掉我）
-	//...日后根据需要再继续增加
-	{ 0,         NULL,               NULL               }     // 信号对应的数字至少是1，所以可以用0作为一个特殊标记
+
+    //{ SIGKILL,   "SIGKILL",          signal_handler },	  // SIGKILL，自定义，收到这个优雅自己退出整个程序，在函数中去加个if处理
+                                                              // 9 SIGKILL不能被捕获，所以传参给sigaction会报参数错误
+    { SIGUSR1,   "SIGUSR1",          signal_handler },	      // 10 SIGUSR1 ，这个信号可以被捕获
+                                                              // 自定义，收到这个优雅自己退出整个程序，在函数中去加个if处理
+    
+    //...日后根据需要再继续增加
+	{ 0,         NULL,               NULL           }         // 信号对应的数字至少是1，所以可以用0作为一个特殊标记
 };
 
 /**
@@ -81,7 +87,7 @@ bool InitSignals()
 		// 注册信号
 		if (sigaction(s_sig->signo, &sa, NULL) == -1)   // 如果失败打日志并退出
 		{
-			LogErrorCore(NGX_LOG_EMERG, errno, "sigaction(%s) failed", s_sig->signame);
+            LogErrorCoreAddPrintAddr(NGX_LOG_EMERG, errno, "sigaction()注册信号[%s]的处理函数时失败！", s_sig->signame);
 			return ret = false;
 		}
 	}
@@ -121,6 +127,13 @@ static void signal_handler(int signo, siginfo_t* siginfo, void* ucontext)
 			// 这里就可以对这个信号进行处理
 			/* 将来这里就添加执行代码，目前暂时就往标准输出点信息作为执行到这的查看 */
 			LogStderr(0, "信号%d(%s)已经注册处理...", signo, sig->signame);
+
+            // kill -15 pid号，使得程序优雅退出
+            if(signo == SIGUSR1)   
+            {
+                g_is_stop_programe = true;  // 标志程序退出，后面的死循环中对此有检测
+                break;
+            }
 
 			break;
 		}

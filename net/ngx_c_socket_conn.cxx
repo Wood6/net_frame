@@ -484,11 +484,11 @@ lblRRTD:
                 // 到释放的时间了: 
                 // ......这将来可能还要做一些是否能释放的判断[在我们写完发送数据代码之后吧]，先预留位置
                 // ....
-                //我认为，凡是到释放时间的，atomi_sendbuf_full_flag_n都应该为0；这里我们加点日志判断下
+                // 我认为，凡是到释放时间的，atomi_sendbuf_full_flag_n 都应该为0；这里我们加点日志判断下
                 if(p_conn->atomi_sendbuf_full_flag_n != 0)
                 {
                     // 这确实不应该，打印个日志吧；
-                    LogStderr(0,"CSocket::ServerRecyConnectionThread()中到释放时间却发现p_Conn.atomi_sendbuf_full_flag_n!=0，这个不该发生");
+                    LogErrorCoreAddPrintAddr(NGX_LOG_WARN, 0, "连接都到释放时间却发现p_conn.atomi_sendbuf_full_flag_n!=0，这个不该发生");
                     // 其他先暂时啥也不干，路程继续往下走，继续去释放吧。
                 }
 
@@ -514,14 +514,14 @@ lblRRTD:
 
         if(true == g_is_stop_programe) // 要退出整个程序，那么肯定要先退出这个循环
         {
-            LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "整个程序要退出了，开始进行资源回收...");
+            LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "g_is_stop_programe为true了，要求整个程序要退出了，开始回收连接池资源...");
         
             if(p_socket_obj->m_totol_recy_connection_n > 0)
             {
-                //因为要退出，所以就得硬释放了【不管到没到时间，不管有没有其他不 允许释放的需求，都得硬释放】
+                //  因为要退出，所以就得硬释放了【不管到没到时间，不管有没有其他不 允许释放的需求，都得硬释放】
                 err = pthread_mutex_lock(&p_socket_obj->m_mutex_recyList_connection);
                 if(err != 0) 
-					LogStderr(err,"CSocket::ServerRecyConnectionThread()中pthread_mutex_lock2()失败，返回的错误码为%d!",err);
+                    LogErrorCoreAddPrintAddr(NGX_LOG_ERR, 0, "pthread_mutex_lock()失败，返回的错误码err = %d", err);
 
         lblRRTD2:
                 pos    = p_socket_obj->m_list_recy_connection.begin();
@@ -529,9 +529,9 @@ lblRRTD:
                 for(; pos != posend; ++pos)
                 {
                     p_conn = (*pos);
-                    --p_socket_obj->m_totol_recy_connection_n;        //待释放连接队列大小-1
-                    p_socket_obj->m_list_recy_connection.erase(pos);   //迭代器已经失效，但pos所指内容在p_conn里保存着呢
-                    p_socket_obj->FreeConnectionToCPool(p_conn);	   //归还参数pConn所代表的连接到到连接池中
+                    --p_socket_obj->m_totol_recy_connection_n;         // 待释放连接队列大小-1
+                    p_socket_obj->m_list_recy_connection.erase(pos);   // 迭代器已经失效，但pos所指内容在p_conn里保存着呢
+                    p_socket_obj->FreeConnectionToCPool(p_conn);	   // 归还参数p_conn所代表的连接到到连接池中
 
                     LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "连接[%ud]回收完成!", p_conn->fd);
                     
@@ -540,7 +540,7 @@ lblRRTD:
                 
                 err = pthread_mutex_unlock(&p_socket_obj->m_mutex_recyList_connection);
                 if(err != 0)  
-                    LogStderr(err,"CSocket::ServerRecyConnectionThread()pthread_mutex_unlock2()失败，返回的错误码为%d!",err);
+                    LogErrorCoreAddPrintAddr(NGX_LOG_ERR, 0, "pthread_mutex_lock()失败，返回的错误码err = %d", err);
             } 
             
             break; // 整个程序要退出了，所以break;

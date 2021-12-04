@@ -68,7 +68,7 @@ void MasterProcessCycle()
 		char title[1000] = { 0 };
 		strcpy(title, (const char *)arr_master_process_name); // "master process"
 		strcat(title, " ");                                   // 跟一个空格分开一些，清晰    //"master process "
-		for (int i = 0; i < g_os_argc; i++)                       // "master process ./net_frame"
+		for (int i = 0; i < g_os_argc; i++)                   // "master process ./net_frame"
 		{
 			strcat(title, g_os_argv[i]);
 		}
@@ -90,8 +90,10 @@ void MasterProcessCycle()
 	sigemptyset(&set);              // 信号屏蔽字为空，表示不屏蔽任何信号
 
 
-	/* 经上面处理work进程去这里WorkerProcessCycle()循环了，执行流能到当前这个位置的是master进程 */
-	for (;; )
+	/* 经上面处理work进程去这里WorkerProcessCycle()循环了，执行流正常能到当前这个位置的是master进程 */
+    // 当 g_is_stop_programe 被置位true要求程序优雅退出时，那worke进程会从上面函数中一路返回可能会开始进入到这里
+    // 所以加个条件 NGX_PROCESS_IS_MASTER == g_process_type 限制在worker子进程返回退出整个程序的过程中也不会走到这面去
+	for (;NGX_PROCESS_IS_MASTER == g_process_type; )
 	{
 		// ngx_log_error_core(0,0,"haha--这是父进程，pid为%P",ngx_pid);
 
@@ -109,6 +111,12 @@ void MasterProcessCycle()
 						  // 此时master进程完全靠信号驱动干活 
 
 		sleep(1);         // 休息1秒  
+
+        if(true == g_is_stop_programe)
+        {
+            LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "g_is_stop_programe为ture了，要求整个进程退出了，master进程退出死循环...");
+            break;
+        }
 
 		// 以后扩充.......
 	}
@@ -141,6 +149,8 @@ static void StartCreatWorkerProc(int cnt_workprocess)
 	{
 		CreatWorkerProc(i, "worker process");
 	}
+
+    return;
 }
 
 
@@ -212,12 +222,12 @@ static void WorkerProcessCycle(int inum, const char* p_procname)
 
 	g_process_type = NGX_PROCESS_IS_WORKER;
 
-	/* 初始化子进程，重新设置标题，*/
-	InitWorkerProcess(inum);
+	/* 重新设置标题，初始化子进程 */
 	SetProcTitle(p_procname);                // 设置标题
+	InitWorkerProcess(inum);
 
-	// 设置标题时顺便记录下来进程名，进程id等信息到日志
-	LogErrorCore(NGX_LOG_NOTICE, 0, "%s %P 启动并开始运行......!", p_procname, g_pid);
+	// 设置好并初始化后打条日志记录下来进程名，进程id等信息到日志，也标志着开开始真正干活了。。。
+	LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "子进程%s[pid_%P]已经启动并初始化完成，下面要开始真正干活了...", p_procname, g_pid);
 
 	//暂时先放个死循环，我们在这个循环里一直不出来
 	//setvbuf(stdout,NULL,_IONBF,0); //这个函数. 直接将printf缓冲区禁止， printf就直接输出了。
@@ -229,11 +239,19 @@ static void WorkerProcessCycle(int inum, const char* p_procname)
 
 		ProcessEventsAndTimers();         // 处理网络事件和定时器事件
 
+        if(true == g_is_stop_programe)
+        {
+            LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "g_is_stop_programe为ture了，要求整个进程退出了，worker子进程退出死循环...");
+            break;
+        }
+
 	}
 
     // 如果从上面for循环跳出来，考虑在这里停止线程池
     g_threadpool.StopAll();            
     g_socket.ShutdownSubproc();  // socket需要释放的东西考虑释放；
+
+    return;
 }
 
 /**
@@ -261,6 +279,7 @@ static void InitWorkerProcess(int inum)
 
 	sigemptyset(&set);   // 清空信号集
 	// 原来是屏蔽那10个信号【防止fork()期间收到信号导致混乱】，现在不再屏蔽任何信号【接收任何信号】
+	// 用于改变进程的当前阻塞信号集,也可以用来检测当前进程的信号掩码,这里是改变，由原来的阻塞改为不再阻塞
 	if (sigprocmask(SIG_SETMASK, &set, NULL) == -1)
 	{
 		LogErrorCore(NGX_LOG_ALERT, errno, "ngx_worker_process_init()中sigprocmask()失败!");

@@ -38,8 +38,9 @@ gs_log_t gs_log;
  */
 void LogInit()
 {
-	CConfig* p_config = CConfig::GetInstance();
-	const char* p_logpath = p_config->GetString("log_file_path");
+    // 单例类，main在全面已经实例化，这里拿到的指针是当时已经实体化的类指针  
+	CConfig* p_config = CConfig::GetInstance();  
+	const char* p_logpath = p_config->GetString("log_file_path"); // 直接从内存中读取的，不用耗时去读文件了
 	if (NULL == p_logpath)
 	{
 		p_logpath = NGX_ERROR_LOG_PATH;
@@ -216,8 +217,9 @@ void LogErrorCore(int level, int err, const char* fmt, ...)
 	gettimeofday(&tv, NULL);   // 获取当前时间，返回自1970-01-01 00:00:00到现在经历的秒数【第二个参数是时区，一般不关心】
 	sec = tv.tv_sec;
 	localtime_r(&sec, &tm);    // 把参数1的time_t转换为本地时间，保存到参数2中去，带_r的是线程安全的版本，尽量使用
-	++tm.tm_mon;
-	tm.tm_yday += 1900;
+	++tm.tm_mon;               // C的历史原因，时间戳中的月份是从零开始，所以对应到日常月份要 +1
+	//tm.tm_yday += 1900;      // tm_yday时间戳在该年中的第几天，这里用错了
+    tm.tm_year += 1900;        // 年份 在1900基础上算的秒数换算的，所以对应正常年份 +1900
 
 	u_char arr_curr_time[40] = { 0 };
 	// 将时间值格式化到arr_curr_time数组中
@@ -229,7 +231,7 @@ void LogErrorCore(int level, int err, const char* fmt, ...)
 		tm.tm_hour,
 		tm.tm_min,
 		tm.tm_sec);
-
+    
 	// 定义一个arr_errstr准备存放这个组合各种当前状态后的错误字符串
 	u_char* p_arr_errstr = NULL;                  // 指向当前要拷贝数据到其中的内存位置
 	u_char* p_last = NULL;

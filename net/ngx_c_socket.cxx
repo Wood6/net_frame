@@ -148,6 +148,8 @@ void CSocket::ShutdownSubproc()
     pthread_mutex_destroy(&m_mutex_send_msg);    //发消息互斥量释放    
     pthread_mutex_destroy(&m_mutex_recyList_connection);       //连接回收队列相关的互斥量释放
     sem_destroy(&m_sem_send_event);                  //发消息相关线程信号量释放
+
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "Socket类回收程序 ShutdownSubproc() 成功执行完，Socket类相关程序全部正常结束");
 }
 
 /**
@@ -359,7 +361,7 @@ bool CSocket::OpenListeningSockets()
 		// 参数1：AF_INET：使用ipv4协议，一般就这么写
 		// 参数2：SOCK_STREAM：使用TCP，表示可靠连接【相对还有一个UDP套接字，表示不可靠连接】
 		// 参数3：给0，固定用法，就这么记
-		isock = socket(AF_INET, SOCK_STREAM, 0); //系统函数，成功返回非负描述符，出错返回-1
+		isock = socket(AF_INET, SOCK_STREAM, 0); // 系统函数，成功返回非负描述符，出错返回-1
 		if (isock == -1)
 		{
 			LogStderrAddPrintAddr(errno, "CSocket::Initialize()中socket()失败,i=%d.", i);
@@ -409,11 +411,11 @@ bool CSocket::OpenListeningSockets()
 		}
 
 		// 可以，放到vector里来
-		gps_listening_t p_listen_socket = new _gs_listening;         // 千万不要写错，注意前边类型是指针，后边类型是一个结构体
-		memset(p_listen_socket, 0, sizeof(_gs_listening));           // 注意后边用的是 ngx_listening_t而不是lpngx_listening_t
+		gps_listening_t p_listen_socket = new _gs_listening;        // 千万不要写错，注意前边类型是指针，后边类型是一个结构体
+		memset(p_listen_socket, 0, sizeof(_gs_listening));          // 注意后边用的是 ngx_listening_t而不是lpngx_listening_t
 		p_listen_socket->port = iport;                              // 记录下所监听的端口号
-		p_listen_socket->fd = isock;                                // 套接字木柄保存下来   
-		LogErrorCore(NGX_LOG_INFO, 0, "监听%d端口成功!", iport);    // 显示一些信息到日志中
+		p_listen_socket->fd = isock;                                // 套接字句柄保存下来   
+		LogErrorCore(NGX_LOG_INFO, 0, "监听%d端口成功!", iport);          // 显示一些信息到日志中
 		m_vec_listen_socket.push_back(p_listen_socket);             // 加入到队列中
 	}  // enf for(int i = 0; i < m_lister_port_cnt; i++) 
 
@@ -879,7 +881,7 @@ int CSocket::EpollProcessEvents(int timer)
 		if (errno == EINTR)
 		{
 			// 信号所致，直接返回，一般认为这不是毛病，但还是打印下日志记录一下，因为一般也不会人为给worker进程发送消息
-			LogErrorCore(NGX_LOG_INFO, errno, "CSocket::ngx_epoll_process_events()中epoll_wait()失败!");
+			LogErrorCoreAddPrintAddr(NGX_LOG_INFO, errno, "worker子进程收到了系统某个信号，epoll_wait()失败退出!");
 			return 1;  // 正常返回
 		}
 		else
@@ -1078,7 +1080,7 @@ void* CSocket::ServerSendListThread(void* thread_data)
         // 一般走到这里都表示需要处理数据收发了
         if(true == g_is_stop_programe)  // 要求整个进程退出
         {
-            LogErrorCore(NGX_LOG_INFO, 0, "g_is_stop_programe=true，要求整个进程退出了！");
+            LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "g_is_stop_programe为ture了，要求整个进程退出了，发消息线程在此退出...");
             break;
         }
             

@@ -48,7 +48,7 @@ static void FreeResource();
 int main(int argc, char **argv)
 {
 	int exit_code = 0;
-    //CMemory* p_memory;
+
     // (0)先初始化的变量
     g_is_stop_programe = false;            // 标记程序是否退出，0不退出   
 
@@ -82,9 +82,7 @@ int main(int argc, char **argv)
 		goto lblexit;
 	}
 
-    // (2.1)内存单例类可以在这里初始化，返回值不用保存
-    //CMemory::GetInstance();
-	// (2.2)crc32校验算法单例类可以在这里初始化，返回值不用保存
+	// (2.1)crc32校验算法单例类可以在这里初始化，返回值不用保存
 	CCRC32::GetInstance();
 
 	// 第三部分：一些必须事先准备好的资源，先初始化
@@ -93,12 +91,14 @@ int main(int argc, char **argv)
 	// 第四部分：一些初始化函数，准备放这里
 	if (InitSignals() == false)          // 信号注册
 	{
+        LogErrorCoreAddPrintAddr(NGX_LOG_ERR, errno, "InitSignals()信号注册失败，退出!");
 		exit_code = 1;
 		goto lblexit;
 	}
 	 
 	if (g_socket.InitSocket() == false)  // 初始化socket
 	{
+        LogErrorCoreAddPrintAddr(NGX_LOG_ERR, errno, "g_socket.InitSocket()socket初始化失败，退出!");
 		exit_code = 1;
 		goto lblexit;
 	}
@@ -112,11 +112,13 @@ int main(int argc, char **argv)
 		int ret_creat_monitor_proc = CreatDaemon();
 		if (-1 == ret_creat_monitor_proc)
 		{
+            LogErrorCoreAddPrintAddr(NGX_LOG_ERR, errno, "CreatDaemon()创建守护进程master失败，退出!");
 			exit_code = -1;
 			goto lblexit;
 		}
 		if (1 == ret_creat_monitor_proc)
 		{
+            LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "原来的main进程完成使命退出历史舞台，后面任务交给守护进程master和后面会创建的工作进程worker了...");
 			// 父进程在这里就退出历史舞台了。。。
 			FreeResource();
 			return exit_code = 0;
@@ -125,7 +127,7 @@ int main(int argc, char **argv)
 		g_is_daemon = 1;       // 守护进程标记，标记是否启用了守护进程模式，0：未启用，1：启用了
 	}
 	
-	// 第7部分开始正式的主工作流程，主流程一致在下边这个函数里循环，暂时不会走下来，资源释放啥的日后再慢慢完善和考虑 
+	// 第7部分开始正式的主工作流程，主流程一直在下边这个函数里循环，暂时不会走下来，资源释放啥的日后再慢慢完善和考虑 
 	MasterProcessCycle();
 
 lblexit:

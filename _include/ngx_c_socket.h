@@ -80,6 +80,8 @@ struct _gs_connection
     // 和发包有关-----------------------------
 	std::atomic<int>          atomi_sendbuf_full_flag_n;   // 发送消息，如果发送缓冲区满了，则需要通过epoll事件
 	                                                       // 来驱动消息的继续发送，所以如果发送缓冲区满，则用这个变量标记
+	                                                       // 为0，发送缓存区没满，
+	                                                       // >0发送缓存区满了，则需要使用epoll通知写事件了
 	char*                     p_sendbuf_array_mem_addr;    // 发送完成后释放用的，整个数据的头指针，其实是 消息头 + 包头 + 包体
 	char*                      p_sendbuf;                  // 发送数据的缓冲区的头指针，开始 其实是包头+包体
 	unsigned int              len_send;                    // 要发送多少数据

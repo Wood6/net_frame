@@ -402,7 +402,7 @@ void CThreadPool::StopAll()
 	}
 	m_vec_thread.clear();
 
-	LogStderr(0, "CThreadPool::StopAll()成功返回，线程池中线程全部正常结束!");
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "线程池回收程序StopAll()成功执行完，线程池中线程全部正常结束");
     
     return;    
 }
