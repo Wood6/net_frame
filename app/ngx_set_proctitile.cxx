@@ -27,6 +27,8 @@
  */
 void InitSetProcTitle()
 {
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "");
+    
 	// 这里无需判断penvmen == NULL,有些编译器new会返回NULL，有些会报异常，
 	// 但不管怎样，如果在重要的地方new失败了，你无法收场，让程序失控崩溃，助你发现问题为好； 
 	gp_envmem = new char[g_env_need_mem];
@@ -64,6 +66,8 @@ void InitSetProcTitle()
  */
 void SetProcTitle(const char *title)
 {
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "");
+    
 	// 我们假设，所有的命令 行参数我们都不需要用到了，可以被随意覆盖了；
 	// 注意：我们的标题长度，不会长到原始标题和原始环境变量都装不下，否则怕出问题，不处理
 

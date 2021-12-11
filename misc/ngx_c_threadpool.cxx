@@ -133,10 +133,12 @@ void CThreadPool::ClearMsgRecvQueue()
 
  */
 bool CThreadPool::Create(int thread_n)
-{      
+{ 
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: 线程池创建线程数量thread_n = %d", thread_n);
+    
     m_creat_thread_n = thread_n; // 保存要创建的线程数量    
 
-	ps_thread_item_t p_thread;
+	ps_thread_item_t p_thread = NULL;
 	int err = 0;
     for(int i = 0; i < m_creat_thread_n; ++i)
     {
@@ -223,7 +225,7 @@ void* CThreadPool::ThreadFunc(void* thread_data)
         // 若该mutex已经被另外一个线程锁定了，该调用将会阻塞线程直到mutex被解锁。  
         err = pthread_mutex_lock(&m_pthread_mutex);  
         if(err != 0) 
-            LogStderr(err,"CThreadPool::ThreadFunc()pthread_mutex_lock()失败，返回的错误码为%d!",err); // 有问题，要及时报告
+            LogErrorCoreAddPrintAddr(NGX_LOG_ALERT, 0, "pthread_mutex_lock()失败，函数执行的返回值err = %d", err);  // 有问题，要及时报告
         
 
         // 以下这行程序写法技巧十分重要，必须要用while这种写法，
@@ -236,8 +238,6 @@ void* CThreadPool::ThreadFunc(void* thread_data)
         
         // pthread_cond_wait()函数，如果只有一条消息 唤醒了两个线程干活，那么其中有一个线程拿不到消息，
         // 那如果不用while写，就会出问题，所以被惊醒后必须再次用while拿消息，拿到才走下来；
-        //while( NULL == (jobbuf = g_socket.OutMsgRecvQueue()) && false == m_is_shutdown)
-        //while ( (0 == p_threadpool_obj->m_list_rece_msg_queue.size() == 0) && (fasle == m_is_shutdown) )
         while( (0 == p_threadpool_obj->m_recv_msg_queue_n) && (false == m_is_shutdown) )
         {
             // 如果这个pthread_cond_wait被唤醒【被唤醒后程序执行流程往下走的前提是拿到了锁--官方：pthread_cond_wait()返回时，互斥量再次被锁住】，
@@ -253,37 +253,7 @@ void* CThreadPool::ThreadFunc(void* thread_data)
             //LogStderr(0,"执行了pthread_cond_wait-------------end");
         }
 
-        // 能走下来的，必然是 拿到了真正的 消息队列中的数据   或者 m_is_shutdown == true
-
-        /*
-        jobbuf = g_socket.outMsgRecvQueue(); //从消息队列中取消息
-        if( jobbuf == NULL && m_is_shutdown == false)
-        {
-            // 消息队列为空，并且不要求退出，则
-            // pthread_cond_wait()阻塞调用线程直到指定的条件有信号（signaled）。
-            // 该函数应该在互斥量锁定时调用，当在等待时会自动解锁互斥量【这是重点】。
-            // 在信号被发送，线程被激活后，互斥量会自动被锁定，当线程结束时，由程序员负责解锁互斥量。  
-            // 说白了，某个地方调用了pthread_cond_signal(&m_pthread_cond);，这个pthread_cond_wait就会走下来；
-
-            LogStderr(0,"--------------即将调用pthread_cond_wait,tid=%d--------------",tid);
-
-
-            if(p_thread->is_running == false)
-                p_thread->is_running = true; //标记为true了才允许调用StopAll()：测试中发现如果Create()和StopAll()紧挨着调用，就会导致线程混乱，所以每个线程必须执行到这里，才认为是启动成功了；
-
-            err = pthread_cond_wait(&m_pthread_cond, &m_pthread_mutex);
-            if(err != 0) 
-				LogStderr(err,"CThreadPool::ThreadFunc()pthread_cond_wait()失败，返回的错误码为%d!",err);//有问题，要及时报告
-
-
-
-            LogStderr(0,"--------------调用pthread_cond_wait完毕,tid=%d--------------",tid);
-        }
-        */
-        //if(!m_is_shutdown)        // 如果这个条件成立，表示肯定是拿到了真正消息队列中的数据，要去干活了，干活，则表示正在运行的线程数量要增加1；
-        //    ++m_running_thread_n; // 因为这里是互斥的，所以这个+是OK的；
-
-
+        // 能走下来的，必然是 拿到了真正的 消息队列中的数据   或者 m_is_shutdown == tru
         //pthread_t tid = pthread_self();                                // 获取线程自身id，以方便调试打印信息等
 
         // 走到这里时刻，互斥量肯定是锁着的。。。。。。
@@ -304,20 +274,17 @@ void* CThreadPool::ThreadFunc(void* thread_data)
         // 可以解锁互斥量了,让其他线程可以拿到锁
         err = pthread_mutex_unlock(&m_pthread_mutex);
         if(err != 0)  
-            LogStderr(err,"CThreadPool::ThreadFunc()中pthread_mutex_unlock()失败，返回的错误码为%d!", err);            // 有问题，要及时报告
+            LogErrorCoreAddPrintAddr(NGX_LOG_ALERT, 0, "pthread_mutex_unlock()失败，函数执行的返回值err = %d", err);            // 有问题，要及时报告
         
         // 加个信息日志，方便调试
-        LogErrorCore(NGX_LOG_INFO, 0, "线程[%ud]被激活正在处理从消息队列中取出最上面一个消息，CThreadPool::ThreadFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = %ud!",\
-                                      pthread_self(), ntohs(((gps_pkg_header_t)(jobbuf+sizeof(gs_msg_header_t)))->len_pkg ) );
+        LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "线程[%ud]被激活正在处理从消息队列中取出最上面一个消息，"
+                                                   "消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = %ud!",\
+                                                  pthread_self(), ntohs(((gps_pkg_header_t)(jobbuf+sizeof(gs_msg_header_t)))->len_pkg ) );
 
         // 能走到这里的，就是有消息可以处理，开始处理
         ++p_threadpool_obj->m_running_thread_n;    // 原子+1，这比互斥量要快很多，运行线程数+1
 
         g_socket.ThreadRecvProcFunc(jobbuf);       // 处理消息队列中来的消息
-
-        //LogStderr(0, "执行开始---begin, tid = %ud", tid);
-        //sleep(5);                                  // 临时测试代码
-        //LogStderr(0, "执行结束---end, tid = %ud", tid);
 
         p_memory->FreeMemory(jobbuf);              // 释放消息内存 
         --p_threadpool_obj->m_running_thread_n;    // 原子-1，运行线程数-1
@@ -362,6 +329,7 @@ void* CThreadPool::ThreadFunc(void* thread_data)
  */
 void CThreadPool::StopAll() 
 {
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "");
     // (1)已经调用过，就不要重复调用了
     if(true == m_is_shutdown)
     {
@@ -439,22 +407,15 @@ void CThreadPool::StopAll()
  */
 void CThreadPool::Call()
 {
-    //LogStderr(0,"m_pthreadCondbegin--------------=%ui!",m_pthread_cond);  // 数字5，此数字不靠谱
-    //for(int i = 0; i <= 100; i++)
-    //{
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "");
+
     int err = pthread_cond_signal(&m_pthread_cond); // 唤醒一个等待该条件的线程，也就是可以唤醒卡在pthread_cond_wait()的线程
     if(err != 0 )
     {
         // 这是有问题啊，要打印日志啊
-		LogStderr(err,"CThreadPool::Call()中pthread_cond_signal()失败，返回的错误码为%d!",err);
+		LogErrorCoreAddPrintAddr(NGX_LOG_ALERT, 0, "pthread_cond_signal()失败，函数执行返回值err = %d", err);
     }
-    //}
-    //唤醒完100次，试试打印下m_pthread_cond值;
-    //LogStderr(0,"m_pthreadCondend--------------=%ui!",m_pthread_cond);  // 数字1
 
-    
-    // (1)如果当前的工作线程全部都忙，则要报警
-    // bool ifallthreadbusy = false;
     if(m_creat_thread_n == m_running_thread_n)  // 线程池中线程总量，跟当前正在干活的线程数量一样，说明所有线程都忙碌起来，线程不够用了
     {        
         // 线程不够用了
@@ -464,42 +425,9 @@ void CThreadPool::Call()
             // 两次报告之间的间隔必须超过10秒，不然如果一直出现当前工作线程全忙，但频繁报告日志也够烦的
             m_last_emg_time = currtime;         // 更新时间
             // 写日志，通知这种紧急情况给用户，用户要考虑增加线程池中线程数量了
-			LogStderr(0,"CThreadPool::Call()中发现线程池中当前空闲线程数量为0，要考虑扩容线程池了!");
+			LogErrorCoreAddPrintAddr(NGX_LOG_ALERT, 0, "发现线程池中干活线程与总线程数一样了，表示当前空闲线程数量为0，要考虑扩容线程池了!");
         }
     } 
-
-/*
-    // -------------------------------------------------------如下内容都是一些测试代码；
-    // 唤醒丢失？--------------------------------------------------------------------------
-    // (2)整个工程中，只在一个线程（主线程）中调用了Call，所以不存在多个线程调用Call的情形。
-    if(ifallthreadbusy == false)
-    {
-        // 有空闲线程  ，有没有可能我这里调用   pthread_cond_signal()，但因为某个时刻线程曾经全忙过，导致本次调用 pthread_cond_signal()并没有激发某个线程的pthread_cond_wait()执行呢？
-        // 我认为这种可能性不排除，这叫 唤醒丢失。如果真出现这种问题，我们如何弥补？
-        if(irmqc > 5) //我随便来个数字比如给个5吧
-        {
-            // 如果有空闲线程，并且 接收消息队列中超过5条信息没有被处理，则我总感觉可能真的是 唤醒丢失
-            //  唤醒如果真丢失，我是否考虑这里多唤醒一次？以尝试逐渐补偿回丢失的唤醒？此法是否可行，我尚不可知，我打印一条日志【其实后来仔细相同：唤醒如果真丢失，也无所谓，因为ThreadFunc()会一直处理直到整个消息队列为空】
-            LogStderr(0,"CThreadPool::Call()中感觉有唤醒丢失发生，irmqc = %d!",irmqc);
-
-            int err = pthread_cond_signal(&m_pthread_cond); //唤醒一个等待该条件的线程，也就是可以唤醒卡在pthread_cond_wait()的线程
-            if(err != 0 )
-            {
-                // 这是有问题啊，要打印日志啊
-                LogStderr(err,"CThreadPool::Call()中pthread_cond_signal 2()失败，返回的错误码为%d!",err);
-            }
-        }
-    }  
-
-    // (3)准备打印一些参考信息【10秒打印一次】,当然是有触发本函数的情况下才行
-    m_iCurrTime = time(NULL);
-    if(m_iCurrTime - m_iPrintInfoTime > 10)
-    {
-        m_iPrintInfoTime = m_iCurrTime;
-        int irunn = m_running_thread_n;
-        LogStderr(0,"信息：当前消息队列中的消息数为%d,整个线程池中线程数量为%d,正在运行的线程数量为 = %d!",irmqc,m_creat_thread_n,irunn); // 正常消息，三个数字为 1，X，0
-    }
-    */
     
     return;
 }
@@ -525,15 +453,13 @@ void CThreadPool::Call()
  */
 void CThreadPool::AddMsgRecvQueueAndSignal(char* p_buf)
 {
-    // 加个信息日志，方便调试
-    LogErrorCore(NGX_LOG_INFO, 0, "将消息插入消息队列之前，CThreadPool::AddMsgRecvQueueAndSignal()中包内存中表示[包头+包体]的长度len_pkg = %ud!",\
-                                  ntohs(((gps_pkg_header_t)(p_buf+sizeof(gs_msg_header_t)))->len_pkg ) );  
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_buf = %p", p_buf);
 
 	//  互斥
 	int err = pthread_mutex_lock(&m_pthread_mutex);
 	if (err != 0)
 	{
-		LogStderr(err, "CThreadPool::AddMsgRecvQueueAndSignal()中pthread_mutex_lock()失败，返回的错误码为%d!", err);
+		LogStderrAddPrintAddr(err, "pthread_mutex_lock()失败，返回的错误码为%d", err);
 	}
 
 	m_list_rece_msg_queue.push_back(p_buf);  // 入消息队列
@@ -544,11 +470,11 @@ void CThreadPool::AddMsgRecvQueueAndSignal(char* p_buf)
 	err = pthread_mutex_unlock(&m_pthread_mutex);
 	if (err != 0)
 	{
-		LogStderr(err, "CThreadPool::AddMsgRecvQueueAndSignal()中pthread_mutex_unlock()失败，返回的错误码为%d!", err);
+		LogStderrAddPrintAddr(err, "pthread_mutex_unlock()失败，返回的错误码为%d", err);
 	}
 
     // 加个信息日志，方便调试
-    LogErrorCore(NGX_LOG_INFO, 0, "在发信号给线程之前从消息队列中取出最上面一个消息，CThreadPool::AddMsgRecvQueueAndSignal()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = %ud!",\
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "在发信号给线程之前从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = %ud",\
                                   ntohs(((gps_pkg_header_t)(m_list_rece_msg_queue.front()+sizeof(gs_msg_header_t)))->len_pkg ) );
 
 	// 可以激发一个线程来干活了

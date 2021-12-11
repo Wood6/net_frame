@@ -39,19 +39,20 @@ gs_log_t gs_log;
 void LogInit()
 {
     // 单例类，main在全面已经实例化，这里拿到的指针是当时已经实体化的类指针  
-	CConfig* p_config = CConfig::GetInstance();  
-	const char* p_logpath = p_config->GetString("log_file_path"); // 直接从内存中读取的，不用耗时去读文件了
-	if (NULL == p_logpath)
-	{
-		p_logpath = NGX_ERROR_LOG_PATH;
-	}
+    CConfig* p_config  = CConfig::GetInstance();  
+    const char* p_logpath = p_config->GetString("log_file_path"); // 直接从内存中读取的，不用耗时去读文件了
+    if (NULL == p_logpath)
+    {
+    	p_logpath = NGX_ERROR_LOG_PATH;
+    }
 
-	gs_log.log_level = p_config->GetIntDefault("log_level", NGX_LOG_NOTICE);
+    gs_log.log_level = p_config->GetIntDefault("log_level", NGX_LOG_NOTICE);
+
 	gs_log.fd = open(p_logpath, O_WRONLY | O_APPEND | O_CREAT, 0644);
 	if (-1 == gs_log.fd)
 	{
-		LogStderr(errno, "[alert] could not open error log file: open() \"%s\" failed", p_logpath);
-		gs_log.fd = STDERR_FILENO;  //  如果有错误，则直接定位到 标准错误上去 
+		LogStderrAddPrintAddr(errno, "[alert] open()打开日志文件[%s]失败，errno = %d", p_logpath, errno);
+		gs_log.fd = STDERR_FILENO;  //  如果有错误，则直接定位到标准错误上去 
 	}
 }
 
@@ -119,14 +120,11 @@ void LogStderr(int err, const char* fmt, ...)
 	write(STDERR_FILENO, arr_errstr, p_errstr - arr_errstr);
 	if (gs_log.fd > STDERR_FILENO)    // 如果这是个有效的日志文件，本条件肯定成立，此时也才有意义将这个信息写到日志文件
 	{
-		// 因为上边已经把err信息显示出来了，所以这里就不要显示了，否则显示重复了
-		err = 0;         // 不要再次把错误信息弄到字符串里，否则字符串里重复了
-
 		--p_errstr;      
 		*p_errstr = 0;   // 把原来末尾的\n干掉，因为到ngx_log_err_core中还会加这个\n
 
 		// 往日志文件里面写一行错误日志
-		LogErrorCore(NGX_LOG_STDERR, err, (const char*)arr_errstr);
+		LogErrorCoreAddPrintAddr(NGX_LOG_STDERR, 0, "%s", (const char*)arr_errstr);
 	}
 
 }
@@ -154,7 +152,7 @@ void LogStderr(int err, const char* fmt, ...)
 
  */
 u_char* LogErrno(u_char* p_buf, u_char* p_last, int err)
-{
+{ 
 	char* perror_info = strerror(err);
 	size_t len_perror_info = strlen(perror_info);
 

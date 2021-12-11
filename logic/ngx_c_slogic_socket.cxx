@@ -100,6 +100,7 @@ CLogicSocket::~CLogicSocket()
  */
 bool CLogicSocket::InitSocket()
 {
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "");
 	// 做一些和本类相关的初始化工作
 	// ....日后根据需要扩展
 	return CSocket::InitSocket();  // 调用父类的同名函数
@@ -124,18 +125,12 @@ bool CLogicSocket::InitSocket()
  */
 void CLogicSocket::ThreadRecvProcFunc(char *p_msg_buf)
 {
-    // 加个信息日志，方便调试
-    LogErrorCore(NGX_LOG_INFO, 0, "线程[%ud]被激活正在处理从消息队列中取出最上面一个消息，CLogicSocket::ThreadRecvProcFunc()中消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = %ud!",\
-                                  pthread_self(), ntohs(((gps_pkg_header_t)(p_msg_buf+sizeof(gs_msg_header_t)))->len_pkg ) );
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_msg_buf = %p", p_msg_buf);
 
-	gps_msg_header_t p_msg_header = (gps_msg_header_t)p_msg_buf;                                 // 消息头
+	gps_msg_header_t p_msg_header = (gps_msg_header_t)p_msg_buf;                       // 消息头
 	gps_pkg_header_t  p_pkg_header = (gps_pkg_header_t)(p_msg_buf + m_len_msg_header); // 包头
-	void  *p_pkg_body = NULL;                                                                    // 指向包体的指针
-	unsigned short len_pkg = ntohs(p_pkg_header->len_pkg);                                       // 客户端指明的包宽度【包头+包体】
-
-    // 加个信息日志，方便调试
-    LogErrorCore(NGX_LOG_INFO, 0, "线程[%ud]即将开始处理程序提取出来的数据，CLogicSocket::ThreadRecvProcFunc()中提取出来的[包头+包体]的长度len_pkg = %ud!",\
-                                  pthread_self(), len_pkg );
+	void  *p_pkg_body = NULL;                                                          // 指向包体的指针
+	unsigned short len_pkg = ntohs(p_pkg_header->len_pkg);                             // 客户端指明的包宽度【包头+包体】
 
 	if (m_len_pkg_header == len_pkg)
 	{
@@ -153,11 +148,11 @@ void CLogicSocket::ThreadRecvProcFunc(char *p_msg_buf)
 		p_pkg_body = (void *)(p_msg_buf + m_len_msg_header + m_len_pkg_header); // 跳过消息头 以及 包头 ，指向包体
 
 		// 计算crc值判断包的完整性        
-		int calc_crc = CCRC32::GetInstance()->GetCRC((unsigned char *)p_pkg_body, len_pkg - m_len_pkg_header); // 计算纯包体的crc值
+		int calc_crc = CCRC32::GetInstance()->GetCRC((unsigned char *)p_pkg_body, len_pkg - m_len_pkg_header);  // 计算纯包体的crc值
 		if (calc_crc != p_pkg_header->crc32) // 服务器端根据包体计算crc值，和客户端传递过来的包头中的crc32信息比较
 		{
-			LogStderr(0, "CLogicSocket::threadRecvProcFunc()中CRC错误，丢弃数据!");    // 正式代码中可以干掉这个信息
-			return;                                                                    // crc错,直接丢弃
+			LogErrorCoreAddPrintAddr(NGX_LOG_ALERT, 0, "CRC错误，丢弃数据");            // 正式代码中可以干掉这个信息
+			return;                                                              // crc错,直接丢弃
 		}
 	}
 
@@ -166,7 +161,7 @@ void CLogicSocket::ThreadRecvProcFunc(char *p_msg_buf)
 	gps_connection_t p_conn = p_msg_header->p_conn;          // 消息头中藏着连接池中连接的指针
 
 	// 我们要做一些判断
-	// (1)如果从收到客户端发送来的包，到服务器释放一个线程池中的线程处理该包的过程中，客户端断开了，那显然，这种收到的包我们就不必处理了；
+	// (1)如果从收到客户端发送来的包，到服务器释放一个连接池中的线程处理该包的过程中，客户端断开了，那显然，这种收到的包我们就不必处理了；
 	// 该连接池中连接以被其他tcp连接【其他socket】占用，这说明原来的 客户端和本服务器的连接断了，这种包直接丢弃不理
 	if (p_conn->currse_quence_n != p_msg_header->currse_quence_n)   
 	{
@@ -176,7 +171,7 @@ void CLogicSocket::ThreadRecvProcFunc(char *p_msg_buf)
 	// (2)判断消息码是正确的，防止客户端恶意侵害我们服务器，发送一个不在我们服务器处理范围内的消息码
 	if (msg_type >= AUTH_TOTAL_COMMANDS)                     // 无符号数不可能<0
 	{
-		LogStderr(0, "CLogicSocket::threadRecvProcFunc()中msg_type=%d消息码不对!", msg_type); //这种有恶意倾向或者错误倾向的包，希望打印出来看看是谁干的
+		LogErrorCoreAddPrintAddr(NGX_LOG_ALERT, 0, "msg_type = %d, 消息码不对!", msg_type); //这种有恶意倾向或者错误倾向的包，希望打印出来看看是谁干的
 		return;                                              // 丢弃不理这种包【恶意包或者错误包】
 	}
 
@@ -185,7 +180,7 @@ void CLogicSocket::ThreadRecvProcFunc(char *p_msg_buf)
 	if (status_handler[msg_type] == NULL)                     // 这种用msg_type的方式可以使查找要执行的成员函数效率特别高
 	{
         // 这种有恶意倾向或者错误倾向的包，希望打印出来看看是谁干的
-		LogStderr(0, "CLogicSocket::threadRecvProcFunc()中msg_type=%d消息码找不到对应的处理函数!", msg_type); 
+        LogErrorCoreAddPrintAddr(NGX_LOG_ALERT, 0, "msg_type = %d, 消息码找不到对应的处理函数，有可能是被篡改了", msg_type);
 		return;                                               // 没有相关的处理函数
 	}
 
@@ -221,6 +216,9 @@ void CLogicSocket::ThreadRecvProcFunc(char *p_msg_buf)
  */
 bool CLogicSocket::_HandleRegister(gps_connection_t p_conn, gps_msg_header_t p_msg_header, char* p_pkg_body, unsigned short len_body)
 {
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_conn = %p, p_msg_header = %p, p_pkg_body = %p, len_body = %ud",\
+                                              p_conn, p_msg_header, p_pkg_body, len_body);
+
 	// (1)首先判断包体的合法性
 	if (NULL == p_pkg_body)     // 具体看客户端服务器约定，如果约定这个命令[msg_type]必须带包体，那么如果不带包体，就认为是恶意包直接不处理    
 	{
@@ -288,33 +286,7 @@ bool CLogicSocket::_HandleRegister(gps_connection_t p_conn, gps_msg_header_t p_m
 
 	// f)发送数据包
 	SendMsg(p_sendbuf);
-	/*if(ngx_epoll_oper_event(
-								p_conn->fd,         // socekt句柄
-								EPOLL_CTL_MOD,      // 事件类型，这里是增加
-								EPOLLOUT,           // 标志，这里代表要增加的标志,EPOLLOUT：可写
-								0,                  // 对于事件类型为增加的，EPOLL_CTL_MOD需要这个参数, 0：增加   1：去掉 2：完全覆盖
-								p_conn              // 连接池中的连接
-								) == -1)
-	{
-		LogStderr(0,"1111111111111111111111111111111111111111111111111111111111111!");
-	} */
-
-	/*
-	sleep(100);  //休息这么长时间
-	//如果连接回收了，则肯定是currse_quence_n不等了
-	if(pMsgHeader->currse_quence_n != p_conn->currse_quence_n)
-	{
-		//应该是不等，因为这个插座已经被回收了
-		LogStderr(0,"插座不等,%L--%L",pMsgHeader->currse_quence_n,p_conn->currse_quence_n);
-	}
-	else
-	{
-		LogStderr(0,"插座相等哦,%L--%L",pMsgHeader->currse_quence_n,p_conn->currse_quence_n);
-	}
-
-	*/
-	//LogStderr(0,"执行了CLogicSocket::_HandleRegister()!");
-
+    
 	return true;
 }
 

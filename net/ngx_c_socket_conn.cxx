@@ -150,9 +150,9 @@ void CSocket::InitConnectionPool()
     CMemory *p_memory = CMemory::GetInstance();   
 
     int len_conn = sizeof(gs_connection_t);    
-    for(int i = 0; i < m_worker_connections_n; ++i)     // 先创建这么多个连接，后续在使用get连接发现不够程序会动态申请增加
-    {
-	// 清理内存 , 因为这里分配内存new char，无法执行构造函数，所以如下：
+    for(int i = 0; i < m_worker_connections_n; ++i)     // 先创建这么多个连接，后续在使用get连接发现不够程序会动态自己申请堆内存扩容增加
+    {                                                   // 在main()中初始化CSocket::InitSocket()函数时就从读取到配置中的这个m_worker_connections_n值
+	    // 清理内存 , 因为这里分配内存new char，无法执行构造函数，所以如下：
         p_conn = (gps_connection_t)p_memory->AllocMemory(len_conn, true); 
         // 手工调用构造函数，因为AllocMemory里无法调用构造函数
 	    // 定位new【不懂请百度】，释放则显式调用p_conn->~_gs_connection();
@@ -442,9 +442,7 @@ void CSocket::AddRecyConnectList(gps_connection_t p_conn)
 
  */
 void* CSocket::ServerRecyConnectionThread(void* p_thread_data)
-{
-    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "进入到连接回收线程[%ud]中...", pthread_self());
-    
+{   
     _thread_item* p_thread = static_cast<_thread_item*>(p_thread_data);
     CSocket* p_socket_obj = p_thread->_pThis;
     
@@ -455,8 +453,8 @@ void* CSocket::ServerRecyConnectionThread(void* p_thread_data)
     
     while(1)
     {
-        //这个线程创建后这里一直有执行到，打印日志太多，注释掉
-        //LogErrorCoreAddPrintAddr(NGX_LOG_DEBUG, 0, "当前待回收连接数m_totol_recy_connection_n[ %d ]",int(p_socket_obj->m_totol_recy_connection_n) );
+        // 这个线程创建后这里一直有执行到，打印日志太多，注释掉
+        // LogErrorCoreAddPrintAddr(NGX_LOG_DEBUG, 0, "当前待回收连接数m_totol_recy_connection_n[ %d ]",int(p_socket_obj->m_totol_recy_connection_n) );
         
         // 为简化问题，我们直接每次休息200毫秒  
         usleep(200 * 1000);  // 单位是微妙,又因为1毫秒=1000微妙，所以 200 *1000 = 200毫秒

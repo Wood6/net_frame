@@ -31,8 +31,7 @@
  */
 void CSocket::ReadRequestHandler(gps_connection_t p_conn)
 {
-    LogErrorCoreAddPrintAddr(NGX_LOG_DEBUG, 0, "p_conn=%p, p_conn->p_recvbuf_pos=%p, p_conn->len_recv=%ud",\
-                                                p_conn, p_conn->p_recvbuf_pos, p_conn->len_recv);
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_conn = %p", p_conn);
 
     // 收包，注意我们用的第二个和第三个参数，我们用的始终是这两个参数，
     // 因此我们必须保证 p_conn->p_recvbuf_pos 指向正确的收包位置，保证 p_conn->len_recv 指向正确的收包宽度  
@@ -135,7 +134,7 @@ void CSocket::ReadRequestHandler(gps_connection_t p_conn)
  */
 ssize_t CSocket::RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_buf) 
 {
-    LogErrorCoreAddPrintAddr(NGX_LOG_DEBUG, 0, "p_conn=%p, p_buff=%p, len_buf=%ud", p_conn, p_buff, len_buf);
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_conn=%p, p_buff=%p, len_buf=%ud", p_conn, p_buff, len_buf);
     
     ssize_t recv_cnt = 0;
     recv_cnt = recv(p_conn->fd, p_buff, len_buf, 0);   // recv()系统函数， 最后一个参数flag，一般为0； 
@@ -144,11 +143,6 @@ ssize_t CSocket::RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_bu
     {
         // 客户端关闭【应该是正常完成了4次挥手】，我这边就直接回收连接连接，关闭socket即可 
         // LogStderrAddPrintAddr(0,"连接被客户端正常关闭[4路挥手关闭]！");
-
-#if 0
-        CloseConnection(p_conn);
-#endif
-
         if(close(p_conn->fd) == -1)
         {
             LogErrorCore(NGX_LOG_ALERT, errno, "CSocket::RecvProc()中close(%d)失败！", p_conn->fd);
@@ -246,6 +240,8 @@ ssize_t CSocket::RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_bu
  */
 void CSocket::WaitRequestHandlerProcPart1(gps_connection_t p_conn)
 {
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_conn = %p", p_conn);
+
     CMemory* p_memory = CMemory::GetInstance();		
 
     gps_pkg_header_t p_pkg_header;
@@ -260,7 +256,7 @@ void CSocket::WaitRequestHandlerProcPart1(gps_connection_t p_conn)
                                               // 【不管客户端/服务器是什么操作系统，发送的数字是多少，收到的就是多少】
                                               // 直接百度搜索"网络字节序" "主机字节序" "p_conn++ 大端" "p_conn++ 小端"
 
-    LogErrorCore(NGX_LOG_INFO, 0, "包头收完整了，CSocket::WaitRequestHandlerProcPart1()中包头结构体中表示[包头+包体]的长度len_pkg = %ud!", len_pkg);
+    LogStderrAddPrintAddr(0, "包头收完整了，包头结构体中表示[包头+包体]的长度len_pkg = %ud", len_pkg);
 
     // 恶意包或者错误包的判断
     if(len_pkg < m_len_pkg_header) 
@@ -288,9 +284,6 @@ void CSocket::WaitRequestHandlerProcPart1(gps_connection_t p_conn)
         // 分配内存【长度是 消息头长度  + 包头长度 + 包体长度】，最后参数先给false，表示内存不需要memset;
         char *p_tmpbuff  = (char *)p_memory->AllocMemory(m_len_msg_header + len_pkg, false); 
 
-#if 0
-        p_conn->is_new_recvmem   = true;        // 标记我们new了内存，将来在FreeConnection()要回收的
-#endif
         p_conn->p_recvbuf_array_mem_addr = p_tmpbuff;  // 内存开始指针
 
         // a)先填写消息头内容
@@ -337,111 +330,22 @@ void CSocket::WaitRequestHandlerProcPart1(gps_connection_t p_conn)
  */
 void CSocket::WaitRequestHandlerProcLast(gps_connection_t p_conn)
 {
-    //int msgqueue_n = 0;     // 消息队列当前信息数量
-    // 把这段内存放到消息队列中来；
-    //AddMsgRecvQueue(p_conn->p_recvbuf_array_mem_addr, msgqueue_n);
-    // ......这里可能考虑触发业务逻辑，怎么触发业务逻辑，这个代码以后再考虑扩充。。。。。。
-
-
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_conn = %p", p_conn);
     // 上面拿到消息数，下面就知道有多少消息需要处理，
-    // 从而好直接告诉线程需要激活多个个线程来处理消息对应的业务逻辑了
-    
-    // 通过全局线程变量直接调用线程来处理了
-    //g_threadpool.Call(msgqueue_n);                           // 激发线程池中的某个线程来处理业务逻辑     
+    // 从而好直接告诉线程需要激活多个个线程来处理消息对应的业务逻辑了  
 
     // 加个信息日志，方便调试
-    LogErrorCore(NGX_LOG_INFO, 0, "包体收完整了，CSocket::WaitRequestHandlerProcLast()中包体结构体中表示[包头+包体]的长度len_pkg = %ud!",\
+    LogStderrAddPrintAddr(0, "包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = %ud",\
                                   ntohs( ((gps_pkg_header_t)p_conn->arr_pkghead_info)->len_pkg ));     
     
     g_threadpool.AddMsgRecvQueueAndSignal(p_conn->p_recvbuf_array_mem_addr);  // 入消息队列并触发线程处理消息
-#if 0 
-    p_conn->is_new_recvmem     = false;                      // 内存不再需要释放，因为你收完整了包，这个包被上边
-	                                                         // 调用InMsgRecvQueue()移入消息队列，那么释放内存就
-	                                                         // 属于业务逻辑去干，不需要回收连接到连接池中干了
-#endif
+
     p_conn->p_recvbuf_array_mem_addr  = NULL;
     p_conn->pkg_cur_state      = PKG_HEAD_INIT;              // 收包状态机的状态恢复为原始态，为收下一个包做准备                    
     p_conn->p_recvbuf_pos      = p_conn->arr_pkghead_info;   // 设置好收包的位置
     p_conn->len_recv           = m_len_pkg_header;           // 设置好要接收数据的大小
     return;
 }
-
-// 这些消息队列数据的处理全部移到线程相关类中去了，这里就注释掉
-#if 0
-/**
- * 功能：
-    当收到一个完整包之后，将完整包入消息队列，这个包在服务器端应该是 消息头+包头+包体 格式
-
- * 输入参数：(char* p_buf, int& ret_msgqueue_n) 
- 	p_buf 指针，指向一段内存=消息头 + 包头 + 包体
-    ret_msgqueue_n 引用，用来返回消息队列中消息的数量给调用者
-    
- * 返回值：
-	无
-
- * 调用了函数：
-
- * 其他说明：
-
- * 例子说明：
-
- */
-void CSocket::AddMsgRecvQueue(char* p_buf, int& ret_msgqueue_n) 
-{
-    // 利用CLock这个类的封装加解锁很方便，这里加锁，
-    // 函数退出时会自动调用析构函数解锁，就不需要手工去解锁了
-    CLock lock(&m_recv_msg_queue_mutex);    
-    
-    m_list_rece_msg_queue.push_back(p_buf); // 入消息队列
-    ++m_recv_msg_queue_n;                   // 收消息队列数字+1，用变量更方便一点，比 m_list_rece_msg_queue.size()高效
-    ret_msgqueue_n = m_recv_msg_queue_n;    // 接收消息队列当前消息数量保存到ret_msgqueue_n，给调用者
-
-    // ....其他功能待扩充，这里要记住一点，这里的内存都是要释放的，否则。。。。。。。。。。日后增加释放这些内存的代码
-    // ...而且逻辑处理应该要引入多线程，所以这里要考虑临界问题
-    // ....
-
-    // 临时在这里调用一下该函数，以防止接收消息队列过大
-    //TmpOutMsgRecvQueue();   // .....临时，后续会取消这行代码
-
-    // 为了测试方便，因为本函数意味着收到了一个完整的数据包，所以这里打印一个信息
-    LogStderrAddPrintAddr(0,"非常好，收到了一个完整的数据包【包头+包体】！");  
-}
-
-/**
- * 功能：
-    从消息队列中把一个包提取出来以备后续处理
-    
- * 输入参数：
- 	无
-
- * 返回值：
-	消息队列中一个消息，实质是一段内存首地址
-
- * 调用了函数：
-
- * 其他说明：
-
- * 例子说明：
-
- */
-char* CSocket::OutMsgRecvQueue()
-{
-    CLock lock(&m_recv_msg_queue_mutex);
-
-    if(m_list_rece_msg_queue.empty())
-    {
-        return NULL;  //  也许会存在这种情形： 消息本该有，但被干掉了，这里可能为NULL的？        
-    }
-    
-    char* p_retbuf = m_list_rece_msg_queue.front();  // 返回第一个元素但不检查元素存在与否,上面已经检测
-    m_list_rece_msg_queue.pop_front();               // 移除第一个元素但不返回	
-    --m_recv_msg_queue_n;                            // 消息队列数量-1
-    
-    return p_retbuf;
-}
-#endif
-
-// 
 
 /**
  * 功能：
@@ -469,6 +373,8 @@ char* CSocket::OutMsgRecvQueue()
  */
 ssize_t CSocket::SendProc(gps_connection_t p_conn, char* p_buf, ssize_t size) 
 {
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_conn = %p, p_buf = %p, size = %d", p_conn, p_buf, size);
+    
     // 这里参考借鉴了官方nginx函数ngx_unix_send()的写法
     ssize_t n = 0;
 
@@ -544,7 +450,9 @@ ssize_t CSocket::SendProc(gps_connection_t p_conn, char* p_buf, ssize_t size)
 
  */
 void CSocket::WriteRequestHandler(gps_connection_t p_conn)
-{      
+{  
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_conn = %p", p_conn);
+    
     CMemory *p_memory = CMemory::GetInstance();
     
     // 这些代码的书写可以参照 void* CSocket::ServerSendQueueThread(void* threadData)
@@ -582,7 +490,7 @@ void CSocket::WriteRequestHandler(gps_connection_t p_conn)
             LogErrorCoreAddPrintAddr(NGX_LOG_WARN, errno, "EpollOperEvent()失败！"); 
         }    
 
-        LogErrorCoreAddPrintAddr(NGX_LOG_INFO, errno, "系统epoll通知可写后，数据发送完毕，epoll写事件也成功移除，很好！"); // 做个提示吧，商用时可以干掉        
+        LogStderrAddPrintAddr(errno, "系统epoll通知可写后，数据发送完毕，epoll写事件也成功移除，很好！"); // 做个提示吧，商用时可以干掉        
     }
 
     // 能走下来的，要么数据发送完毕了，要么对端断开了，那么执行收尾工作吧；
@@ -617,55 +525,9 @@ void CSocket::WriteRequestHandler(gps_connection_t p_conn)
  */
 void CSocket::ThreadRecvProcFunc(char *p_msgbuf)
 {
-	// 后面实现。。。
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_msgbuf = %p", p_msgbuf);
+	// 业务处理线程，子类中实现
 
     return;
 }
-
-// 这个函数不用了
-#if 0
-/**
- * 功能：
-    临时函数，用于将Msg中消息干掉
- * 输入参数：
- 	无
-
- * 返回值：
-	无
-
- * 调用了函数：
-
- * 其他说明：
-
- * 例子说明：
-
- */
-void CSocket::TmpOutMsgRecvQueue()
-{
-    // 日后可能引入OutMsgRecvQueue()，这个函数可能需要临界......
-    if(m_list_rece_msg_queue.empty())  // 没有消息直接退出
-    {
-        return;
-    }
-    
-    int size = m_list_rece_msg_queue.size();
-    if(size < 1000) // 消息不超过1000条就不处理先
-    {
-        return; 
-    }
-    
-    // 消息达到1000条
-    CMemory *p_memory = CMemory::GetInstance();		
-    int cha = size - 500;
-    for(int i = 0; i < cha; ++i)
-    {
-        // 一次干掉一堆
-        char *p_tmp = m_list_rece_msg_queue.front();    // 返回第一个元素但不检查元素存在与否
-        m_list_rece_msg_queue.pop_front();              // 移除第一个元素但不返回	
-        p_memory->FreeMemory(p_tmp);                    // 先释放掉把；
-    }  
-    
-    return;
-}
-#endif
 

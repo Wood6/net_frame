@@ -8,7 +8,6 @@
 #include <stdint.h>
 #include <string.h>
 
-
 CConfig* CConfig::mp_instance = NULL;
 
 /**
@@ -23,15 +22,17 @@ CConfig* CConfig::mp_instance = NULL;
  */
 bool CConfig::Load(const char * p_config_name)
 {
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "");
+    
 	bool ret = true;
 
 	FILE *fp = NULL;
 	fp = fopen(p_config_name, "r");
 	if (NULL == fp)
 	{
+        LogErrorCoreAddPrintAddr(NGX_LOG_ALERT, errno, "fopen()打开配置[%s]文件失败！", p_config_name);
 		return ret = false;
 	}
-
 
 	// 开始从文件中循环读数据最终存储到内存的数据结构vector中
 	char lineBuf[501];
@@ -84,6 +85,8 @@ bool CConfig::Load(const char * p_config_name)
 
 const char* CConfig::GetString(const char *pItemname)
 {
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "");
+
 	char *ret = NULL;
 
 	std::vector<gps_stru_conf_item_t>::iterator iter;
@@ -100,6 +103,8 @@ const char* CConfig::GetString(const char *pItemname)
 
 int CConfig::GetIntDefault(const char *pItemname, const int def)
 {
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "");
+
 	int ret = 0;
 
 	std::vector<gps_stru_conf_item_t>::iterator iter;

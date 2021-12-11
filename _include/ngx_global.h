@@ -19,7 +19,7 @@
 #include "ngx_macro.h"
 #include "ngx_c_threadpool.h"
 #include "ngx_c_slogic_socket.h"
-
+#include "ngx_func.h"
 
 // 配置文件相关结构定义
 typedef struct

@@ -54,14 +54,14 @@ struct _gs_connection
 											     // 那个 gps_listening_t 的内存首地址,用此指针与上面监听套接字的结构体联系起来了
 
 	// ------------------------------------	
-	unsigned                  instance : 1;      // 【位域】失效标志位：0：有效，1：失效【这个是官方nginx提供，到底有什么用，ngx_epoll_process_events()中详解】  
+	//unsigned                  instance : 1;    // 【位域】失效标志位：0：有效，1：失效【这个是官方nginx提供，到底有什么用，ngx_epoll_process_events()中详解】  
 	uint64_t                  currse_quence_n;   // 我引入的一个序号，每次分配出去时+1，此法也有可能在一定程度上检测错包废包，具体怎么用，用到了再说
 	struct sockaddr           s_sockaddr;        // 保存对方地址信息用的
 	//char                    addr_text[100];    // 地址的文本信息，100足够，一般其实如果是ipv4地址，255.255.255.255，其实只需要20字节就够
 
 	// 和读有关的标志-----------------------
 	//uint8_t                   r_ready;         // 读准备好标记【暂时没闹明白官方要怎么用，所以先注释掉】
-	uint8_t                    write_ready;      // 写准备好标记
+	//uint8_t                    write_ready;      // 写准备好标记
 
 	EpollEventHandlerPt        read_handler;     // 读事件的相关处理方法
 	EpollEventHandlerPt        write_handler;    // 写事件的相关处理方法

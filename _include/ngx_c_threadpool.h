@@ -33,8 +33,8 @@ private:
     typedef struct s_thread_item   
     {
         pthread_t    _Handle;                        // 线程句柄,实质是以此标记这个结构体实例化后的首地址
-        CThreadPool* _pThis;                         // 记录线程池的指针   
-        bool         is_running;                     // 标记是否正式启动起来，启动起来后，才允许调用StopAll()来释放
+        CThreadPool* _pThis = NULL;                  // 记录线程池的指针   
+        bool         is_running = false;             // 标记是否正式启动起来，启动起来后，才允许调用StopAll()来释放
 
         // 构造函数
 		s_thread_item(CThreadPool* pthis) : _pThis(pthis), is_running(false){}

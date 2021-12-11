@@ -59,6 +59,8 @@ gs_signal_t  gs_arr2_signals[] = {
  */
 bool InitSignals()
 {
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "");
+    
 	bool ret = true;
 
 	gs_signal_t *s_sig;
@@ -116,7 +118,7 @@ static void signal_handler(int signo, siginfo_t* siginfo, void* ucontext)
 {
 	gs_signal_t* sig;
 
-	LogStderr(0, "-------------- 来信号%d，开始进入信号处理流程 --------------------", signo);
+	LogErrorCoreAddPrintAddr(NGX_LOG_DEBUG, 0, "来信号[%d]，开始进入信号处理流程", signo);
 
 	for (sig = gs_arr2_signals; sig->signo != 0; ++sig)
 	{
@@ -126,7 +128,7 @@ static void signal_handler(int signo, siginfo_t* siginfo, void* ucontext)
 		{
 			// 这里就可以对这个信号进行处理
 			/* 将来这里就添加执行代码，目前暂时就往标准输出点信息作为执行到这的查看 */
-			LogStderr(0, "信号%d(%s)已经注册处理...", signo, sig->signame);
+			LogErrorCoreAddPrintAddr(NGX_LOG_DEBUG, 0, "信号%d(%s)已经注册处理...", signo, sig->signame);
 
             // kill -15 pid号，使得程序优雅退出
             if(signo == SIGUSR1)   
@@ -172,12 +174,12 @@ static void signal_handler(int signo, siginfo_t* siginfo, void* ucontext)
 	// 这里记录一些信息的信息日志
 	if (siginfo && siginfo->si_pid)   // si_pid = sending process ID【发出该信号的进程它的进程id】
 	{
-		LogErrorCore(NGX_LOG_NOTICE, 0, "signal %d(%s) received from %P%s", signo, sig->signame, siginfo->si_pid, action);
+		LogErrorCoreAddPrintAddr(NGX_LOG_NOTICE, 0, "signal %d(%s) received from %P%s", signo, sig->signame, siginfo->si_pid, action);
 	}
 	else
 	{
 		// 没有发送该信号的进程id，所以不显示发送该信号的进程id
-		LogErrorCore(NGX_LOG_NOTICE, 0, "signal %d(%s) received %s", signo, sig->signame, action);
+		LogErrorCoreAddPrintAddr(NGX_LOG_NOTICE, 0, "signal %d(%s) received %s", signo, sig->signame, action);
 	}
 
 	// ..... 其他需要扩展的将来这里可以写代码
@@ -191,7 +193,7 @@ static void signal_handler(int signo, siginfo_t* siginfo, void* ucontext)
 		GetProcessStatus();          // 获取子进程的结束状态
 	}
 
-	LogStderr(0, "-------------- 信号处理流程结束退出了--------------------");
+	LogErrorCoreAddPrintAddr(NGX_LOG_DEBUG, 0, "信号处理流程结束退出了");
 }
 
 
@@ -259,12 +261,12 @@ static void GetProcessStatus()
 		if (WTERMSIG(status))
 		{
 			// 获取使子进程终止的信号编号
-			LogErrorCore(NGX_LOG_ALERT, 0, "pid = %P exited on signal %d!", pid_wait, WTERMSIG(status));
+			LogErrorCoreAddPrintAddr(NGX_LOG_ALERT, 0, "pid = %P exited on signal %d!", pid_wait, WTERMSIG(status));
 		}
 		else
 		{
 			// WEXITSTATUS()获取子进程传递给exit或者_exit参数的低八位
-			LogErrorCore(NGX_LOG_NOTICE, 0, "pid = %P exited with code %d!", pid_wait, WEXITSTATUS(status));
+			LogErrorCoreAddPrintAddr(NGX_LOG_NOTICE, 0, "pid = %P exited with code %d!", pid_wait, WEXITSTATUS(status));
 		}
 	}
 

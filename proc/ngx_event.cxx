@@ -4,6 +4,7 @@
 // 处理网络事件和定时器事件，我们遵照nginx引入这个同名函数
 void ProcessEventsAndTimers()
 {
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "");
 	g_socket.EpollProcessEvents(-1); // -1表示卡着等待把
 
 	// ...再完善

@@ -5,7 +5,7 @@
 
 /**
  * 功能：
-	建立新连接专用函数
+	建立新连接专用函数 / 连接断开时也是触发这个函数执行
 
  * 输入参数：(gps_connection_t p_oldc)
 	p_oldc 
@@ -29,15 +29,15 @@
 void CSocket::EventAccept(gps_connection_t p_oldc)
 {
 	// 因为listen套接字上用的不是ET【边缘触发】，而是LT【水平触发】，意味着客户端连入如果我要不处理，这个函数会被多次调用，
-	// 所以，我这里这里可以不必多次accept()，可以只执行一次accept()
+	// 所以，我这里可以不必多次accept()，可以只执行一次accept()
 	// 这也可以避免本函数被卡太久，注意，本函数应该尽快返回，以免阻塞程序运行；
 	struct sockaddr    my_sockaddr;        // 远端服务器的socket地址
 	socklen_t          len_socket;
 	int                err;
 	int                level;
-	int                s;
-	static int         use_accept4 = 1;     // 我们先认为能够使用accept4()函数
-	gps_connection_t    p_newc;              // 代表连接池中的一个连接【注意这是指针】
+	int                fd_ret_accept;      // accept()返回的连接套接字fd
+	static int         use_accept4 = 1;    // 我们先认为能够使用accept4()函数
+	gps_connection_t   p_newc;             // 代表连接池中的一个连接【注意这是指针】
 
 	// LogStderr(0,"这是几个\n"); 这里会惊群，也就是说，epoll技术本身有惊群的问题
 
@@ -48,11 +48,11 @@ void CSocket::EventAccept(gps_connection_t p_oldc)
 		{
 			// 从内核获取一个用户端连接，最后一个参数SOCK_NONBLOCK表示返回一个非阻塞的socket，
 			// 节省一次ioctl【设置为非阻塞】调用
-			s = accept4(p_oldc->fd, &my_sockaddr, &len_socket, SOCK_NONBLOCK);
+			fd_ret_accept = accept4(p_oldc->fd, &my_sockaddr, &len_socket, SOCK_NONBLOCK);
 		}
 		else
 		{
-			s = accept(p_oldc->fd, &my_sockaddr, &len_socket);
+			fd_ret_accept = accept(p_oldc->fd, &my_sockaddr, &len_socket);
 		}
 
 		// 惊群，有时候不一定完全惊动所有4个worker进程，可能只惊动其中2个等等，
@@ -62,10 +62,10 @@ void CSocket::EventAccept(gps_connection_t p_oldc)
 		// 大家可以写个简单的程序试下，在父进程中bind,listen，然后fork出子进程，
 		// 所有的子进程都accept这个监听句柄。这样，当新连接过来时，大家会发现，
 		// 仅有一个子进程返回新建的连接，其他子进程继续休眠在accept调用上，没有被唤醒。
-		// LogStderr(0,"测试惊群问题，看惊动几个worker进程%d\n",s); 
+		// LogStderr(0,"测试惊群问题，看惊动几个worker进程%d\n",fd_ret_accept); 
 		// 【我的结论是：accept4可以认为基本解决惊群问题，但似乎并没有完全解决，有时候还会惊动其他的worker进程】
 
-		if (s == -1)
+		if (fd_ret_accept == -1)
 		{
 			err = errno;
 
@@ -116,36 +116,36 @@ void CSocket::EventAccept(gps_connection_t p_oldc)
 				// 我这里目前先不处理吧【因为上边已经写这个日志了】；
 			}
 			return;
-		}  //end if(s == -1)
+		}  //end if(fd_ret_accept == -1)
 
 		// 走到这里的，表示accept4()成功了        
-		// LogStderr(errno,"accept4成功s=%d",s); //s这里就是 一个句柄了
-		//p_newc = GetElementOfConnection(s); //这是针对新连入用户的连接，和监听套接字 所对应的连接是两个不同的东西，不要搞混
-		p_newc = GetConnectionFromCPool(s); //这是针对新连入用户的连接，和监听套接字 所对应的连接是两个不同的东西，不要搞混
+		// LogStderr(errno,"accept4成功fd_ret_accept=%d",fd_ret_accept); //fd_ret_accept这里就是 一个句柄了
+		//p_newc = GetElementOfConnection(fd_ret_accept); // 这是针对新连入用户的连接，和监听套接字 所对应的连接是两个不同的东西，不要搞混
+		p_newc = GetConnectionFromCPool(fd_ret_accept);   // 这是针对新连入用户的连接，和监听套接字 所对应的连接是两个不同的东西，不要搞混
 		if (p_newc == NULL)
 		{
 			//连接池中连接不够用，那么就得把这个socekt直接关闭并返回了，因为在ngx_get_connection()中已经写日志了，所以这里不需要写日志了
-			if (close(s) == -1)
+			if (close(fd_ret_accept) == -1)
 			{
-				LogErrorCoreAddPrintAddr(NGX_LOG_ALERT, errno, "CSocket::ngx_event_accept()中close(%d)失败!", s);
+				LogErrorCoreAddPrintAddr(NGX_LOG_ALERT, errno, "CSocket::ngx_event_accept()中close(%d)失败!", fd_ret_accept);
 			}
 			return;
 		}
 		//...........将来这里会判断是否连接超过最大允许连接数，现在，这里可以不处理
 
-		//成功的拿到了连接池中的一个连接
-		memcpy(&p_newc->s_sockaddr, &my_sockaddr, len_socket);  //拷贝客户端地址到连接对象【要转成字符串ip地址参考函数ngx_sock_ntop()】
+		// 成功的拿到了连接池中的一个连接
+		memcpy(&p_newc->s_sockaddr, &my_sockaddr, len_socket);  // 拷贝客户端地址到连接对象【要转成字符串ip地址参考函数ngx_sock_ntop()】
 		//{
 		//    //测试将收到的地址弄成字符串，格式形如"192.168.1.126:40904"或者"192.168.1.126"
 		//    u_char ipaddr[100]; memset(ipaddr,0,sizeof(ipaddr));
 		//    ngx_sock_ntop(&p_newc->s_sockaddr,1,ipaddr,sizeof(ipaddr)-10); //宽度给小点
-		//    LogStderr(0,"ip信息为%s\n",ipaddr);
+		//    LogStderr(0,"ip信息为%fd_ret_accept\n",ipaddr);
 		//}
 
 		if (!use_accept4)
 		{
 			// 如果不是用accept4()取得的socket，那么就要设置为非阻塞【因为用accept4()的已经被accept4()设置为非阻塞了】
-			if (SetNonblocking(s) == false)
+			if (SetNonblocking(fd_ret_accept) == false)
 			{
 				// 设置非阻塞居然失败
 				CloseConnection(p_newc); // 关闭socket,这种可以立即回收这个连接，无需延迟，
@@ -155,27 +155,13 @@ void CSocket::EventAccept(gps_connection_t p_oldc)
 		}
 
 		p_newc->p_listening = p_oldc->p_listening;             // 连接对象 和监听对象关联，方便通过连接对象找监听对象【关联到监听端口】
-#if 0
-        p_newc->write_ready = 1;                               // 标记可以写，新连接写事件肯定是ready的；【从连接池拿出一个连接时这个连接的所有成员都是0】            
-#endif
+
+        // 到这里，accept()成功与对端的connct()连接成功，accept返回的是连接套接字，注意与前面的监听套接字区分开来
+        // 注意理解，当前这里是挂接连接套接字上的事件回调处理函数，要与监听套接字区分开发
 		p_newc->read_handler = &CSocket::ReadRequestHandler;   // 设置数据来时的读处理函数，其实官方nginx中是ngx_http_wait_request_handler()
 		p_newc->write_handler = &CSocket::WriteRequestHandler; // 设置数据发送时的写处理函数。
 		// 客户端应该主动发送第一次的数据，这里将读事件加入epoll监控
-#if 0
-		if (EpollAddEvent(s,    // socket句柄
-			1, 0,               // 读，写 ,这里读为1，表示客户端应该主动给我服务器发送消息，我服务器需要首先收到客户端的消息；
-			0,                  // 其他补充标记【EPOLLET(高速模式，边缘触发ET)】，0水平触发模式
-			                    // 后续因为实际项目需要，我们采用LT模式【水平触发模式/低速模式】
-			EPOLL_CTL_ADD,      // 事件类型【增加，还有删除/修改】                                    
-			p_newc              // 连接池中的连接
-		) == -1)
-		{
-			// 增加事件失败，失败日志在ngx_epoll_add_event中写过了，因此这里不多写啥；
-			CloseConnection(p_newc); // 回收连接池中的连接（千万不能忘记），并关闭socket
-			return;                  // 直接返回
-		}
-#endif
-        if(EpollOperEvent(s,                    // socekt句柄
+        if(EpollOperEvent(fd_ret_accept,        // socekt句柄
                           EPOLL_CTL_ADD,        // 事件类型，这里是增加
                           EPOLLIN | EPOLLRDHUP, // 标志，这里代表要增加的标志,EPOLLIN可读，EPOLLRDHUP表示TCP连接的远端关闭或者半关闭，
                                                 // 如果边缘触发模式可以增加，EPOLLET对于事件类型为增加的
@@ -188,32 +174,6 @@ void CSocket::EventAccept(gps_connection_t p_oldc)
 
                    return;  // 直接返回
                }
-                /*
-                else
-                {
-                    //打印下发送缓冲区大小
-                    int           n;
-                    socklen_t     len;
-                    len = sizeof(int);
-                    getsockopt(s,SOL_SOCKET,SO_SNDBUF, &n, &len);
-                    LogStderr(0,"发送缓冲区的大小为%d!",n); //87040
-
-                    n = 0;
-                    getsockopt(s,SOL_SOCKET,SO_RCVBUF, &n, &len);
-                    LogStderr(0,"接收缓冲区的大小为%d!",n); //374400
-
-                    int sendbuf = 2048;
-                    if (setsockopt(s, SOL_SOCKET, SO_SNDBUF,(const void *) &sendbuf,n) == 0)
-                    {
-                        LogStderr(0,"发送缓冲区大小成功设置为%d!",sendbuf); 
-                    }
-
-                     getsockopt(s,SOL_SOCKET,SO_SNDBUF, &n, &len);
-                    LogStderr(0,"发送缓冲区的大小为%d!",n); //87040
-                }
-                */
-
-
 		break;                       // 一般就是循环一次就跳出去
 	} while (1);
 

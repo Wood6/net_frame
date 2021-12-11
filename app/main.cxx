@@ -9,10 +9,7 @@
 #include "ngx_c_crc32.h"              // 和crc32校验算法有关 
 #include "ngx_c_slogic_socket.h"      // 和socket通讯相关
 
-
-using namespace std;
-
-// global variable
+// 全局变量
 size_t g_argv_need_mem  = 0;
 size_t g_env_need_mem   = 0;
 int    g_os_argc        = 0;
@@ -25,7 +22,7 @@ int    g_is_daemon      = 0;       // 是否开启守护进程模式，0未启�
 pid_t  g_pid;                      // 当前进程的pid
 pid_t  g_ppid;                     // 父进程pid
 int    g_process_type;             // 进程类型，用来标识是master进程还是worker进程
-bool   g_is_stop_programe;         // 标志程序退出,false不退出,true退出
+bool   g_is_stop_programe = false; // 标志程序退出,false不退出,true退出
 
 // 标记子进程状态变化[一般是子进程发来SIGCHLD信号表示退出],
 // sig_atomic_t:系统定义的类型：访问或改变这些变量需要在计算机的一条指令内完成
@@ -34,19 +31,17 @@ sig_atomic_t g_flag_workproc_change;
 
 // socket相关
 //CSocket g_socket;                // socket全局对象
-CLogicSocket g_socket;             // socket全局对象
+CLogicSocket g_socket;             // socket的子类，一般使用这个，父类socket定型后不太会动他了
 
 // 线程池相关
 CThreadPool g_threadpool;          // 线程池全局对象
 
-// 
-
-// 专门在程序执行末尾释放资源的函数【一系列的main返回前的释放动作函数】
+// 专门在程序执行末尾释放资源的函数,一系列的main返回前的释放动作函数
 static void FreeResource();
 
-// 程序入口函数 -----------------------------------------------------------
+// 程序入口函数 ----------------
 int main(int argc, char **argv)
-{
+{ 
 	int exit_code = 0;
 
     // (0)先初始化的变量
@@ -75,9 +70,11 @@ int main(int argc, char **argv)
 
 	// 第二部分：初始化失败就要直接退出的
 	CConfig * p_config = CConfig::GetInstance();
-	if (false == p_config->Load(CONFIG_FILE_PATH))
+	if (false == p_config->Load(CONFIG_FILE_PATH))  // 因为日志文件也有配置依赖，所以开日志文件前先把配置给加载了
 	{
-		LogStderr(0, "配置文件[%s]载入失败，退出!", "nginx.conf");
+        // 此时日志文件还没有打开，这个接口能往标准错误输出一条信息
+		//LogStderr(0, "配置文件[%s]载入失败，退出!", "nginx.conf");
+		LogErrorCoreAddPrintAddr(NGX_LOG_ALERT, errno, "配置文件[%s]载入失败，退出！", CONFIG_FILE_PATH);
 		exit_code = 2;   // 标记找不到文件退出
 		goto lblexit;
 	}
@@ -87,6 +84,8 @@ int main(int argc, char **argv)
 
 	// 第三部分：一些必须事先准备好的资源，先初始化
 	LogInit();
+
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "LogInit()完成，可以开始写日志记录了...");
 
 	// 第四部分：一些初始化函数，准备放这里
 	if (InitSignals() == false)          // 信号注册

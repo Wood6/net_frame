@@ -15,9 +15,6 @@
 #include <signal.h>
 
 
-
-
-
 // 字符串相关函数 ----------------------------------------------------------------
 void LeftTrim(char* s);
 void RightTrim(char* s);
@@ -38,14 +35,12 @@ struct atomic
 #define FILE_NAME      ( strrchr(__FILE__,'/') ? (strrchr(__FILE__, '/') + 1) : __FILE__ )
 #define LogErrorCoreAddPrintAddr(level, err, fmt, ...)  \
 	do {\
-		LogErrorCore(level, err, "[%s(), %s: %ud]," fmt, __func__, FILE_NAME, __LINE__, ##__VA_ARGS__);\
+		LogErrorCore(level, err, "[%s(), %s:%ud] " fmt, __func__, FILE_NAME, __LINE__, ##__VA_ARGS__);\
 	} while (0);
-
 #define LogStderrAddPrintAddr(err, fmt, ...)  \
 	do {\
-		LogStderr(err, "[%s(), %s: %ud]," fmt, __func__, FILE_NAME, __LINE__, ##__VA_ARGS__);\
+		LogStderr(err, "[%s(), %s:%ud] " fmt, __func__, FILE_NAME, __LINE__, ##__VA_ARGS__);\
 	} while (0);
-
 
 // 原始log接口，没有加上打log地方的输出
 void LogInit();
@@ -53,17 +48,14 @@ void LogStderr(int err, const char* fmt, ...);
 u_char* LogErrno(u_char* p_buf, u_char* p_last, int err);
 void LogErrorCore(int level, int err, const char* fmt, ...);
 
-
 // 日志字符串格式化处理相关 
 u_char* SlPrintf(u_char* p_buf, u_char* p_last, const char* fmt, ...);
 u_char* SnPrintf(u_char* p_buf, size_t max, const char* fmt, ...);
 u_char* VslPrintf(u_char* p_buf, u_char* p_last, const char* fmt, va_list args);
 
 
-
 // 信号相关代码 ----------------------------------------------------------------
 bool InitSignals();
-
 
 
 // 设备进程标题相关 ------------------------------------------------------------

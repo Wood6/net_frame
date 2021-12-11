@@ -34,6 +34,8 @@ static void WorkerProcessCycle(int inum, const char* p_procname);
  */
 void MasterProcessCycle()
 {
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "");
+    
 	sigset_t set;
 	sigemptyset(&set);
 
@@ -56,7 +58,7 @@ void MasterProcessCycle()
 	// 阻塞期间，你发过来的上述信号，多个会被合并为一个，暂存着，等你放开信号屏蔽后才能收到这些信号。。。
 	if (sigprocmask(SIG_BLOCK, &set, NULL) == -1)
 	{
-		LogErrorCore(NGX_LOG_ALERT, errno, "ngx_master_process_cycle()中sigprocmask()失败！");
+		LogErrorCoreAddPrintAddr(NGX_LOG_ALERT, errno, "sigprocmask()失败！");
 		// 即便sigprocmask失败，程序流程 也继续往下走
 	}
 
@@ -76,7 +78,7 @@ void MasterProcessCycle()
 		SetProcTitle(title);             // 设置标题
 
 		// 设置标题时顺便记录下来进程名，进程id等信息到日志
-		LogErrorCore(NGX_LOG_NOTICE, 0, "%s %P 【master进程】启动并开始运行......!", title, g_pid);
+		LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "%s %P 【master进程】启动并开始运行...", title, g_pid);
 	}
 	// 设置主进程标题结束
 
@@ -143,8 +145,8 @@ void MasterProcessCycle()
  */
 static void StartCreatWorkerProc(int cnt_workprocess)
 {
-	LogErrorCore(NGX_LOG_INFO, 0, "进入了StartCreatWorkerProc()");
-
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "");
+    
 	for (int i = 0; i < cnt_workprocess; ++i)
 	{
 		CreatWorkerProc(i, "worker process");
@@ -174,13 +176,13 @@ static void StartCreatWorkerProc(int cnt_workprocess)
  */
 static int CreatWorkerProc(int inum, const char* p_procname)
 {
-	LogErrorCore(NGX_LOG_INFO, 0, "进入了CreatWorkerProc()");
-
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "");
+    
 	pid_t pid_fork = fork();
 	switch (pid_fork)
 	{
 	case -1:   // 产生子进程失败
-		LogErrorCore(NGX_LOG_ALERT, errno, "ngx_spawn_process()fork()产生子进程num=%d,procname=\"%s\"失败!", inum, p_procname);
+		LogErrorCoreAddPrintAddr(NGX_LOG_ALERT, errno, "fork()产生子进程inum =  %d, p_procname = \"%s\"失败!", inum, p_procname);
 		return -1;
 
 	case 0:    // 子进程分支
@@ -218,37 +220,32 @@ static int CreatWorkerProc(int inum, const char* p_procname)
  */
 static void WorkerProcessCycle(int inum, const char* p_procname)
 {
-	LogErrorCore(NGX_LOG_INFO, 0, "进入了WorkerProcessCycle()");
-
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "");
+    
 	g_process_type = NGX_PROCESS_IS_WORKER;
 
-	/* 重新设置标题，初始化子进程 */
-	SetProcTitle(p_procname);                // 设置标题
-	InitWorkerProcess(inum);
+	SetProcTitle(p_procname);        // 设置标题
+	InitWorkerProcess(inum);         // 这里面做了不少重要事情，重点追踪函数  
 
-	// 设置好并初始化后打条日志记录下来进程名，进程id等信息到日志，也标志着开开始真正干活了。。。
 	LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "子进程%s[pid_%P]已经启动并初始化完成，下面要开始真正干活了...", p_procname, g_pid);
 
-	//暂时先放个死循环，我们在这个循环里一直不出来
-	//setvbuf(stdout,NULL,_IONBF,0); //这个函数. 直接将printf缓冲区禁止， printf就直接输出了。
 	for (;;)
 	{
-		// printf("worker进程休息1秒");       
-		// fflush(stdout); //刷新标准输出缓冲区，把输出缓冲区里的东西打印到标准输出设备上，则printf里的东西会立即输出；
-		//sleep(1); // 先sleep一下 以后扩充.......
-
-		ProcessEventsAndTimers();         // 处理网络事件和定时器事件
+		ProcessEventsAndTimers();    // 处理网络事件和定时器事件，实质是个epoll事件分发，对应的事件分发给对应的回调函数去执行....
 
         if(true == g_is_stop_programe)
         {
-            LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "g_is_stop_programe为ture了，要求整个进程退出了，worker子进程退出死循环...");
+            LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "g_is_stop_programe为ture，要求整个进程退出了，worker子进程退出死循环...");
             break;
         }
 
 	}
+    
 
-    // 如果从上面for循环跳出来，考虑在这里停止线程池
-    g_threadpool.StopAll();            
+    // 如果从上面for循环跳出来,就是子进程要退出了，下面放回收子进程资源的代码
+
+    
+    g_threadpool.StopAll();      // 停止线程池       
     g_socket.ShutdownSubproc();  // socket需要释放的东西考虑释放；
 
     return;
@@ -273,8 +270,8 @@ static void WorkerProcessCycle(int inum, const char* p_procname)
  */
 static void InitWorkerProcess(int inum)
 {
-	LogErrorCore(NGX_LOG_INFO, 0, "进入了InitWorkerProcess()");
-
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "");
+    
 	sigset_t set;
 
 	sigemptyset(&set);   // 清空信号集
@@ -282,7 +279,7 @@ static void InitWorkerProcess(int inum)
 	// 用于改变进程的当前阻塞信号集,也可以用来检测当前进程的信号掩码,这里是改变，由原来的阻塞改为不再阻塞
 	if (sigprocmask(SIG_SETMASK, &set, NULL) == -1)
 	{
-		LogErrorCore(NGX_LOG_ALERT, errno, "ngx_worker_process_init()中sigprocmask()失败!");
+		LogErrorCoreAddPrintAddr(NGX_LOG_ALERT, errno, "sigprocmask()失败!");
 	}
 
     // 线程池代码，率先创建，至少要比和socket相关的内容优先，因为socket起来可能立刻就有事件需要线程处理
@@ -291,6 +288,7 @@ static void InitWorkerProcess(int inum)
     int creat_thread_n = p_config->GetIntDefault(CONFING_ITEMNAME_CREAT_THREAD_N, 5);  
     if(g_threadpool.Create(creat_thread_n) == false)
     {
+        LogErrorCoreAddPrintAddr(NGX_LOG_ALERT, 0, "g_threadpool.Create()创建线程池失败!");
         // 内存没释放，但是简单粗暴退出；
         exit(-2);
     }
@@ -298,6 +296,7 @@ static void InitWorkerProcess(int inum)
 
     if(g_socket.InitSubproc() == false) // 初始化子进程需要具备的一些多线程能力相关的信息
     {
+        LogErrorCoreAddPrintAddr(NGX_LOG_ALERT, 0, "g_socket.InitSubproc()失败!");
         // 内存没释放，但是简单粗暴退出；
         exit(-2);
     }
