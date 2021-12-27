@@ -10,6 +10,7 @@
 #include <sys/socket.h>
 #include <pthread.h>
 #include <semaphore.h>      // 信号量
+#include <map>              // multimap
 
 #include "ngx_comm.h"
 
@@ -92,6 +93,9 @@ struct _gs_connection
     uint32_t                   epoll_events_type;          // 和epoll事件有关 
 
 
+	// 和心跳包有关
+	time_t                    last_ping_time;              // 上次收到心跳包的时间【上次发送心跳包的时间】
+
 	// ----------------------------------------
 	gps_connection_t            data;             // 这是个指针【等价于传统链表里的next成员：后继指针】，
 	                                              // 指向下一个本类型对象，用于把空闲的连接池对象串起来
@@ -170,10 +174,19 @@ private:
 	pthread_mutex_t               m_mutex_send_msg;             // 发消息队列互斥量 
 	sem_t                         m_sem_send_event;             // 处理发消息线程相关的信号量
 
+	// 时间相关
+	bool                           m_is_enable_ping_timer;       // 是否开启心跳包时钟，true：开启   false：不开启	
+	pthread_mutex_t                m_mutex_ping_timer;           // 和时间队列有关的互斥量
+	std::multimap<time_t, gps_msg_header_t> m_multimap_timer;    // 时间队列	
+	size_t                         m_multimap_timer_size;        // 时间队列的尺寸
+	time_t                         m_multimap_timer_front_value; // 当前计时队列头部时间值
+
 protected:
     // 一些和网络通讯有关的成员变量
     size_t                        m_len_pkg_header;      // sizeof(COMM_PKG_HEADER);		
     size_t                        m_len_msg_header;      // sizeof(STRUC_MSG_HEADER);
+
+	int                           m_ping_wait_time;      // 多少秒检测一次是否 心跳超时，只有当 m_is_enable_ping_timer = true 时，本项才有用	
 
 private:
 	void ReadConf();                           // 专门用于读各种配置项
@@ -181,47 +194,51 @@ private:
 	void CloseListeningSockets();              // 关闭监听套接字
 	bool SetNonblocking(int sockfd);           // 设置非阻塞套接字
 
-	//gps_connection_t GetElementOfConnection(int isock);    // 从连接池中获取一个空闲连接
-	//void FreeConnection(gps_connection_t p_c);             // 将 p_conn 归还进连接池
     // 连接池 或 连接相关 -----------------
-    void InitConnectionPool();                                     // 初始化连接池
-    void ClearConnectionPool();                                    // 回收连接池
-    gps_connection_t GetConnectionFromCPool(int fdsock);           // 从连接池中获取一个空闲连接
-    void FreeConnectionToCPool(gps_connection_t p_conn);           // 归还参数pConn所代表的连接到到连接池中 
-    void AddRecyConnectList(gps_connection_t p_conn);              // 将要回收的连接放到一个队列中来
+    void InitConnectionPool();                                  // 初始化连接池
+    void ClearConnectionPool();                                 // 回收连接池
+    gps_connection_t GetConnectionFromCPool(int fdsock);        // 从连接池中获取一个空闲连接
+    void FreeConnectionToCPool(gps_connection_t p_conn);        // 归还参数pConn所代表的连接到到连接池中 
+    void AddRecyConnectList(gps_connection_t p_conn);           // 将要回收的连接放到一个队列中来
 
 
-	void EventAccept(gps_connection_t old_c);                // 建立新连接
-	void ReadRequestHandler(gps_connection_t p_conn);        //设置数据来时的读处理函数
-	void WriteRequestHandler(gps_connection_t p_conn);       // 设置数据发送时的写处理函数
-	//void WaitRequestHandler(gps_connection_t p_c);         // 设置数据来时的读处理函数
-	void CloseConnection(gps_connection_t p_conn);         // 用户连入，我们accept4()时，得到的socket
-	                                                       // 在处理中产生失败，则资源用这个函数释放
-	                                                       // 【因为这里涉及到好几个要释放的资源，所以写成函数】
+	void EventAccept(gps_connection_t old_c);                   // 建立新连接
+	void ReadRequestHandler(gps_connection_t p_conn);           // 设置数据来时的读处理函数
+	void WriteRequestHandler(gps_connection_t p_conn);          // 设置数据发送时的写处理函数
+	void CloseConnection(gps_connection_t p_conn);              // 用户连入，我们accept4()时，得到的socket
+	                                                            // 在处理中产生失败，则资源用这个函数释放
+	                                                            // 【因为这里涉及到好几个要释放的资源，所以写成函数】
 
 
 	// 获取对端相关，
 	// 根据参数1给定的信息，获取地址端口字符串，返回这个字符串的长度
 	size_t SocketNtop(struct sockaddr *sa, int port, u_char *text, size_t len);  
 
-    // 移到线程类中去
-    //void ClearMsgRecvQueue();         // 清理接受收据的消息队列
-
     ssize_t RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_buf);  // 接收从客户端来的数据专用函数
-	void WaitRequestHandlerProcPart1(gps_connection_t p_conn);                   // 包头收完整后的处理                                                                   
-	void WaitRequestHandlerProcLast(gps_connection_t p_conn);                    // 收到一个完整包后的处理
-	void AddMsgRecvQueue(char* p_buf, int& ret_msgqueue_n);                      // 收到一个完整消息后，入消息队列
-	//void TmpOutMsgRecvQueue();                              // 临时清除对列中消息函数，测试用，将来会删除该函数
+	void WaitRequestHandlerProcPart1(gps_connection_t p_conn);                  // 包头收完整后的处理                                                                   
+	void WaitRequestHandlerProcLast(gps_connection_t p_conn);                   // 收到一个完整包后的处理
+	void AddMsgRecvQueue(char* p_buf, int& ret_msgqueue_n);                     // 收到一个完整消息后，入消息队列
 
     //线程相关函数
-    static void* ServerSendListThread(void *threadData);                   // 专门用来发送数据的线程
-	static void* ServerRecyConnectionThread(void* thread_data);            // 专门用来回收连接的线程
+    static void* ServerSendListThread(void *threadData);                  // 专门用来发送数据的线程
+	static void* ServerRecyConnectionThread(void* thread_data);           // 专门用来回收连接的线程
 
-    ssize_t SendProc(gps_connection_t p_conn,char *p_buf,ssize_t size);    //  将数据发送到客户端
-    void ClearSendMsgList();                                               // 处理发送消息队列  
+    ssize_t SendProc(gps_connection_t p_conn,char *p_buf,ssize_t size);   //  将数据发送到客户端
+    void ClearSendMsgList();                                              // 处理发送消息队列 
+
+	static void* ServerTimerQueueMonitorThread(void *threadData);         // 时间队列监视线程，处理到期不发心跳包的用户踢出的线程
+
+	// 和时间相关的函数
+	void    AddToTimerMultimap(gps_connection_t p_conn);          // 设置踢出时钟(向map表中增加内容)
+	time_t  GetEarliestTime();                                    // 从multimap中取得最早的时间返回去
+	gps_msg_header_t RemoveFirstTimer();                          // 从m_timeQueuemap移除最早的时间，并把最早这个时间所在的项的值所对应的指针 返回，调用者负责互斥，所以本函数不用互斥，
+	gps_msg_header_t GetOverTimeTimer(time_t cur_time);           // 根据给的当前时间，从m_multimap_timer找到比这个时间更老（更早）的节点【1个】返回去，这些节点都是时间超过了，要处理的节点      
+	void DeleteFromTimerMultimap(gps_connection_t p_conn);        // 把指定用户tcp连接从timer表中抠出去
+	void ClearAllFromTimerMultimap();                             // 清理时间队列中所有内容
 
 protected:
-    void SendMsg(char *p_send_buf);                                        // 把数据扔到待发送对列中 
+    void SendMsg(char *p_send_buf);                               // 把数据扔到待发送对列中 
+	void ManualCloseSocketProc(gps_connection_t p_conn);          // 主动关闭一个连接时的要做些善后的处理函数	
 
 public:
 	CSocket();
@@ -233,24 +250,17 @@ public:
 
 	/***** epoll 相关成员函数 ******/
 	int InitEpoll();                                 // epoll 功能初始化
-#if 0
-	int EpollAddEvent(int fd,
-		int read_event, int write_event,
-		uint32_t otherflag,
-		uint32_t event_type,
-		gps_connection_t p_conn
-	);                                                    // epoll 增加事件
-#endif
     // epoll操作事件,取代原来的EpollAddEvent()
     int EpollOperEvent(int fd, uint32_t event_type, 
                             uint32_t flag,int otherflag,
                             gps_connection_t p_conn);   
 
-	int EpollProcessEvents(int timer);                    // epoll等待接收和处理事件
+	int EpollProcessEvents(int timer);                 // epoll等待接收和处理事件
 
-    // 移到线程相关类中去
-    //char* OutMsgRecvQueue();                            // 将一个消息出消息队列
     virtual void ThreadRecvProcFunc(char* p_msgbuf);   // 处理客户端请求，这个将来会被设计为子类重写
+
+	// 心跳包检测时间到，该去检测心跳包是否超时的事宜，本函数只是把内存释放，子类应该重新事先该函数以实现具体的判断动作
+	virtual void PingTimeOutChecking(gps_msg_header_t p_msg_header, time_t cur_time);
     
 };
 

@@ -43,19 +43,22 @@ CSocket::CSocket()
 	m_recy_connection_wait_time = 60;   // 等待这么些秒后才回收连接
 
 	// epoll相关
-	m_handle_epoll = -1;          // epoll返回的句柄
+	m_handle_epoll = -1;                // epoll返回的句柄
 #if 0
 	//mp_connections = NULL;        // 连接池【连接数组】先给空
 	//mp_free_connections = NULL;   // 连接池中空闲的连接链 
 #endif
     // 一些和网络通讯有关的常用变量值，供后续频繁使用时提高效率
-    m_len_pkg_header = sizeof(gs_pkg_header_t);   // 包头的sizeof值【占用的字节数】
-    m_len_msg_header = sizeof(gs_msg_header_t);        // 消息头的sizeof值【占用的字节数】
+    m_len_pkg_header = sizeof(gs_pkg_header_t);    // 包头的sizeof值【占用的字节数】
+    m_len_msg_header = sizeof(gs_msg_header_t);    // 消息头的sizeof值【占用的字节数】
 
 
-    //各种队列相关
-    m_send_msg_list_n = 0;     //  发消息队列大小
+    // 各种队列相关
+    m_send_msg_list_n = 0;         // 发消息队列大小
     m_totol_recy_connection_n = 0; // 待释放连接队列大小
+
+	m_multimap_timer_size = 0;               // 当前计时队列尺寸
+	m_multimap_timer_front_value = 0;            // 当前计时队列头部的时间值
         
 
     //m_recv_msg_queue_n = 0;                            //  收消息队列中消息数量初始化0
@@ -147,12 +150,14 @@ void CSocket::ShutdownSubproc()
     // (3)队列相关
     //clearMsgSendQueue();
 	ClearConnectionPool();
+	ClearAllFromTimerMultimap();
     
     // (4)多线程相关    
-    pthread_mutex_destroy(&m_mutex_connection);          //连接相关互斥量释放
-    pthread_mutex_destroy(&m_mutex_send_msg);    //发消息互斥量释放    
-    pthread_mutex_destroy(&m_mutex_recyList_connection);       //连接回收队列相关的互斥量释放
-    sem_destroy(&m_sem_send_event);                  //发消息相关线程信号量释放
+    pthread_mutex_destroy(&m_mutex_connection);          // 连接相关互斥量释放
+    pthread_mutex_destroy(&m_mutex_send_msg);            // 发消息互斥量释放    
+    pthread_mutex_destroy(&m_mutex_recyList_connection); // 连接回收队列相关的互斥量释放
+    sem_destroy(&m_sem_send_event);                      // 发消息相关线程信号量释放
+	pthread_mutex_destroy(&m_mutex_ping_timer);            // 时间处理队列相关的互斥量释放
 
     LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "Socket类回收程序 ShutdownSubproc() 成功执行完，Socket类相关程序全部正常结束");
 }
@@ -191,6 +196,43 @@ void CSocket::ClearSendMsgList()
 
 /**
  * 功能：
+    主动关闭一个连接时的要做些善后的处理函数
+
+ * 输入参数：(gps_connection_t p_conn)
+ 	p_conn 主动关闭的连接
+
+ * 返回值：
+	无
+
+ * 调用了函数：
+
+ * 其他说明：
+
+ * 例子说明：
+
+ */
+void CSocket::ManualCloseSocketProc(gps_connection_t p_conn)
+{
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "");
+    
+	if (true == m_is_enable_ping_timer)
+	{
+		DeleteFromTimerMultimap(p_conn); // 从时间队列中把连接干掉
+	}
+	if (p_conn->fd != -1)
+	{
+		close(p_conn->fd);  // 这个socket关闭，关闭后epoll就会被从红黑树中删除，所以这之后无法收到任何epoll事件
+		p_conn->fd = -1;
+	}
+
+	if (p_conn->atomi_sendbuf_full_flag_n > 0)
+		--p_conn->atomi_sendbuf_full_flag_n;   // 归0
+
+	AddRecyConnectList(p_conn);  // 将此链接放入延迟回收队列
+}
+
+/**
+ * 功能：
 	专门用于读各种配置项
 
  * 输入参数：
@@ -215,6 +257,10 @@ void CSocket::ReadConf()
 	m_worker_connections_n = p_config->GetIntDefault("worker_connections", m_worker_connections_n);  // epoll连接的最大项数
 	m_lister_port_cnt = p_config->GetIntDefault("listen_port_cnt", m_lister_port_cnt);               // 取得要监听的端口数量
     m_recy_connection_wait_time  = p_config->GetIntDefault("recy_connection_wait_time",m_recy_connection_wait_time); //等待这么些秒后才回收连接
+
+	m_is_enable_ping_timer = p_config->GetIntDefault("enable_socket_wait_time", 0) ? true : false;    // 是否开启踢人时钟，true开启   false不开启
+	m_ping_wait_time = p_config->GetIntDefault("socket_max_wait_time", m_ping_wait_time);        // 多少秒检测一次是否 心跳超时，只有当m_is_enable_ping_timer = true时，本项才有用	
+	m_ping_wait_time = (m_ping_wait_time > 5) ? m_ping_wait_time : 5;                            // 不建议低于5秒钟，因为无需太频繁
 }
 
 /**
@@ -277,23 +323,30 @@ bool CSocket::InitSubproc()
     err = pthread_mutex_init(&m_mutex_send_msg, NULL);
     if(err != 0)
     {        
-        LogErrorCoreAddPrintAddr(NGX_LOG_ERR, 0, "pthread_mutex_init()创建发送数据的线程失败，err = %d", err);
+        LogErrorCoreAddPrintAddr(NGX_LOG_ERR, 0, "pthread_mutex_init(&m_mutex_send_msg)创建失败，err = %d", err);
         return false;    
     }
     // 连接相关互斥量初始化
     err = pthread_mutex_init(&m_mutex_connection, NULL);
     if(err != 0)
     {
-        LogErrorCoreAddPrintAddr(NGX_LOG_ERR, 0, "pthread_mutex_init()创建发送数据的线程失败，err = %d", err);
+        LogErrorCoreAddPrintAddr(NGX_LOG_ERR, 0, "pthread_mutex_init(&m_mutex_connection)创建失败，err = %d", err);
         return false;    
     }    
     // 连接回收队列相关互斥量初始化
     err = pthread_mutex_init(&m_mutex_recyList_connection, NULL);
     if(err != 0)
     {
-        LogErrorCoreAddPrintAddr(NGX_LOG_ERR, 0, "pthread_mutex_init()创建发送数据的线程失败，err = %d", err);
+        LogErrorCoreAddPrintAddr(NGX_LOG_ERR, 0, "pthread_mutex_init(&m_mutex_recyList_connection)创建失败，err = %d", err);
         return false;    
     } 
+	// 和时间处理队列有关的互斥量初始化
+	err = pthread_mutex_init(&m_mutex_ping_timer, NULL);
+	if (err != 0)
+	{
+		LogErrorCoreAddPrintAddr(NGX_LOG_ERR, 0, "pthread_mutex_init(&m_mutex_ping_timer)创建失败，err = %d", err);
+		return false;
+	}
    
     // 初始化发消息相关信号量，信号量用于进程/线程 之间的同步，虽然 
     // 互斥量[pthread_mutex_lock]和 条件变量[pthread_cond_wait]都是线程之间的同步手段，
@@ -329,6 +382,18 @@ bool CSocket::InitSubproc()
         LogErrorCoreAddPrintAddr(NGX_LOG_ERR, 0, "pthread_create()创建回收连接的线程失败，err = %d", err);
         return false;
     }
+
+	if (m_is_enable_ping_timer)      // 是否开启踢人时钟，true开启，false不开启
+	{
+		_thread_item* p_time_monitor_thread;  // 专门用来处理到期不发心跳包的用户踢出的线程
+		m_vec_thread.push_back(p_time_monitor_thread = new _thread_item(this));
+		err = pthread_create(&p_time_monitor_thread->_Handle, NULL, ServerTimerQueueMonitorThread, p_time_monitor_thread);
+		if (err != 0)
+		{
+			LogErrorCoreAddPrintAddr(NGX_LOG_ERR, 0, "pthread_create(ServerTimerQueueMonitorThread)失败, err = %d", err);
+			return false;
+		}
+	}
 
     return true;
 }

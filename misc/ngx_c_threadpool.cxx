@@ -37,6 +37,8 @@ bool CThreadPool::m_is_shutdown = false;                                   // �
  */
 CThreadPool::CThreadPool()
 {
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "");
+    
     m_running_thread_n = 0;   // 正在运行的线程，开始给个0【注意这种写法：原子的对象给0也可以直接赋值，当整型变量来用】
     m_last_emg_time = 0;      // 上次报告线程不够用了的时间；
     //m_iPrintInfoTime = 0;   // 上次打印参考信息的时间；
@@ -63,6 +65,8 @@ CThreadPool::CThreadPool()
  */
 CThreadPool::~CThreadPool()
 {
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "");
+    
     // 资源释放在StopAll()里统一进行，就不在这里进行了
 
     // 接收消息队列中内容释放
@@ -89,6 +93,8 @@ CThreadPool::~CThreadPool()
  */
 void CThreadPool::ClearMsgRecvQueue()
 {
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "");
+    
     char* p_tmp = NULL;
     
     // 消息队列是个链表结构，清理这个结构实质是要清理掉这个链表上的每一个元素
@@ -212,6 +218,8 @@ lblfor:
  */
 void* CThreadPool::ThreadFunc(void* thread_data)
 {
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: 创建线程[%ud]时传递的参数thread_data = %p", pthread_self(), thread_data);
+    
     // 这个是静态成员函数，是不存在this指针的,所以这里通过这种方式先拿到类的this指针，方便后面代码编码
     ps_thread_item_t p_thread = static_cast<ps_thread_item_t>(thread_data);
     CThreadPool* p_threadpool_obj = p_thread->_pThis;
@@ -278,7 +286,7 @@ void* CThreadPool::ThreadFunc(void* thread_data)
         
         // 加个信息日志，方便调试
         LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "线程[%ud]被激活正在处理从消息队列中取出最上面一个消息，"
-                                                   "消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = %ud!",\
+                                                   "消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = %ud",\
                                                   pthread_self(), ntohs(((gps_pkg_header_t)(jobbuf+sizeof(gs_msg_header_t)))->len_pkg ) );
 
         // 能走到这里的，就是有消息可以处理，开始处理

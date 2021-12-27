@@ -22,6 +22,7 @@ typedef bool (CLogicSocket::*handler)(gps_connection_t p_conn,       // 连接�
 static const handler status_handler[] =
 {
 	// 数组前5个元素，保留，以备将来增加一些基本服务器功能
+	&CLogicSocket::_HandlePing,                             // 【0】：心跳包的实现
 	NULL,                                                   // 【0】：下标从0开始
 	NULL,                                                   // 【1】：下标从0开始
 	NULL,                                                   // 【2】：下标从0开始
@@ -210,6 +211,8 @@ void CLogicSocket::ThreadRecvProcFunc(char *p_msg_buf)
  * 调用了函数：
 
  * 其他说明：
+    此函数实际是个业务处理函数
+    业务处理函数都是在CLogicSocket::ThreadRecvProcFunc(xxx)被调用
 
  * 例子说明：
 
@@ -250,7 +253,7 @@ bool CLogicSocket::_HandleRegister(gps_connection_t p_conn, gps_msg_header_t p_m
 
 	// (5)给客户端返回数据时，一般也是返回一个结构，这个结构内容具体由客户端/服务器协商，
 	// 这里我们就以给客户端也返回同样的 gs_register_t 结构来举例    
-	// gps_register_t pFromPkgHeader =  (gps_register_t)(((char *)pMsgHeader)+m_len_msg_header);
+	// gps_register_t pFromPkgHeader =  (gps_register_t)(((char *)p_msg_header)+m_len_msg_header);
 	
 	gps_pkg_header_t p_pkg_header = NULL;                           // 指向收到的包的包头，其中数据后续可能要用到
 	CMemory  *p_memory = CMemory::GetInstance();
@@ -259,7 +262,7 @@ bool CLogicSocket::_HandleRegister(gps_connection_t p_conn, gps_msg_header_t p_m
     
 	// a)分配要发送出去的包的内存
 	//len_sending = 65000;                                            // unsigned short最大65535也就差不多是这个值
-	len_sending = 25000;
+	//len_sending = 25000;
 
 	// 准备发送的格式，这里是 消息头+包头+包体
 	char *p_sendbuf = (char *)p_memory->AllocMemory(m_len_msg_header + m_len_pkg_header + len_sending, false);
@@ -287,6 +290,124 @@ bool CLogicSocket::_HandleRegister(gps_connection_t p_conn, gps_msg_header_t p_m
 	// f)发送数据包
 	SendMsg(p_sendbuf);
     
+	return true;
+}
+
+/**
+ * 功能：
+	心跳包检测时间到，该去检测心跳包是否超时的事宜，本函数是子类函数，实现具体的判断动作
+
+ * 输入参数：(gps_msg_header_t p_msg_header, time_t cur_time)
+	p_msg_header  超时连接的消息头
+	cur_time      调用该函数的当前时间
+
+ * 返回值：
+	无
+
+ * 调用了函数：
+
+ * 其他说明：
+
+ * 例子说明：
+
+ */
+void CLogicSocket::PingTimeOutChecking(gps_msg_header_t p_msg_header, time_t cur_time)
+{
+	CMemory *p_memory = CMemory::GetInstance();
+
+	if (p_msg_header->currse_quence_n == p_msg_header->p_conn->currse_quence_n) // 此连接没断
+	{
+		gps_connection_t p_conn = p_msg_header->p_conn;
+
+		// 超时踢的判断标准就是 每次检查的时间间隔*3，超过这个时间没发送心跳包，就踢【大家可以根据实际情况自由设定】
+		if ((cur_time - p_conn->last_ping_time) > (m_ping_wait_time * 3 + 10))
+		{
+			// 踢出去【如果此时此刻该用户正好断线，则这个socket可能立即被后续上来的连接复用  如果真有人这么倒霉，赶上这个点了，那么可能错踢，错踢就错踢】            
+			LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "时间到不发心跳包，踢出去!");   // 感觉OK
+			ManualCloseSocketProc(p_conn);
+		}
+
+		p_memory->FreeMemory(p_msg_header);// 内存要释放
+	}
+	else // 此连接断了
+	{
+		p_memory->FreeMemory(p_msg_header);// 内存要释放
+	}
+}
+
+/**
+ * 功能：
+	发送没有包体的数据包给客户端, 此函数是提供给 _HandlePing(xxx)调用的
+
+ * 输入参数：(gps_msg_header_t p_msg_header, unsigned short msg_type)
+	p_msg_header  
+	msg_type      业务包的类型
+
+ * 返回值：
+	无
+
+ * 调用了函数：
+
+ * 其他说明：
+
+ * 例子说明：
+
+ */
+void CLogicSocket::SendNoBodyPkgToClient(gps_msg_header_t p_msg_header, unsigned short msg_type)
+{
+	CMemory  *p_memory = CMemory::GetInstance();
+	char *p_sendbuf = (char *)p_memory->AllocMemory(m_len_msg_header + m_len_pkg_header, false);
+	char *p_tmpbuf = p_sendbuf;
+
+	memcpy(p_tmpbuf, p_msg_header, m_len_msg_header);
+	p_tmpbuf += m_len_msg_header;
+
+	gps_pkg_header_t p_pkg_header = (gps_pkg_header_t)p_tmpbuf;	  // 指向的是我要发送出去的包的包头	
+	p_pkg_header->msg_type = htons(msg_type);
+	p_pkg_header->len_pkg = htons(static_cast<unsigned short>(m_len_pkg_header));
+	p_pkg_header->crc32 = 0;
+    
+	SendMsg(p_sendbuf);  // 服务端发包
+}
+
+/**
+ * 功能：
+	接收并处理客户端发送过来的ping包
+
+ * 输入参数：(gps_connection_t p_conn, gps_msg_header_t p_msg_header, char* p_pkg_body, unsigned short len_pkg_body)
+    p_conn          表示一个用户/tcp连接
+	p_msg_header    消息头  
+	p_pkg_body      包体
+	len_pkg_body    包体长
+
+ * 返回值：
+	无
+
+ * 调用了函数：
+    SendNoBodyPkgToClient(xxx)
+
+ * 其他说明：
+    此函数实际是个业务处理函数
+    业务处理函数都是在CLogicSocket::ThreadRecvProcFunc(xxx)被调用
+
+ * 例子说明：
+
+ */
+
+bool CLogicSocket::_HandlePing(gps_connection_t p_conn, gps_msg_header_t p_msg_header, char* p_pkg_body, unsigned short len_pkg_body)
+{
+	// 心跳包要求没有包体；
+	if (len_pkg_body != 0)  // 有包体则认为是 非法包
+		return false;
+
+	CLock lock(&p_conn->mutex_logic_porc);  // 凡是和本用户（本连接p_conn）有关的访问都考虑用互斥，以免该用户同时发送过来两个命令达到各种作弊目的
+	p_conn->last_ping_time = time(NULL);    // 更新该变量
+
+	// 服务器也发送 一个只有包头的数据包给客户端，作为返回的数据
+	SendNoBodyPkgToClient(p_msg_header, _CMD_PING);
+
+	LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "成功收到了心跳包并返回结果！");
+
 	return true;
 }
 

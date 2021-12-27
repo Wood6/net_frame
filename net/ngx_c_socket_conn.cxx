@@ -78,6 +78,7 @@ void _gs_connection::GetOneToUse()
 {
 	++currse_quence_n;
 
+	fd = -1;                                 // 开始先给-1
 	pkg_cur_state = PKG_HEAD_INIT;           // 收包状态处于 初始状态，准备接收数据包头【状态机】
 	p_recvbuf_pos = arr_pkghead_info;        // 收包我要先收到这里来，因为我要先收包头，所以收数据的buff直接就是arr_pkghead_info
 	len_recv = sizeof(gs_pkg_header_t);      // 这里指定收数据的长度，这里先要求收包头这么长字节的数据
@@ -85,7 +86,8 @@ void _gs_connection::GetOneToUse()
 	p_recvbuf_array_mem_addr  = NULL;        // 既然没new内存，那自然指向的内存地址先给NULL
 	atomi_sendbuf_full_flag_n = false;       // 原子的
 	p_sendbuf_mem = NULL;                    // 发送数据头指针记录
-	epoll_events_type    = 0;                // epoll事件先给0 
+	epoll_events_type    = 0;                // epoll事件先给0
+	last_ping_time = time(NULL);             // 上次ping的时间
 }
 
 
@@ -394,7 +396,7 @@ void CSocket::FreeConnection(gps_connection_t p_conn)
 
 /**
  * 功能：
-	将要回收的连接放到一个队列(list)中来
+	将要回收的连接放到一个（延迟回收）队列(list)中来
 
  * 输入参数：(gps_connection_t p_conn) 
 	p_conn 指针，指向要回收的连接内存地址
@@ -413,10 +415,28 @@ void CSocket::AddRecyConnectList(gps_connection_t p_conn)
 {
     LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "连接加到延迟回收队列(list)中，连接[%d]在[%ud]秒后将被回收", p_conn->fd, m_recy_connection_wait_time);
     
+	std::list<gps_connection_t>::iterator pos;
+	bool is_existed = false;
+
     //LogStderr(0,"CSocket::inRecyConnectQueue()执行，连接入到回收队列中.");  
     // 针对连接回收列表的互斥量，因为线程ServerRecyConnectionThread()也有要用到这个回收列表；
     CLock lock(&m_mutex_recyList_connection); 
     
+	// 如下判断防止连接被多次扔到回收站中来
+	for (pos = m_list_recy_connection.begin(); pos != m_list_recy_connection.end(); ++pos)
+	{
+		if ((*pos) == p_conn)
+		{
+			is_existed = true;
+			break;
+		}
+	}
+	if (is_existed == true) // 找到了，不必再入了
+	{
+		// 我有义务保证这个只入一次嘛
+		return;
+	}
+
     p_conn->add_recyList_time = time(NULL);     // 记录回收时间
     ++p_conn->currse_quence_n;
     
@@ -483,7 +503,8 @@ lblRRTD:
                 // ......这将来可能还要做一些是否能释放的判断[在我们写完发送数据代码之后吧]，先预留位置
                 // ....
                 // 我认为，凡是到释放时间的，atomi_sendbuf_full_flag_n 都应该为0；这里我们加点日志判断下
-                if(p_conn->atomi_sendbuf_full_flag_n != 0)
+                //if(p_conn->atomi_sendbuf_full_flag_n != 0)
+				if(p_conn->atomi_sendbuf_full_flag_n > 0)
                 {
                     // 这确实不应该，打印个日志吧；
                     LogErrorCoreAddPrintAddr(NGX_LOG_WARN, 0, "连接都到释放时间却发现p_conn.atomi_sendbuf_full_flag_n!=0，这个不该发生");
@@ -579,9 +600,11 @@ void CSocket::CloseConnection(gps_connection_t p_conn)
                                // 不要这个东西，回收时不要轻易东连接里边的内容
 #endif
 	FreeConnectionToCPool(p_conn);    // 把释放代码放在最后边，更合适  
-	if (close(p_conn->fd) == -1)
+
+	if (p_conn->fd != -1)
 	{
-		LogErrorCore(NGX_LOG_ALERT, errno, "CSocket::CloseConnection()中close(%d)失败!", p_conn->fd);
+		close(p_conn->fd);
+		p_conn->fd = -1;
 	}
 
 }

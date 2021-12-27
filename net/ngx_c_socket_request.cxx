@@ -148,8 +148,9 @@ ssize_t CSocket::RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_bu
             LogErrorCore(NGX_LOG_ALERT, errno, "CSocket::RecvProc()中close(%d)失败！", p_conn->fd);
         }
 
-        AddRecyConnectList(p_conn);   // 加入延迟回收队列
-        
+        //AddRecyConnectList(p_conn);   // 加入延迟回收队列
+		ManualCloseSocketProc(p_conn);
+
         return -1;
     }
     // 客户端没断，走这里 
@@ -209,7 +210,8 @@ ssize_t CSocket::RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_bu
         {
             LogErrorCore(NGX_LOG_ALERT, errno, "CSocket::RecvProc()中第二处close(%d)失败！", p_conn->fd);
         }
-        AddRecyConnectList(p_conn);   // 加入延迟回收队列
+        //AddRecyConnectList(p_conn);   // 加入延迟回收队列
+		ManualCloseSocketProc(p_conn);
         
         return -1;
     }

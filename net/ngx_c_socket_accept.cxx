@@ -174,6 +174,12 @@ void CSocket::EventAccept(gps_connection_t p_oldc)
 
                    return;  // 直接返回
                }
+
+		if (m_is_enable_ping_timer == 1)
+		{
+			AddToTimerMultimap(p_newc);
+		}
+
 		break;                       // 一般就是循环一次就跳出去
 	} while (1);
 
