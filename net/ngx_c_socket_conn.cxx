@@ -238,7 +238,7 @@ gps_connection_t CSocket::GetConnectionFromCPool(int fdsock)
         --m_free_connection_n; 
         p_conn->fd = fdsock;
 
-        LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "连接池中有空闲连接，从这些空闲连接中取到一个连接[%ud]", p_conn->fd);
+        LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "连接池中有空闲连接，从这些空闲连接中取到一个连接[%Xp]", p_conn);
         
         return p_conn;
     }
@@ -254,7 +254,7 @@ gps_connection_t CSocket::GetConnectionFromCPool(int fdsock)
     ++m_total_connection_n;             
     p_conn->fd = fdsock;
 
-    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "连接池中没有空闲连接，成功动态了创建一个连接[%ud]", p_conn->fd);
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "连接池中没有空闲连接，成功动态了创建一个连接[%Xp]", p_conn);
     
     return p_conn;
 }
@@ -413,7 +413,7 @@ void CSocket::FreeConnection(gps_connection_t p_conn)
  */
 void CSocket::AddRecyConnectList(gps_connection_t p_conn)              
 {
-    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "连接加到延迟回收队列(list)中，连接[%d]在[%ud]秒后将被回收", p_conn->fd, m_recy_connection_wait_time);
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "连接加到延迟回收队列(list)中，连接[%Xp]在[%ud]秒后将被回收", p_conn, m_recy_connection_wait_time);
     
 	std::list<gps_connection_t>::iterator pos;
 	bool is_existed = false;
@@ -513,7 +513,7 @@ lblRRTD:
 
                 LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "已经延时[%ud]秒了，此时待回收连接数有[%ud]个",\
                                          p_socket_obj->m_recy_connection_wait_time, int(p_socket_obj->m_totol_recy_connection_n) );
-                LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "现在对连接[%d]开始走回收流程...", p_conn->fd);
+                LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "现在对连接[%Xp]开始走回收流程...", p_conn);
 
                 // 流程走到这里，表示可以释放，那我们就开始释放
                 --p_socket_obj->m_totol_recy_connection_n;          // 待释放连接队列大小-1
@@ -523,7 +523,7 @@ lblRRTD:
 
                 p_socket_obj->FreeConnectionToCPool(p_conn);	    // 归还参数p_conn所代表的连接到到连接池中
 
-                LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "连接[%ud]回收完成!", p_conn->fd);
+                LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "连接[%Xp]回收完成!", p_conn);
                 
                 goto lblRRTD; 
             } 
@@ -552,7 +552,7 @@ lblRRTD:
                     p_socket_obj->m_list_recy_connection.erase(pos);   // 迭代器已经失效，但pos所指内容在p_conn里保存着呢
                     p_socket_obj->FreeConnectionToCPool(p_conn);	   // 归还参数p_conn所代表的连接到到连接池中
 
-                    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "连接[%ud]回收完成!", p_conn->fd);
+                    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "连接[%Xp]回收完成!", p_conn);
                     
                     goto lblRRTD2; 
                 } 

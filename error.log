@@ -178,3 +178,111 @@
 2021/12/28 06:20:16 [info] pid_12035: [ServerRecyConnectionThread(), ngx_c_socket_conn.cxx:516] 现在对连接[-1]开始走回收流程...
 2021/12/28 06:20:16 [info] pid_12035: [FreeConnectionToCPool(), ngx_c_socket_conn.cxx:353] 归还连接[4294967295]到连接池中完成，此时连接池中空闲连接有[m_list_free_connection.size()=1022]
 2021/12/28 06:20:16 [info] pid_12035: [ServerRecyConnectionThread(), ngx_c_socket_conn.cxx:526] 连接[4294967295]回收完成!
+2021/12/28 07:14:29 [debug] pid_12035: [signal_handler(), ngx_signal.cxx:121] 来信号[10]，开始进入信号处理流程
+2021/12/28 07:14:29 [debug] pid_12035: [signal_handler(), ngx_signal.cxx:131] 信号10(SIGUSR1)已经注册处理...
+2021/12/28 07:14:29 [notice] pid_12035: [signal_handler(), ngx_signal.cxx:177] signal 10(SIGUSR1) received from 2198
+2021/12/28 07:14:29 [debug] pid_12035: [signal_handler(), ngx_signal.cxx:196] 信号处理流程结束退出了
+2021/12/28 07:14:29 [error] pid_12035: [EpollProcessEvents(), ngx_c_socket.cxx:930] worker子进程收到了系统某个信号，epoll_wait()失败退出! (4: Interrupted system call) 
+2021/12/28 07:14:29 [info] pid_12035: [WorkerProcessCycle(), ngx_process_cycle.cxx:238] g_is_stop_programe为ture，要求整个进程退出了，worker子进程退出死循环...
+2021/12/28 07:14:29 [info] pid_12035: [StopAll(), ngx_c_threadpool.cxx:340] 
+2021/12/28 07:14:29 [debug] pid_12034: [signal_handler(), ngx_signal.cxx:121] 来信号[10]，开始进入信号处理流程
+2021/12/28 07:14:29 [debug] pid_12034: [signal_handler(), ngx_signal.cxx:131] 信号10(SIGUSR1)已经注册处理...
+2021/12/28 07:14:29 [notice] pid_12034: [signal_handler(), ngx_signal.cxx:177] signal 10(SIGUSR1) received from 2198
+2021/12/28 07:14:29 [debug] pid_12034: [signal_handler(), ngx_signal.cxx:196] 信号处理流程结束退出了
+2021/12/28 07:14:29 [info] pid_12035: [StopAll(), ngx_c_threadpool.cxx:381] 线程池回收程序StopAll()成功执行完，线程池中线程全部正常结束
+2021/12/28 07:14:29 [info] pid_12035: [ShutdownSubproc(), ngx_c_socket.cxx:129] 
+2021/12/28 07:14:29 [info] pid_12035: [ServerSendListThread(), ngx_c_socket.cxx:1069] g_is_stop_programe为ture了，要求整个进程退出了，发消息线程在此退出...
+2021/12/28 07:14:29 [info] pid_12035: [ServerRecyConnectionThread(), ngx_c_socket_conn.cxx:536] g_is_stop_programe为true了，要求整个程序要退出了，开始回收连接池资源...
+2021/12/28 07:14:29 [info] pid_12035: [ClearAllFromTimerMultimap(), ngx_c_socket_time.cxx:248] 
+2021/12/28 07:14:29 [info] pid_12035: [ShutdownSubproc(), ngx_c_socket.cxx:162] Socket类回收程序 ShutdownSubproc() 成功执行完，Socket类相关程序全部正常结束
+2021/12/28 07:14:29 [stderr] pid_12035: [LogStderr(), ngx_log.cxx:127] nginx: 程序退出，再见了！
+2021/12/28 07:14:30 [info] pid_12034: [MasterProcessCycle(), ngx_process_cycle.cxx:119] g_is_stop_programe为ture了，要求整个进程退出了，master进程退出死循环...
+2021/12/28 07:14:30 [stderr] pid_12034: [LogStderr(), ngx_log.cxx:127] nginx: 程序退出，再见了！
+2021/12/28 07:15:13 [info] pid_12967: [main(), main.cxx:88] LogInit()完成，可以开始写日志记录了...
+2021/12/28 07:15:13 [info] pid_12967: [InitSignals(), ngx_signal.cxx:62] 
+2021/12/28 07:15:13 [info] pid_12967: [InitSocket(), ngx_c_slogic_socket.cxx:104] 
+2021/12/28 07:15:13 [info] pid_12967: [InitSocket(), ngx_c_socket.cxx:287] 
+2021/12/28 07:15:13 [info] pid_12967: [ReadConf(), ngx_c_socket.cxx:254] 
+2021/12/28 07:15:13 [info] pid_12967: [GetIntDefault(), ngx_c_conf.cxx:106] 
+2021/12/28 07:15:13 [info] pid_12967: [GetIntDefault(), ngx_c_conf.cxx:106] 
+2021/12/28 07:15:13 [info] pid_12967: [GetIntDefault(), ngx_c_conf.cxx:106] 
+2021/12/28 07:15:13 [info] pid_12967: [GetIntDefault(), ngx_c_conf.cxx:106] 
+2021/12/28 07:15:13 [info] pid_12967: [GetIntDefault(), ngx_c_conf.cxx:106] 
+2021/12/28 07:15:13 [info] pid_12967: [OpenListeningSockets(), ngx_c_socket.cxx:423] 
+2021/12/28 07:15:13 [info] pid_12967: [SetNonblocking(), ngx_c_socket.cxx:532] 参数: sockfd = 4
+2021/12/28 07:15:13 [info] pid_12967: [GetIntDefault(), ngx_c_conf.cxx:106] 
+2021/12/28 07:15:13 [info] pid_12967: [OpenListeningSockets(), ngx_c_socket.cxx:498] 监听端口[80]成功!
+2021/12/28 07:15:13 [info] pid_12967: [SetNonblocking(), ngx_c_socket.cxx:532] 参数: sockfd = 5
+2021/12/28 07:15:13 [info] pid_12967: [GetIntDefault(), ngx_c_conf.cxx:106] 
+2021/12/28 07:15:13 [info] pid_12967: [OpenListeningSockets(), ngx_c_socket.cxx:498] 监听端口[443]成功!
+2021/12/28 07:15:13 [info] pid_12967: [InitSetProcTitle(), ngx_set_proctitile.cxx:30] 
+2021/12/28 07:15:13 [info] pid_12967: [GetIntDefault(), ngx_c_conf.cxx:106] 
+2021/12/28 07:15:13 [info] pid_12967: [CreatDaemon(), ngx_daemon.cxx:25] 
+2021/12/28 07:15:13 [info] pid_12967: [main(), main.cxx:120] 原来的main进程完成使命退出历史舞台，后面任务交给守护进程master和后面会创建的工作进程worker了...
+2021/12/28 07:15:13 [info] pid_12968: [MasterProcessCycle(), ngx_process_cycle.cxx:37] 
+2021/12/28 07:15:13 [info] pid_12968: [SetProcTitle(), ngx_set_proctitile.cxx:69] 
+2021/12/28 07:15:13 [info] pid_12968: [MasterProcessCycle(), ngx_process_cycle.cxx:81] master process ./bin/x86/Debug/net_frame 12968 【master进程】启动并开始运行...
+2021/12/28 07:15:13 [info] pid_12968: [GetIntDefault(), ngx_c_conf.cxx:106] 
+2021/12/28 07:15:13 [info] pid_12968: [StartCreatWorkerProc(), ngx_process_cycle.cxx:148] 
+2021/12/28 07:15:13 [info] pid_12968: [CreatWorkerProc(), ngx_process_cycle.cxx:179] 
+2021/12/28 07:15:13 [info] pid_12969: [WorkerProcessCycle(), ngx_process_cycle.cxx:223] 
+2021/12/28 07:15:13 [info] pid_12969: [SetProcTitle(), ngx_set_proctitile.cxx:69] 
+2021/12/28 07:15:13 [info] pid_12969: [InitWorkerProcess(), ngx_process_cycle.cxx:273] 
+2021/12/28 07:15:13 [info] pid_12969: [GetIntDefault(), ngx_c_conf.cxx:106] 
+2021/12/28 07:15:13 [info] pid_12969: [Create(), ngx_c_threadpool.cxx:143] 参数: 线程池创建线程数量thread_n = 2
+2021/12/28 07:15:13 [stderr] pid_12969: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程0成功,线程id = 3074292544
+2021/12/28 07:15:13 [stderr] pid_12969: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程1成功,线程id = 3065899840
+2021/12/28 07:15:13 [info] pid_12969: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[3065899840]时传递的参数thread_data = 088AE0A0
+2021/12/28 07:15:13 [info] pid_12969: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[3074292544]时传递的参数thread_data = 088AE060
+2021/12/28 07:15:14 [info] pid_12969: [InitSubproc(), ngx_c_socket.cxx:318] 
+2021/12/28 07:15:14 [info] pid_12969: [InitEpoll(), ngx_c_socket.cxx:655] 
+2021/12/28 07:15:14 [info] pid_12969: [ServerSendListThread(), ngx_c_socket.cxx:1035] 参数: thread_data = 088AE090
+2021/12/28 07:15:14 [info] pid_12969: [ServerTimerQueueMonitorThread(), ngx_c_socket_time.cxx:283] 参数: 时间队列监视和处理线程[3038763840], 该线程的线程参数threadData = 088AE350
+2021/12/28 07:15:14 [info] pid_12969: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx:226] 套接字[socket=4]来连接池取一个连接了...
+2021/12/28 07:15:14 [info] pid_12969: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx:241] 连接池中有空闲连接，从这些空闲连接中取到一个连接[088B0B48]
+2021/12/28 07:15:14 [info] pid_12969: [EpollOperEvent(), ngx_c_socket.cxx:741] 参数: fd = 4, event_type = 1, flag = 8193, otherflag = 0, p_conn = 088B0B48
+2021/12/28 07:15:14 [info] pid_12969: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx:226] 套接字[socket=5]来连接池取一个连接了...
+2021/12/28 07:15:14 [info] pid_12969: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx:241] 连接池中有空闲连接，从这些空闲连接中取到一个连接[088B0BE0]
+2021/12/28 07:15:14 [info] pid_12969: [EpollOperEvent(), ngx_c_socket.cxx:741] 参数: fd = 5, event_type = 1, flag = 8193, otherflag = 0, p_conn = 088B0BE0
+2021/12/28 07:15:14 [info] pid_12969: [WorkerProcessCycle(), ngx_process_cycle.cxx:230] 子进程worker process[pid_12969]已经启动并初始化完成，下面要开始真正干活了...
+2021/12/28 07:15:14 [info] pid_12969: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
+2021/12/28 07:15:14 [info] pid_12969: [EpollProcessEvents(), ngx_c_socket.cxx:912] 
+2021/12/28 07:19:54 [info] pid_12969: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx:226] 套接字[socket=7]来连接池取一个连接了...
+2021/12/28 07:19:54 [info] pid_12969: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx:241] 连接池中有空闲连接，从这些空闲连接中取到一个连接[088B0C78]
+2021/12/28 07:19:54 [info] pid_12969: [EpollOperEvent(), ngx_c_socket.cxx:741] 参数: fd = 7, event_type = 1, flag = 8193, otherflag = 0, p_conn = 088B0C78
+2021/12/28 07:19:54 [info] pid_12969: [AddToTimerMultimap(), ngx_c_socket_time.cxx:46] 参数：p_conn = 088B0C78
+2021/12/28 07:19:54 [info] pid_12969: [GetEarliestTime(), ngx_c_socket_time.cxx:81] 
+2021/12/28 07:19:54 [info] pid_12969: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
+2021/12/28 07:19:54 [info] pid_12969: [EpollProcessEvents(), ngx_c_socket.cxx:912] 
+2021/12/28 07:20:15 [info] pid_12969: [GetOverTimeTimer(), ngx_c_socket_time.cxx:149] 参数: cur_time = 1640647215
+2021/12/28 07:20:15 [info] pid_12969: [GetEarliestTime(), ngx_c_socket_time.cxx:81] 
+2021/12/28 07:20:15 [info] pid_12969: [RemoveFirstTimer(), ngx_c_socket_time.cxx:110] 
+2021/12/28 07:20:15 [info] pid_12969: [GetEarliestTime(), ngx_c_socket_time.cxx:81] 
+2021/12/28 07:20:15 [info] pid_12969: [GetOverTimeTimer(), ngx_c_socket_time.cxx:149] 参数: cur_time = 1640647215
+2021/12/28 07:20:15 [info] pid_12969: [GetEarliestTime(), ngx_c_socket_time.cxx:81] 
+2021/12/28 07:20:36 [info] pid_12969: [GetOverTimeTimer(), ngx_c_socket_time.cxx:149] 参数: cur_time = 1640647236
+2021/12/28 07:20:36 [info] pid_12969: [GetEarliestTime(), ngx_c_socket_time.cxx:81] 
+2021/12/28 07:20:36 [info] pid_12969: [RemoveFirstTimer(), ngx_c_socket_time.cxx:110] 
+2021/12/28 07:20:36 [info] pid_12969: [GetEarliestTime(), ngx_c_socket_time.cxx:81] 
+2021/12/28 07:20:36 [info] pid_12969: [GetOverTimeTimer(), ngx_c_socket_time.cxx:149] 参数: cur_time = 1640647236
+2021/12/28 07:20:36 [info] pid_12969: [GetEarliestTime(), ngx_c_socket_time.cxx:81] 
+2021/12/28 07:20:57 [info] pid_12969: [GetOverTimeTimer(), ngx_c_socket_time.cxx:149] 参数: cur_time = 1640647257
+2021/12/28 07:20:57 [info] pid_12969: [GetEarliestTime(), ngx_c_socket_time.cxx:81] 
+2021/12/28 07:20:57 [info] pid_12969: [RemoveFirstTimer(), ngx_c_socket_time.cxx:110] 
+2021/12/28 07:20:57 [info] pid_12969: [GetEarliestTime(), ngx_c_socket_time.cxx:81] 
+2021/12/28 07:20:57 [info] pid_12969: [GetOverTimeTimer(), ngx_c_socket_time.cxx:149] 参数: cur_time = 1640647257
+2021/12/28 07:20:57 [info] pid_12969: [GetEarliestTime(), ngx_c_socket_time.cxx:81] 
+2021/12/28 07:21:18 [info] pid_12969: [GetOverTimeTimer(), ngx_c_socket_time.cxx:149] 参数: cur_time = 1640647278
+2021/12/28 07:21:18 [info] pid_12969: [GetEarliestTime(), ngx_c_socket_time.cxx:81] 
+2021/12/28 07:21:18 [info] pid_12969: [RemoveFirstTimer(), ngx_c_socket_time.cxx:110] 
+2021/12/28 07:21:18 [info] pid_12969: [GetEarliestTime(), ngx_c_socket_time.cxx:81] 
+2021/12/28 07:21:18 [info] pid_12969: [GetOverTimeTimer(), ngx_c_socket_time.cxx:149] 参数: cur_time = 1640647278
+2021/12/28 07:21:18 [info] pid_12969: [GetEarliestTime(), ngx_c_socket_time.cxx:81] 
+2021/12/28 07:21:18 [info] pid_12969: [PingTimeOutChecking(), ngx_c_slogic_socket.cxx:326] 时间到不发心跳包，踢出去!
+2021/12/28 07:21:18 [info] pid_12969: [ManualCloseSocketProc(), ngx_c_socket.cxx:216] 
+2021/12/28 07:21:18 [info] pid_12969: [DeleteFromTimerMultimap(), ngx_c_socket_time.cxx:198] 参数: p_conn = 088B0C78
+2021/12/28 07:21:18 [info] pid_12969: [AddRecyConnectList(), ngx_c_socket_conn.cxx:416] 连接加到延迟回收队列(list)中，连接[088B0C78]在[80]秒后将被回收
+2021/12/28 07:22:38 [info] pid_12969: [ServerRecyConnectionThread(), ngx_c_socket_conn.cxx:515] 已经延时[80]秒了，此时待回收连接数有[1]个
+2021/12/28 07:22:38 [info] pid_12969: [ServerRecyConnectionThread(), ngx_c_socket_conn.cxx:516] 现在对连接[088B0C78]开始走回收流程...
+2021/12/28 07:22:38 [info] pid_12969: [FreeConnectionToCPool(), ngx_c_socket_conn.cxx:353] 归还连接[4294967295]到连接池中完成，此时连接池中空闲连接有[m_list_free_connection.size()=1022]
+2021/12/28 07:22:38 [info] pid_12969: [ServerRecyConnectionThread(), ngx_c_socket_conn.cxx:526] 连接[088B0C78]回收完成!
