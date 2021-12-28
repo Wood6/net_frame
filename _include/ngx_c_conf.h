@@ -53,9 +53,9 @@ public:
 		}
 	};
 
-	bool Load(const char * p_conf_name);                            // 加载配置
-	const char* GetString(const char *p_itemname);                  // 根据ItemName获取信息字符串类型配置信息，不修改不用互斥
-	int GetIntDefault(const char *p_itemname, const int def);   // 根据ItemName获取数字类型配置信息，不修改不用互斥
+	bool Load(const char* p_conf_name);                            // 加载配置
+	const char* GetString(const char* p_itemname);                 // 根据p_itemname获取信息字符串类型配置信息，不修改不用互斥
+	int GetIntDefault(const char* p_itemname, const int def);  // 根据p_itemname获取数字类型配置信息，不修改不用互斥
 };
 
 #endif

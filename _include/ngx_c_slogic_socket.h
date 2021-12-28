@@ -23,7 +23,7 @@ public:
 	bool _HandleLogIn(gps_connection_t p_conn, gps_msg_header_t p_msg_header, char* p_pkg_body, unsigned short len_body);
 	bool _HandlePing(gps_connection_t pConn, gps_msg_header_t p_msg_header, char *p_pkg_body, unsigned short len_body);
 
-	virtual void PingTimeOutChecking(gps_msg_header_t p_msg_header, time_t cur_time);      // 心跳包检测时间到，该去检测心跳包是否超时的事宜，本函数只是把内存释放，子类应该重新事先该函数以实现具体的判断动作
+	virtual void PingTimeOutChecking(gps_msg_header_t p_msg_header, time_t cur_time);  // 心跳包检测时间到，该去检测心跳包是否超时的事宜，本函数只是把内存释放，子类应该重新事先该函数以实现具体的判断动作
 
 public:
 	virtual void ThreadRecvProcFunc(char* p_msg_buf);

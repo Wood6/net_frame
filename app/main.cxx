@@ -72,8 +72,6 @@ int main(int argc, char **argv)
 	CConfig * p_config = CConfig::GetInstance();
 	if (false == p_config->Load(CONFIG_FILE_PATH))  // 因为日志文件也有配置依赖，所以开日志文件前先把配置给加载了
 	{
-        // 此时日志文件还没有打开，这个接口能往标准错误输出一条信息
-		//LogStderr(0, "配置文件[%s]载入失败，退出!", "nginx.conf");
 		LogErrorCoreAddPrintAddr(NGX_LOG_ALERT, errno, "配置文件[%s]载入失败，退出！", CONFIG_FILE_PATH);
 		exit_code = 2;   // 标记找不到文件退出
 		goto lblexit;

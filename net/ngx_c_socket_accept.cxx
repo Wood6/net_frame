@@ -119,8 +119,6 @@ void CSocket::EventAccept(gps_connection_t p_oldc)
 		}  //end if(fd_ret_accept == -1)
 
 		// 走到这里的，表示accept4()成功了        
-		// LogStderr(errno,"accept4成功fd_ret_accept=%d",fd_ret_accept); //fd_ret_accept这里就是 一个句柄了
-		//p_newc = GetElementOfConnection(fd_ret_accept); // 这是针对新连入用户的连接，和监听套接字 所对应的连接是两个不同的东西，不要搞混
 		p_newc = GetConnectionFromCPool(fd_ret_accept);   // 这是针对新连入用户的连接，和监听套接字 所对应的连接是两个不同的东西，不要搞混
 		if (p_newc == NULL)
 		{
@@ -135,12 +133,6 @@ void CSocket::EventAccept(gps_connection_t p_oldc)
 
 		// 成功的拿到了连接池中的一个连接
 		memcpy(&p_newc->s_sockaddr, &my_sockaddr, len_socket);  // 拷贝客户端地址到连接对象【要转成字符串ip地址参考函数ngx_sock_ntop()】
-		//{
-		//    //测试将收到的地址弄成字符串，格式形如"192.168.1.126:40904"或者"192.168.1.126"
-		//    u_char ipaddr[100]; memset(ipaddr,0,sizeof(ipaddr));
-		//    ngx_sock_ntop(&p_newc->s_sockaddr,1,ipaddr,sizeof(ipaddr)-10); //宽度给小点
-		//    LogStderr(0,"ip信息为%fd_ret_accept\n",ipaddr);
-		//}
 
 		if (!use_accept4)
 		{

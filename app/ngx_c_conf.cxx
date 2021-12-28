@@ -83,7 +83,24 @@ bool CConfig::Load(const char * p_config_name)
 	return ret;
 }
 
-const char* CConfig::GetString(const char *pItemname)
+/**
+ * 功能：
+	根据p_itemname获取信息字符串类型配置信息，不修改不用互斥
+
+ * 输入参数：(const char* p_itemname)
+    p_itemname 配置项名字
+
+ * 返回值：
+	const char* 返回配置值（字符串形式返回）
+
+ * 调用了函数：
+
+ * 其他说明：
+
+ * 例子说明：
+
+ */
+const char* CConfig::GetString(const char* p_itemname)
 {
     LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "");
 
@@ -92,7 +109,7 @@ const char* CConfig::GetString(const char *pItemname)
 	std::vector<gps_stru_conf_item_t>::iterator iter;
 	for (iter = m_vec_config_item.begin(); iter != m_vec_config_item.end(); ++iter)
 	{
-		if (0 == strcmp(pItemname, (*iter)->c_arr_item_name))
+		if (0 == strcmp(p_itemname, (*iter)->c_arr_item_name))
 		{
 			return (*iter)->c_arr_iter_content;
 		}
@@ -101,7 +118,25 @@ const char* CConfig::GetString(const char *pItemname)
 	return ret;
 }
 
-int CConfig::GetIntDefault(const char *pItemname, const int def)
+/**
+ * 功能：
+	根据p_itemname获取数字类型配置信息，不修改不用互斥
+
+ * 输入参数：(const char* p_itemname, const int def)
+    p_itemname 配置项名字
+    def 配置文件中若没有这个配置，则默认用这个值返回
+
+ * 返回值：
+	int 返回配置值（int型数据）
+
+ * 调用了函数：
+
+ * 其他说明：
+
+ * 例子说明：
+
+ */
+int CConfig::GetIntDefault(const char* p_itemname, const int def)
 {
     LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "");
 
@@ -110,7 +145,7 @@ int CConfig::GetIntDefault(const char *pItemname, const int def)
 	std::vector<gps_stru_conf_item_t>::iterator iter;
 	for (iter = m_vec_config_item.begin(); iter != m_vec_config_item.end(); ++iter)
 	{
-		if (0 == strcmp(pItemname, (*iter)->c_arr_item_name))
+		if (0 == strcmp(p_itemname, (*iter)->c_arr_item_name))
 		{
 			return atoi((*iter)->c_arr_iter_content);
 		}

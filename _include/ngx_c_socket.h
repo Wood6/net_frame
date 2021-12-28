@@ -55,14 +55,10 @@ struct _gs_connection
 											     // 那个 gps_listening_t 的内存首地址,用此指针与上面监听套接字的结构体联系起来了
 
 	// ------------------------------------	
-	//unsigned                  instance : 1;    // 【位域】失效标志位：0：有效，1：失效【这个是官方nginx提供，到底有什么用，ngx_epoll_process_events()中详解】  
 	uint64_t                  currse_quence_n;   // 我引入的一个序号，每次分配出去时+1，此法也有可能在一定程度上检测错包废包，具体怎么用，用到了再说
 	struct sockaddr           s_sockaddr;        // 保存对方地址信息用的
-	//char                    addr_text[100];    // 地址的文本信息，100足够，一般其实如果是ipv4地址，255.255.255.255，其实只需要20字节就够
+	
 
-	// 和读有关的标志-----------------------
-	//uint8_t                   r_ready;         // 读准备好标记【暂时没闹明白官方要怎么用，所以先注释掉】
-	//uint8_t                    write_ready;      // 写准备好标记
 
 	EpollEventHandlerPt        read_handler;     // 读事件的相关处理方法
 	EpollEventHandlerPt        write_handler;    // 写事件的相关处理方法
@@ -76,25 +72,25 @@ struct _gs_connection
     bool                       is_new_recvmem;    // 如果我们成功的收到了包头，
                                                   // 那么我们就要分配内存开始保存 包头+消息头+包体内容，
                                                   // 这个标记用来标记是否我们new过内存，因为new过是需要释放的
-    char*                      p_recvbuf_array_mem_addr; // new出来的用于收包的内存首地址，和 is_new_recvmem  配对使用
+    char*                      p_recvbuf_array_mem_addr;  // new出来的用于收包的内存首地址，和 is_new_recvmem  配对使用
 
     // 和发包有关-----------------------------
-	std::atomic<int>          atomi_sendbuf_full_flag_n;   // 发送消息，如果发送缓冲区满了，则需要通过epoll事件
-	                                                       // 来驱动消息的继续发送，所以如果发送缓冲区满，则用这个变量标记
-	                                                       // 为0，发送缓存区没满，
-	                                                       // >0发送缓存区满了，则需要使用epoll通知写事件了
-	char*                     p_sendbuf_array_mem_addr;    // 发送完成后释放用的，整个数据的头指针，其实是 消息头 + 包头 + 包体
-	char*                      p_sendbuf;                  // 发送数据的缓冲区的头指针，开始 其实是包头+包体
-	unsigned int              len_send;                    // 要发送多少数据
+	std::atomic<int>          atomi_sendbuf_full_flag_n;  // 发送消息，如果发送缓冲区满了，则需要通过epoll事件
+	                                                      // 来驱动消息的继续发送，所以如果发送缓冲区满，则用这个变量标记
+	                                                      // 为0，发送缓存区没满，
+	                                                      // >0发送缓存区满了，则需要使用epoll通知写事件了
+	char*                     p_sendbuf_array_mem_addr;   // 发送完成后释放用的，整个数据的头指针，其实是 消息头 + 包头 + 包体
+	char*                     p_sendbuf;                  // 发送数据的缓冲区的头指针，开始 其实是包头+包体
+	unsigned int              len_send;                   // 要发送多少数据
 
-	char*                      p_sendbuf_mem;              // 发送完成后释放用的，整个数据的头指针，其实是 消息头 + 包头 + 包体
+	char*                     p_sendbuf_mem;              // 发送完成后释放用的，整个数据的头指针，其实是 消息头 + 包头 + 包体
 
     // 和epoll事件有关------------------------
-    uint32_t                   epoll_events_type;          // 和epoll事件有关 
+    uint32_t                   epoll_events_type;         // 和epoll事件有关 
 
 
 	// 和心跳包有关
-	time_t                    last_ping_time;              // 上次收到心跳包的时间【上次发送心跳包的时间】
+	time_t                    last_ping_time;             // 上次收到心跳包的时间【上次发送心跳包的时间】
 
 	// ----------------------------------------
 	gps_connection_t            data;             // 这是个指针【等价于传统链表里的next成员：后继指针】，
@@ -141,18 +137,8 @@ private:
 	
 
 	// 连接池相关
-	//gps_connection_t               mp_connections;       // 注意这是个指针，其实这是个连接池的首地址
-	//gps_connection_t               mp_free_connections;  // 空闲连接链表头，连接池中总是有某些连接被占用，
-	                                                     // 为了快速在池中找到一个空闲的连接，我把空闲的
-	                                                     // 连接专门用该成员记录;【串成一串，其实这里
-	                                                     // 指向的都是m_pconnections连接池里的没有被使用的成员】
 	int                           m_connection_n;        // 当前进程中所有连接对象的总数【连接池大小】
 	int                           m_free_connections_n;  // 连接池中可用连接总数
-
-    // 将这些移到线程类中去了
-    //std::list<char *>             m_list_rece_msg_queue;  // 接受数据消息队列
-    //int                           m_recv_msg_queue_n;     // 收消息队列大小
-    //pthread_mutex_t               m_recv_msg_queue_mutex; // 收消息队列互斥量 
 
     // 和连接池有关的 ------------------------------
 	std::list<gps_connection_t>  m_list_connection;             // 连接列表【连接池】

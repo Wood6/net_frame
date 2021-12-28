@@ -44,25 +44,17 @@ CSocket::CSocket()
 
 	// epoll相关
 	m_handle_epoll = -1;                // epoll返回的句柄
-#if 0
-	//mp_connections = NULL;        // 连接池【连接数组】先给空
-	//mp_free_connections = NULL;   // 连接池中空闲的连接链 
-#endif
+
     // 一些和网络通讯有关的常用变量值，供后续频繁使用时提高效率
     m_len_pkg_header = sizeof(gs_pkg_header_t);    // 包头的sizeof值【占用的字节数】
     m_len_msg_header = sizeof(gs_msg_header_t);    // 消息头的sizeof值【占用的字节数】
 
-
     // 各种队列相关
-    m_send_msg_list_n = 0;         // 发消息队列大小
-    m_totol_recy_connection_n = 0; // 待释放连接队列大小
+    m_send_msg_list_n = 0;              // 发消息队列大小
+    m_totol_recy_connection_n = 0;      // 待释放连接队列大小
 
-	m_multimap_timer_size = 0;               // 当前计时队列尺寸
-	m_multimap_timer_front_value = 0;            // 当前计时队列头部的时间值
-        
-
-    //m_recv_msg_queue_n = 0;                            //  收消息队列中消息数量初始化0
-    //pthread_mutex_init(&m_recv_msg_queue_mutex, NULL); // 互斥量初始化
+	m_multimap_timer_size = 0;          // 当前计时队列尺寸
+	m_multimap_timer_front_value = 0;   // 当前计时队列头部的时间值
 }
 
 /**
@@ -94,17 +86,8 @@ CSocket::~CSocket()
 	{
 		delete (*iter); // 一定要把指针指向的内存干掉，不然内存泄漏
 	}
+    
 	m_vec_listen_socket.clear();
-
-	// (2)连接池相关的内容释放---------
-	//if (mp_connections != NULL)                     // 释放连接池
-	//	delete[] mp_connections;
-
-    // (3)接收消息队列中内容释放
-    //ClearMsgRecvQueue();
-
-    // (4)多线程相关
-    //pthread_mutex_destroy(&m_recv_msg_queue_mutex);  // 互斥量释放
 }
 
 /**

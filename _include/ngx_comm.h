@@ -19,7 +19,6 @@ const unsigned char PKG_HEAD_INIT          = 0;     // 初始状态，准备接�
 const unsigned char PKG_HEAD_RECV_ING      = 1;     // 接收包头中，包头不完整，继续接收中
 const unsigned char PKG_BODY_INIT          = 2;     // 包头刚好收完，准备接收包体
 const unsigned char PKG_BODY_RECV_ING      = 3;     // 接收包体中，包体不完整，继续接收中，处理后直接回到 PKG_HEAD_INIT 状态
-//const unsigned char _PKG_RECV_FINISHED    = 4;    // 完整包收完，这个状态似乎没什么用处
 
 typedef struct _s_pkg_head gs_pkg_header_t, *gps_pkg_header_t;
 
@@ -32,7 +31,7 @@ struct _s_pkg_head
                                  // 我们定义_PKG_MAX_LENGTH 30000，所以用pkgLen足够保存下
 	                             // 包头中记录着整个包【包头—+包体】的长度
 	                             
-    unsigned short msg_type;     //  消息类型代码--2字节，用于区别每个不同的命令【不同的消息】
+    unsigned short msg_type;     // 消息类型代码--2字节，用于区别每个不同的命令【不同的消息】
     
     int            crc32;        // CRC32效验--4字节，为了防止收发数据中出现收到内容
                                  // 和发送内容不一致的情况，引入这个字段做一个基本的校验用	

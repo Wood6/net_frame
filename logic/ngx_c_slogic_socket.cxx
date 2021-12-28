@@ -178,11 +178,11 @@ void CLogicSocket::ThreadRecvProcFunc(char *p_msg_buf)
 
 	// 能走到这里的，包没过期，不恶意，那好继续判断是否有相应的处理函数
 	// (3)有对应的消息处理函数吗
-	if (status_handler[msg_type] == NULL)                     // 这种用msg_type的方式可以使查找要执行的成员函数效率特别高
+	if (status_handler[msg_type] == NULL)                    // 这种用msg_type的方式可以使查找要执行的成员函数效率特别高
 	{
         // 这种有恶意倾向或者错误倾向的包，希望打印出来看看是谁干的
         LogErrorCoreAddPrintAddr(NGX_LOG_ALERT, 0, "msg_type = %d, 消息码找不到对应的处理函数，有可能是被篡改了", msg_type);
-		return;                                               // 没有相关的处理函数
+		return;                                              // 没有相关的处理函数
 	}
 
 	// 一切正确，可以放心大胆的处理了
@@ -193,8 +193,7 @@ void CLogicSocket::ThreadRecvProcFunc(char *p_msg_buf)
 	return;
 }
 
-// ----------------------------------------------------------------------------------------------------------
-// 处理各种业务逻辑
+// ---------------- 处理各种业务逻辑 ---------------------------------------------------- 
 /**
  * 功能：
 	业务逻辑处理函数
