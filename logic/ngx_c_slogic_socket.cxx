@@ -318,11 +318,17 @@ void CLogicSocket::PingTimeOutChecking(gps_msg_header_t p_msg_header, time_t cur
 	{
 		gps_connection_t p_conn = p_msg_header->p_conn;
 
+        if(m_is_overtime_kick)
+        {
+            // 到时间直接踢出去的需求
+            LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "m_is_overtime_kick为true，开启了到时间直接踢出去的开关，按此配置将此连接[%Xp]踢下线!", p_conn);   
+            ManualCloseSocketProc(p_conn); 
+        }
 		// 超时踢的判断标准就是 每次检查的时间间隔*3，超过这个时间没发送心跳包，就踢【大家可以根据实际情况自由设定】
-		if ((cur_time - p_conn->last_ping_time) > (m_ping_wait_time * 3 + 10))
+		else if ((cur_time - p_conn->last_ping_time) > (m_ping_wait_time * 3 + 10))
 		{
 			// 踢出去【如果此时此刻该用户正好断线，则这个socket可能立即被后续上来的连接复用  如果真有人这么倒霉，赶上这个点了，那么可能错踢，错踢就错踢】            
-			LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "时间到不发心跳包，踢出去!");   // 感觉OK
+			LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "时间到不发心跳包，将此连接[%Xp]踢出去!", p_conn);   // 感觉OK
 			ManualCloseSocketProc(p_conn);
 		}
 

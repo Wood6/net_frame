@@ -1,470 +1,108 @@
-2021/12/28 19:55:16 [info] pid_28775: [main(), main.cxx:86] LogInit()完成，可以开始写日志记录了...
-2021/12/28 19:55:16 [info] pid_28775: [InitSignals(), ngx_signal.cxx:62] 
-2021/12/28 19:55:16 [info] pid_28775: [InitSocket(), ngx_c_slogic_socket.cxx:104] 
-2021/12/28 19:55:16 [info] pid_28775: [InitSocket(), ngx_c_socket.cxx:347] 
-2021/12/28 19:55:16 [info] pid_28775: [ReadConf(), ngx_c_socket.cxx:310] 
-2021/12/28 19:55:16 [info] pid_28775: [GetIntDefault(), ngx_c_conf.cxx:141] 
-2021/12/28 19:55:16 [info] pid_28775: [GetIntDefault(), ngx_c_conf.cxx:141] 
-2021/12/28 19:55:16 [info] pid_28775: [GetIntDefault(), ngx_c_conf.cxx:141] 
-2021/12/28 19:55:16 [info] pid_28775: [GetIntDefault(), ngx_c_conf.cxx:141] 
-2021/12/28 19:55:16 [info] pid_28775: [GetIntDefault(), ngx_c_conf.cxx:141] 
-2021/12/28 19:55:16 [info] pid_28775: [GetIntDefault(), ngx_c_conf.cxx:141] 
-2021/12/28 19:55:16 [info] pid_28775: [GetIntDefault(), ngx_c_conf.cxx:141] 
-2021/12/28 19:55:16 [info] pid_28775: [GetIntDefault(), ngx_c_conf.cxx:141] 
-2021/12/28 19:55:16 [info] pid_28775: [OpenListeningSockets(), ngx_c_socket.cxx:483] 
-2021/12/28 19:55:16 [info] pid_28775: [SetNonblocking(), ngx_c_socket.cxx:592] 参数: sockfd = 4
-2021/12/28 19:55:16 [info] pid_28775: [GetIntDefault(), ngx_c_conf.cxx:141] 
-2021/12/28 19:55:16 [info] pid_28775: [OpenListeningSockets(), ngx_c_socket.cxx:558] 监听端口[80]成功!
-2021/12/28 19:55:16 [info] pid_28775: [SetNonblocking(), ngx_c_socket.cxx:592] 参数: sockfd = 5
-2021/12/28 19:55:16 [info] pid_28775: [GetIntDefault(), ngx_c_conf.cxx:141] 
-2021/12/28 19:55:16 [info] pid_28775: [OpenListeningSockets(), ngx_c_socket.cxx:558] 监听端口[443]成功!
-2021/12/28 19:55:16 [info] pid_28775: [InitSetProcTitle(), ngx_set_proctitile.cxx:30] 
-2021/12/28 19:55:16 [info] pid_28775: [GetIntDefault(), ngx_c_conf.cxx:141] 
-2021/12/28 19:55:16 [info] pid_28775: [CreatDaemon(), ngx_daemon.cxx:25] 
-2021/12/28 19:55:16 [info] pid_28775: [main(), main.cxx:118] 原来的main进程完成使命退出历史舞台，后面任务交给守护进程master和后面会创建的工作进程worker了...
-2021/12/28 19:55:16 [info] pid_28776: [MasterProcessCycle(), ngx_process_cycle.cxx:37] 
-2021/12/28 19:55:16 [info] pid_28776: [SetProcTitle(), ngx_set_proctitile.cxx:69] 
-2021/12/28 19:55:16 [info] pid_28776: [MasterProcessCycle(), ngx_process_cycle.cxx:81] master process ./bin/x86/Debug/net_frame 28776 【master进程】启动并开始运行...
-2021/12/28 19:55:16 [info] pid_28776: [GetIntDefault(), ngx_c_conf.cxx:141] 
-2021/12/28 19:55:16 [info] pid_28776: [StartCreatWorkerProc(), ngx_process_cycle.cxx:148] 
-2021/12/28 19:55:16 [info] pid_28776: [CreatWorkerProc(), ngx_process_cycle.cxx:179] 
-2021/12/28 19:55:16 [info] pid_28777: [WorkerProcessCycle(), ngx_process_cycle.cxx:223] 
-2021/12/28 19:55:16 [info] pid_28777: [SetProcTitle(), ngx_set_proctitile.cxx:69] 
-2021/12/28 19:55:16 [info] pid_28777: [InitWorkerProcess(), ngx_process_cycle.cxx:273] 
-2021/12/28 19:55:16 [info] pid_28777: [GetIntDefault(), ngx_c_conf.cxx:141] 
-2021/12/28 19:55:16 [info] pid_28777: [Create(), ngx_c_threadpool.cxx:143] 参数: 线程池创建线程数量thread_n = 2
-2021/12/28 19:55:16 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程0成功,线程id = 3074108224
-2021/12/28 19:55:16 [info] pid_28777: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[3074108224]时传递的参数thread_data = 08C3E060
-2021/12/28 19:55:16 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程1成功,线程id = 3065715520
-2021/12/28 19:55:16 [info] pid_28777: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[3065715520]时传递的参数thread_data = 08C3E0A0
-2021/12/28 19:55:17 [info] pid_28777: [InitSubproc(), ngx_c_socket.cxx:378] 
-2021/12/28 19:55:17 [info] pid_28777: [ServerSendListThread(), ngx_c_socket.cxx:1002] 参数: thread_data = 08C3E090
-2021/12/28 19:55:17 [info] pid_28777: [ServerTimerQueueMonitorThread(), ngx_c_socket_time.cxx:283] 参数: 时间队列监视和处理线程[3038763840], 该线程的线程参数threadData = 08C3E350
-2021/12/28 19:55:17 [info] pid_28777: [InitEpoll(), ngx_c_socket.cxx:715] 
-2021/12/28 19:55:17 [info] pid_28777: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx:229] 套接字[socket=4]来连接池取一个连接了...
-2021/12/28 19:55:17 [info] pid_28777: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx:244] 连接池中有空闲连接，从这些空闲连接中取到一个连接[08C411D8]
-2021/12/28 19:55:17 [info] pid_28777: [EpollOperEvent(), ngx_c_socket.cxx:801] 参数: fd = 4, event_type = 1, flag = 8193, otherflag = 0, p_conn = 08C411D8
-2021/12/28 19:55:17 [info] pid_28777: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx:229] 套接字[socket=5]来连接池取一个连接了...
-2021/12/28 19:55:17 [info] pid_28777: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx:244] 连接池中有空闲连接，从这些空闲连接中取到一个连接[08C41280]
-2021/12/28 19:55:17 [info] pid_28777: [EpollOperEvent(), ngx_c_socket.cxx:801] 参数: fd = 5, event_type = 1, flag = 8193, otherflag = 0, p_conn = 08C41280
-2021/12/28 19:55:17 [info] pid_28777: [WorkerProcessCycle(), ngx_process_cycle.cxx:230] 子进程worker process[pid_28777]已经启动并初始化完成，下面要开始真正干活了...
-2021/12/28 19:55:17 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 19:55:17 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 19:55:37 [info] pid_28777: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx:229] 套接字[socket=7]来连接池取一个连接了...
-2021/12/28 19:55:37 [info] pid_28777: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx:244] 连接池中有空闲连接，从这些空闲连接中取到一个连接[08C41328]
-2021/12/28 19:55:37 [info] pid_28777: [EpollOperEvent(), ngx_c_socket.cxx:801] 参数: fd = 7, event_type = 1, flag = 8193, otherflag = 0, p_conn = 08C41328
-2021/12/28 19:55:37 [info] pid_28777: [AddToTimerMultimap(), ngx_c_socket_time.cxx:46] 参数：p_conn = 08C41328
-2021/12/28 19:55:37 [info] pid_28777: [GetEarliestTime(), ngx_c_socket_time.cxx:81] 
-2021/12/28 19:55:37 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 19:55:37 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 19:55:58 [info] pid_28777: [GetOverTimeTimer(), ngx_c_socket_time.cxx:149] 参数: cur_time = 1640692558
-2021/12/28 19:55:58 [info] pid_28777: [GetEarliestTime(), ngx_c_socket_time.cxx:81] 
-2021/12/28 19:55:58 [info] pid_28777: [RemoveFirstTimer(), ngx_c_socket_time.cxx:110] 
-2021/12/28 19:55:58 [info] pid_28777: [GetEarliestTime(), ngx_c_socket_time.cxx:81] 
-2021/12/28 19:55:58 [info] pid_28777: [GetOverTimeTimer(), ngx_c_socket_time.cxx:149] 参数: cur_time = 1640692558
-2021/12/28 19:55:58 [info] pid_28777: [GetEarliestTime(), ngx_c_socket_time.cxx:81] 
-2021/12/28 19:56:04 [info] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:33] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: [RecvProc(), ngx_c_socket_request.cxx:158] 参数: p_conn=08C41328, p_buff=08C41379, len_buf=8
-2021/12/28 19:56:04 [info] pid_28777: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:268] 参数: p_conn = 08C41328, is_flood_attack = false
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:284] 包头收完整了，包头结构体中表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [IsFloodAttack(), ngx_c_socket.cxx:258] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: p_conn->flood_attacked_n = 0, m_flood_attack_checked_n = 10
-2021/12/28 19:56:04 [info] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:365] 参数: p_conn = 08C41328, is_flood_attack = false
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:371] 包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:464] 参数: p_buf = 08C73188
-2021/12/28 19:56:04 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:486] 在发信号给线程之前从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [Call(), ngx_c_threadpool.cxx:418] 
-2021/12/28 19:56:04 [info] pid_28777: [ThreadFunc(), ngx_c_threadpool.cxx:290] 线程[3074108224]被激活正在处理从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [ThreadRecvProcFunc(), ngx_c_slogic_socket.cxx:129] 参数: p_msg_buf = 08C73188
-2021/12/28 19:56:04 [info] pid_28777: [SendMsg(), ngx_c_socket.cxx:677] 参数: p_sendbuf = B6200478
-2021/12/28 19:56:04 [info] pid_28777: [_HandlePing(), ngx_c_slogic_socket.cxx:408] 成功收到了心跳包并返回结果！
-2021/12/28 19:56:04 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 19:56:04 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 19:56:04 [info] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:33] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: [RecvProc(), ngx_c_socket_request.cxx:158] 参数: p_conn=08C41328, p_buff=08C41379, len_buf=8
-2021/12/28 19:56:04 [info] pid_28777: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:268] 参数: p_conn = 08C41328, is_flood_attack = false
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:284] 包头收完整了，包头结构体中表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [IsFloodAttack(), ngx_c_socket.cxx:258] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: p_conn->flood_attacked_n = 1, m_flood_attack_checked_n = 10
-2021/12/28 19:56:04 [info] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:365] 参数: p_conn = 08C41328, is_flood_attack = false
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:371] 包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:464] 参数: p_buf = 08C73188
-2021/12/28 19:56:04 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:486] 在发信号给线程之前从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [Call(), ngx_c_threadpool.cxx:418] 
-2021/12/28 19:56:04 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 19:56:04 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 19:56:04 [info] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:33] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: [RecvProc(), ngx_c_socket_request.cxx:158] 参数: p_conn=08C41328, p_buff=08C41379, len_buf=8
-2021/12/28 19:56:04 [info] pid_28777: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:268] 参数: p_conn = 08C41328, is_flood_attack = false
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:284] 包头收完整了，包头结构体中表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [IsFloodAttack(), ngx_c_socket.cxx:258] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: p_conn->flood_attacked_n = 2, m_flood_attack_checked_n = 10
-2021/12/28 19:56:04 [info] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:365] 参数: p_conn = 08C41328, is_flood_attack = false
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:371] 包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:464] 参数: p_buf = 08C731A0
-2021/12/28 19:56:04 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:486] 在发信号给线程之前从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [Call(), ngx_c_threadpool.cxx:418] 
-2021/12/28 19:56:04 [info] pid_28777: [ThreadFunc(), ngx_c_threadpool.cxx:290] 线程[3074108224]被激活正在处理从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [ThreadRecvProcFunc(), ngx_c_slogic_socket.cxx:129] 参数: p_msg_buf = 08C73188
-2021/12/28 19:56:04 [info] pid_28777: [SendMsg(), ngx_c_socket.cxx:677] 参数: p_sendbuf = B62004A0
-2021/12/28 19:56:04 [info] pid_28777: [_HandlePing(), ngx_c_slogic_socket.cxx:408] 成功收到了心跳包并返回结果！
-2021/12/28 19:56:04 [info] pid_28777: [ThreadFunc(), ngx_c_threadpool.cxx:290] 线程[3074108224]被激活正在处理从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [ThreadRecvProcFunc(), ngx_c_slogic_socket.cxx:129] 参数: p_msg_buf = 08C731A0
-2021/12/28 19:56:04 [info] pid_28777: [SendMsg(), ngx_c_socket.cxx:677] 参数: p_sendbuf = B62004C8
-2021/12/28 19:56:04 [info] pid_28777: [_HandlePing(), ngx_c_slogic_socket.cxx:408] 成功收到了心跳包并返回结果！
-2021/12/28 19:56:04 [info] pid_28777: [ServerSendListThread(), ngx_c_socket.cxx:1097] 即将发送的数据长度是[8]
-2021/12/28 19:56:04 [info] pid_28777: [SendProc(), ngx_c_socket_request.cxx:418] 参数: p_conn = 08C41328, p_buf = B6200484, size = 8
-2021/12/28 19:56:04 [info] pid_28777: [SendProc(), ngx_c_socket_request.cxx:428] send()成功发送了[8]字节的数据
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [ServerSendListThread(), ngx_c_socket.cxx:1108] 数据通过send()发送完毕，很好！
-2021/12/28 19:56:04 [info] pid_28777: [ServerSendListThread(), ngx_c_socket.cxx:1097] 即将发送的数据长度是[8]
-2021/12/28 19:56:04 [info] pid_28777: [SendProc(), ngx_c_socket_request.cxx:418] 参数: p_conn = 08C41328, p_buf = B62004AC, size = 8
-2021/12/28 19:56:04 [info] pid_28777: [SendProc(), ngx_c_socket_request.cxx:428] send()成功发送了[8]字节的数据
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [ServerSendListThread(), ngx_c_socket.cxx:1108] 数据通过send()发送完毕，很好！
-2021/12/28 19:56:04 [info] pid_28777: [ServerSendListThread(), ngx_c_socket.cxx:1097] 即将发送的数据长度是[8]
-2021/12/28 19:56:04 [info] pid_28777: [SendProc(), ngx_c_socket_request.cxx:418] 参数: p_conn = 08C41328, p_buf = B62004D4, size = 8
-2021/12/28 19:56:04 [info] pid_28777: [SendProc(), ngx_c_socket_request.cxx:428] send()成功发送了[8]字节的数据
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [ServerSendListThread(), ngx_c_socket.cxx:1108] 数据通过send()发送完毕，很好！
-2021/12/28 19:56:04 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 19:56:04 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 19:56:04 [info] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:33] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: [RecvProc(), ngx_c_socket_request.cxx:158] 参数: p_conn=08C41328, p_buff=08C41379, len_buf=8
-2021/12/28 19:56:04 [info] pid_28777: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:268] 参数: p_conn = 08C41328, is_flood_attack = false
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:284] 包头收完整了，包头结构体中表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [IsFloodAttack(), ngx_c_socket.cxx:258] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: p_conn->flood_attacked_n = 3, m_flood_attack_checked_n = 10
-2021/12/28 19:56:04 [info] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:365] 参数: p_conn = 08C41328, is_flood_attack = false
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:371] 包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:464] 参数: p_buf = 08C731A0
-2021/12/28 19:56:04 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:486] 在发信号给线程之前从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [Call(), ngx_c_threadpool.cxx:418] 
-2021/12/28 19:56:04 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 19:56:04 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 19:56:04 [info] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:33] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: [RecvProc(), ngx_c_socket_request.cxx:158] 参数: p_conn=08C41328, p_buff=08C41379, len_buf=8
-2021/12/28 19:56:04 [info] pid_28777: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:268] 参数: p_conn = 08C41328, is_flood_attack = false
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:284] 包头收完整了，包头结构体中表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [IsFloodAttack(), ngx_c_socket.cxx:258] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: p_conn->flood_attacked_n = 4, m_flood_attack_checked_n = 10
-2021/12/28 19:56:04 [info] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:365] 参数: p_conn = 08C41328, is_flood_attack = false
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:371] 包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:464] 参数: p_buf = 08C73188
-2021/12/28 19:56:04 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:486] 在发信号给线程之前从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [Call(), ngx_c_threadpool.cxx:418] 
-2021/12/28 19:56:04 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 19:56:04 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 19:56:04 [info] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:33] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: [RecvProc(), ngx_c_socket_request.cxx:158] 参数: p_conn=08C41328, p_buff=08C41379, len_buf=8
-2021/12/28 19:56:04 [info] pid_28777: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:268] 参数: p_conn = 08C41328, is_flood_attack = false
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:284] 包头收完整了，包头结构体中表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [IsFloodAttack(), ngx_c_socket.cxx:258] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: p_conn->flood_attacked_n = 5, m_flood_attack_checked_n = 10
-2021/12/28 19:56:04 [info] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:365] 参数: p_conn = 08C41328, is_flood_attack = false
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:371] 包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:464] 参数: p_buf = 08C731B8
-2021/12/28 19:56:04 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:486] 在发信号给线程之前从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [Call(), ngx_c_threadpool.cxx:418] 
-2021/12/28 19:56:04 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 19:56:04 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 19:56:04 [info] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:33] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: [RecvProc(), ngx_c_socket_request.cxx:158] 参数: p_conn=08C41328, p_buff=08C41379, len_buf=8
-2021/12/28 19:56:04 [info] pid_28777: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:268] 参数: p_conn = 08C41328, is_flood_attack = false
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:284] 包头收完整了，包头结构体中表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [IsFloodAttack(), ngx_c_socket.cxx:258] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: p_conn->flood_attacked_n = 6, m_flood_attack_checked_n = 10
-2021/12/28 19:56:04 [info] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:365] 参数: p_conn = 08C41328, is_flood_attack = false
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:371] 包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:464] 参数: p_buf = 08C731D0
-2021/12/28 19:56:04 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:486] 在发信号给线程之前从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [Call(), ngx_c_threadpool.cxx:418] 
-2021/12/28 19:56:04 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 19:56:04 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 19:56:04 [info] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:33] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: [RecvProc(), ngx_c_socket_request.cxx:158] 参数: p_conn=08C41328, p_buff=08C41379, len_buf=8
-2021/12/28 19:56:04 [info] pid_28777: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:268] 参数: p_conn = 08C41328, is_flood_attack = false
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:284] 包头收完整了，包头结构体中表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [IsFloodAttack(), ngx_c_socket.cxx:258] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: p_conn->flood_attacked_n = 7, m_flood_attack_checked_n = 10
-2021/12/28 19:56:04 [info] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:365] 参数: p_conn = 08C41328, is_flood_attack = false
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:371] 包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:464] 参数: p_buf = 08C731F8
-2021/12/28 19:56:04 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:486] 在发信号给线程之前从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [Call(), ngx_c_threadpool.cxx:418] 
-2021/12/28 19:56:04 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 19:56:04 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 19:56:04 [info] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:33] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: [RecvProc(), ngx_c_socket_request.cxx:158] 参数: p_conn=08C41328, p_buff=08C41379, len_buf=8
-2021/12/28 19:56:04 [info] pid_28777: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:268] 参数: p_conn = 08C41328, is_flood_attack = false
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:284] 包头收完整了，包头结构体中表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [IsFloodAttack(), ngx_c_socket.cxx:258] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: p_conn->flood_attacked_n = 8, m_flood_attack_checked_n = 10
-2021/12/28 19:56:04 [info] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:365] 参数: p_conn = 08C41328, is_flood_attack = false
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:371] 包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:464] 参数: p_buf = 08C73220
-2021/12/28 19:56:04 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:486] 在发信号给线程之前从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [Call(), ngx_c_threadpool.cxx:418] 
-2021/12/28 19:56:04 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 19:56:04 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 19:56:04 [info] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:33] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: [RecvProc(), ngx_c_socket_request.cxx:158] 参数: p_conn=08C41328, p_buff=08C41379, len_buf=8
-2021/12/28 19:56:04 [info] pid_28777: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:268] 参数: p_conn = 08C41328, is_flood_attack = false
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:284] 包头收完整了，包头结构体中表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [IsFloodAttack(), ngx_c_socket.cxx:258] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: p_conn->flood_attacked_n = 9, m_flood_attack_checked_n = 10
-2021/12/28 19:56:04 [info] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:365] 参数: p_conn = 08C41328, is_flood_attack = false
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:371] 包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:464] 参数: p_buf = 08C73248
-2021/12/28 19:56:04 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:486] 在发信号给线程之前从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [Call(), ngx_c_threadpool.cxx:418] 
-2021/12/28 19:56:04 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 19:56:04 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 19:56:04 [info] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:33] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: [RecvProc(), ngx_c_socket_request.cxx:158] 参数: p_conn=08C41328, p_buff=08C41379, len_buf=8
-2021/12/28 19:56:04 [info] pid_28777: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:268] 参数: p_conn = 08C41328, is_flood_attack = false
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:284] 包头收完整了，包头结构体中表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [IsFloodAttack(), ngx_c_socket.cxx:258] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: p_conn->flood_attacked_n = 10, m_flood_attack_checked_n = 10
-2021/12/28 19:56:04 [info] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:365] 参数: p_conn = 08C41328, is_flood_attack = true
-2021/12/28 19:56:04 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:371] 包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [warn] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:379] 连接 p_conn = 08C41328 有flood攻击嫌疑，此处程序将丢弃这个业务请求的消息包并释放收包占用的内存资源
-2021/12/28 19:56:04 [warn] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:124] is_flood_attack为true了，发现客户端连接[08C41328]有flood攻击嫌疑，此处程序干掉这个客户端连接，并将开始回收该连接所占资源
-2021/12/28 19:56:04 [info] pid_28777: [ManualCloseSocketProc(), ngx_c_socket.cxx:203] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: [DeleteFromTimerMultimap(), ngx_c_socket_time.cxx:198] 参数: p_conn = 08C41328
-2021/12/28 19:56:04 [info] pid_28777: [ThreadFunc(), ngx_c_threadpool.cxx:290] 线程[3074108224]被激活正在处理从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [ThreadRecvProcFunc(), ngx_c_slogic_socket.cxx:129] 参数: p_msg_buf = 08C731A0
-2021/12/28 19:56:04 [info] pid_28777: [SendMsg(), ngx_c_socket.cxx:677] 参数: p_sendbuf = B62004C8
-2021/12/28 19:56:04 [info] pid_28777: [_HandlePing(), ngx_c_slogic_socket.cxx:408] 成功收到了心跳包并返回结果！
-2021/12/28 19:56:04 [info] pid_28777: [ThreadFunc(), ngx_c_threadpool.cxx:290] 线程[3074108224]被激活正在处理从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [ThreadRecvProcFunc(), ngx_c_slogic_socket.cxx:129] 参数: p_msg_buf = 08C73188
-2021/12/28 19:56:04 [info] pid_28777: [SendMsg(), ngx_c_socket.cxx:677] 参数: p_sendbuf = B62004A0
-2021/12/28 19:56:04 [info] pid_28777: [_HandlePing(), ngx_c_slogic_socket.cxx:408] 成功收到了心跳包并返回结果！
-2021/12/28 19:56:04 [info] pid_28777: [ThreadFunc(), ngx_c_threadpool.cxx:290] 线程[3074108224]被激活正在处理从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [ThreadRecvProcFunc(), ngx_c_slogic_socket.cxx:129] 参数: p_msg_buf = 08C731B8
-2021/12/28 19:56:04 [info] pid_28777: [SendMsg(), ngx_c_socket.cxx:677] 参数: p_sendbuf = B6200478
-2021/12/28 19:56:04 [info] pid_28777: [_HandlePing(), ngx_c_slogic_socket.cxx:408] 成功收到了心跳包并返回结果！
-2021/12/28 19:56:04 [info] pid_28777: [ThreadFunc(), ngx_c_threadpool.cxx:290] 线程[3074108224]被激活正在处理从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [ThreadRecvProcFunc(), ngx_c_slogic_socket.cxx:129] 参数: p_msg_buf = 08C731D0
-2021/12/28 19:56:04 [info] pid_28777: [SendMsg(), ngx_c_socket.cxx:677] 参数: p_sendbuf = B62004F0
-2021/12/28 19:56:04 [info] pid_28777: [_HandlePing(), ngx_c_slogic_socket.cxx:408] 成功收到了心跳包并返回结果！
-2021/12/28 19:56:04 [info] pid_28777: [ThreadFunc(), ngx_c_threadpool.cxx:290] 线程[3074108224]被激活正在处理从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [ThreadRecvProcFunc(), ngx_c_slogic_socket.cxx:129] 参数: p_msg_buf = 08C731F8
-2021/12/28 19:56:04 [info] pid_28777: [SendMsg(), ngx_c_socket.cxx:677] 参数: p_sendbuf = B6200518
-2021/12/28 19:56:04 [info] pid_28777: [_HandlePing(), ngx_c_slogic_socket.cxx:408] 成功收到了心跳包并返回结果！
-2021/12/28 19:56:04 [info] pid_28777: [ThreadFunc(), ngx_c_threadpool.cxx:290] 线程[3074108224]被激活正在处理从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [ThreadRecvProcFunc(), ngx_c_slogic_socket.cxx:129] 参数: p_msg_buf = 08C73220
-2021/12/28 19:56:04 [info] pid_28777: [SendMsg(), ngx_c_socket.cxx:677] 参数: p_sendbuf = B6200540
-2021/12/28 19:56:04 [info] pid_28777: [_HandlePing(), ngx_c_slogic_socket.cxx:408] 成功收到了心跳包并返回结果！
-2021/12/28 19:56:04 [info] pid_28777: [ThreadFunc(), ngx_c_threadpool.cxx:290] 线程[3074108224]被激活正在处理从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 19:56:04 [info] pid_28777: [ThreadRecvProcFunc(), ngx_c_slogic_socket.cxx:129] 参数: p_msg_buf = 08C73248
-2021/12/28 19:56:04 [info] pid_28777: [SendMsg(), ngx_c_socket.cxx:677] 参数: p_sendbuf = B6200568
-2021/12/28 19:56:04 [info] pid_28777: [_HandlePing(), ngx_c_slogic_socket.cxx:408] 成功收到了心跳包并返回结果！
-2021/12/28 19:56:04 [info] pid_28777: [ServerSendListThread(), ngx_c_socket.cxx:1097] 即将发送的数据长度是[8]
-2021/12/28 19:56:04 [info] pid_28777: [SendProc(), ngx_c_socket_request.cxx:418] 参数: p_conn = 08C41328, p_buf = B62004D4, size = 8
-2021/12/28 19:56:04 [error] pid_28777: [SendProc(), ngx_c_socket_request.cxx:466] send()返回值错误判断到最后杂项错误集合分支，send()失败！ (9: Bad file descriptor) 
-2021/12/28 19:56:04 [warn] pid_28777: [ServerSendListThread(), ngx_c_socket.cxx:1179] SendProc()返回值为[-2]，可能是对端断开了 (9: Bad file descriptor) 
-2021/12/28 19:56:04 [info] pid_28777: [ServerSendListThread(), ngx_c_socket.cxx:1097] 即将发送的数据长度是[8] (9: Bad file descriptor) 
-2021/12/28 19:56:04 [info] pid_28777: [SendProc(), ngx_c_socket_request.cxx:418] 参数: p_conn = 08C41328, p_buf = B62004AC, size = 8
-2021/12/28 19:56:04 [error] pid_28777: [SendProc(), ngx_c_socket_request.cxx:466] send()返回值错误判断到最后杂项错误集合分支，send()失败！ (9: Bad file descriptor) 
-2021/12/28 19:56:04 [warn] pid_28777: [ServerSendListThread(), ngx_c_socket.cxx:1179] SendProc()返回值为[-2]，可能是对端断开了 (9: Bad file descriptor) 
-2021/12/28 19:56:04 [info] pid_28777: [ServerSendListThread(), ngx_c_socket.cxx:1097] 即将发送的数据长度是[8] (9: Bad file descriptor) 
-2021/12/28 19:56:04 [info] pid_28777: [SendProc(), ngx_c_socket_request.cxx:418] 参数: p_conn = 08C41328, p_buf = B6200484, size = 8
-2021/12/28 19:56:04 [error] pid_28777: [SendProc(), ngx_c_socket_request.cxx:466] send()返回值错误判断到最后杂项错误集合分支，send()失败！ (9: Bad file descriptor) 
-2021/12/28 19:56:04 [warn] pid_28777: [ServerSendListThread(), ngx_c_socket.cxx:1179] SendProc()返回值为[-2]，可能是对端断开了 (9: Bad file descriptor) 
-2021/12/28 19:56:04 [info] pid_28777: [ServerSendListThread(), ngx_c_socket.cxx:1097] 即将发送的数据长度是[8] (9: Bad file descriptor) 
-2021/12/28 19:56:04 [info] pid_28777: [SendProc(), ngx_c_socket_request.cxx:418] 参数: p_conn = 08C41328, p_buf = B62004FC, size = 8
-2021/12/28 19:56:04 [error] pid_28777: [SendProc(), ngx_c_socket_request.cxx:466] send()返回值错误判断到最后杂项错误集合分支，send()失败！ (9: Bad file descriptor) 
-2021/12/28 19:56:04 [warn] pid_28777: [ServerSendListThread(), ngx_c_socket.cxx:1179] SendProc()返回值为[-2]，可能是对端断开了 (9: Bad file descriptor) 
-2021/12/28 19:56:04 [info] pid_28777: [ServerSendListThread(), ngx_c_socket.cxx:1097] 即将发送的数据长度是[8] (9: Bad file descriptor) 
-2021/12/28 19:56:04 [info] pid_28777: [SendProc(), ngx_c_socket_request.cxx:418] 参数: p_conn = 08C41328, p_buf = B6200524, size = 8
-2021/12/28 19:56:04 [error] pid_28777: [SendProc(), ngx_c_socket_request.cxx:466] send()返回值错误判断到最后杂项错误集合分支，send()失败！ (9: Bad file descriptor) 
-2021/12/28 19:56:04 [warn] pid_28777: [ServerSendListThread(), ngx_c_socket.cxx:1179] SendProc()返回值为[-2]，可能是对端断开了 (9: Bad file descriptor) 
-2021/12/28 19:56:04 [info] pid_28777: [ServerSendListThread(), ngx_c_socket.cxx:1097] 即将发送的数据长度是[8] (9: Bad file descriptor) 
-2021/12/28 19:56:04 [info] pid_28777: [SendProc(), ngx_c_socket_request.cxx:418] 参数: p_conn = 08C41328, p_buf = B620054C, size = 8
-2021/12/28 19:56:04 [error] pid_28777: [SendProc(), ngx_c_socket_request.cxx:466] send()返回值错误判断到最后杂项错误集合分支，send()失败！ (9: Bad file descriptor) 
-2021/12/28 19:56:04 [warn] pid_28777: [ServerSendListThread(), ngx_c_socket.cxx:1179] SendProc()返回值为[-2]，可能是对端断开了 (9: Bad file descriptor) 
-2021/12/28 19:56:04 [info] pid_28777: [ServerSendListThread(), ngx_c_socket.cxx:1097] 即将发送的数据长度是[8] (9: Bad file descriptor) 
-2021/12/28 19:56:04 [info] pid_28777: [SendProc(), ngx_c_socket_request.cxx:418] 参数: p_conn = 08C41328, p_buf = B6200574, size = 8
-2021/12/28 19:56:04 [error] pid_28777: [SendProc(), ngx_c_socket_request.cxx:466] send()返回值错误判断到最后杂项错误集合分支，send()失败！ (9: Bad file descriptor) 
-2021/12/28 19:56:04 [warn] pid_28777: [ServerSendListThread(), ngx_c_socket.cxx:1179] SendProc()返回值为[-2]，可能是对端断开了 (9: Bad file descriptor) 
-2021/12/28 19:56:04 [info] pid_28777: [AddRecyConnectList(), ngx_c_socket_conn.cxx:319] 连接加到延迟回收队列(list)中，连接[08C41328]在[80]秒后将被回收
-2021/12/28 19:56:04 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 19:56:04 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 19:57:24 [info] pid_28777: [ServerRecyConnectionThread(), ngx_c_socket_conn.cxx:420] 已经延时[80]秒了，此时待回收连接数有[1]个
-2021/12/28 19:57:24 [info] pid_28777: [ServerRecyConnectionThread(), ngx_c_socket_conn.cxx:421] 现在对连接[08C41328]开始走回收流程...
-2021/12/28 19:57:24 [info] pid_28777: [FreeConnectionToCPool(), ngx_c_socket_conn.cxx:297] 归还连接[4294967295]到连接池中完成，此时连接池中空闲连接有[m_list_free_connection.size()=1022]
-2021/12/28 19:57:24 [info] pid_28777: [ServerRecyConnectionThread(), ngx_c_socket_conn.cxx:431] 连接[08C41328]回收完成!
-2021/12/28 20:16:25 [info] pid_28777: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx:229] 套接字[socket=7]来连接池取一个连接了...
-2021/12/28 20:16:25 [info] pid_28777: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx:244] 连接池中有空闲连接，从这些空闲连接中取到一个连接[08C413D0]
-2021/12/28 20:16:25 [info] pid_28777: [EpollOperEvent(), ngx_c_socket.cxx:801] 参数: fd = 7, event_type = 1, flag = 8193, otherflag = 0, p_conn = 08C413D0
-2021/12/28 20:16:25 [info] pid_28777: [AddToTimerMultimap(), ngx_c_socket_time.cxx:46] 参数：p_conn = 08C413D0
-2021/12/28 20:16:25 [info] pid_28777: [GetEarliestTime(), ngx_c_socket_time.cxx:81] 
-2021/12/28 20:16:25 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 20:16:25 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 20:16:42 [info] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:33] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: [RecvProc(), ngx_c_socket_request.cxx:158] 参数: p_conn=08C413D0, p_buff=08C41421, len_buf=8
-2021/12/28 20:16:42 [info] pid_28777: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:268] 参数: p_conn = 08C413D0, is_flood_attack = false
-2021/12/28 20:16:42 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:284] 包头收完整了，包头结构体中表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [IsFloodAttack(), ngx_c_socket.cxx:258] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: p_conn->flood_attacked_n = 0, m_flood_attack_checked_n = 10
-2021/12/28 20:16:42 [info] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:365] 参数: p_conn = 08C413D0, is_flood_attack = false
-2021/12/28 20:16:42 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:371] 包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:464] 参数: p_buf = 08C73248
-2021/12/28 20:16:42 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:486] 在发信号给线程之前从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [Call(), ngx_c_threadpool.cxx:418] 
-2021/12/28 20:16:42 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 20:16:42 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 20:16:42 [info] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:33] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: [RecvProc(), ngx_c_socket_request.cxx:158] 参数: p_conn=08C413D0, p_buff=08C41421, len_buf=8
-2021/12/28 20:16:42 [info] pid_28777: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:268] 参数: p_conn = 08C413D0, is_flood_attack = false
-2021/12/28 20:16:42 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:284] 包头收完整了，包头结构体中表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [IsFloodAttack(), ngx_c_socket.cxx:258] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: p_conn->flood_attacked_n = 1, m_flood_attack_checked_n = 10
-2021/12/28 20:16:42 [info] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:365] 参数: p_conn = 08C413D0, is_flood_attack = false
-2021/12/28 20:16:42 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:371] 包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:464] 参数: p_buf = 08C73220
-2021/12/28 20:16:42 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:486] 在发信号给线程之前从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [Call(), ngx_c_threadpool.cxx:418] 
-2021/12/28 20:16:42 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 20:16:42 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 20:16:42 [info] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:33] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: [RecvProc(), ngx_c_socket_request.cxx:158] 参数: p_conn=08C413D0, p_buff=08C41421, len_buf=8
-2021/12/28 20:16:42 [info] pid_28777: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:268] 参数: p_conn = 08C413D0, is_flood_attack = false
-2021/12/28 20:16:42 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:284] 包头收完整了，包头结构体中表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [IsFloodAttack(), ngx_c_socket.cxx:258] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: p_conn->flood_attacked_n = 2, m_flood_attack_checked_n = 10
-2021/12/28 20:16:42 [info] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:365] 参数: p_conn = 08C413D0, is_flood_attack = false
-2021/12/28 20:16:42 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:371] 包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:464] 参数: p_buf = 08C731F8
-2021/12/28 20:16:42 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:486] 在发信号给线程之前从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [Call(), ngx_c_threadpool.cxx:418] 
-2021/12/28 20:16:42 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 20:16:42 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 20:16:42 [info] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:33] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: [RecvProc(), ngx_c_socket_request.cxx:158] 参数: p_conn=08C413D0, p_buff=08C41421, len_buf=8
-2021/12/28 20:16:42 [info] pid_28777: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:268] 参数: p_conn = 08C413D0, is_flood_attack = false
-2021/12/28 20:16:42 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:284] 包头收完整了，包头结构体中表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [IsFloodAttack(), ngx_c_socket.cxx:258] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: p_conn->flood_attacked_n = 3, m_flood_attack_checked_n = 10
-2021/12/28 20:16:42 [info] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:365] 参数: p_conn = 08C413D0, is_flood_attack = false
-2021/12/28 20:16:42 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:371] 包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:464] 参数: p_buf = 08C731D0
-2021/12/28 20:16:42 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:486] 在发信号给线程之前从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [Call(), ngx_c_threadpool.cxx:418] 
-2021/12/28 20:16:42 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 20:16:42 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 20:16:42 [info] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:33] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: [RecvProc(), ngx_c_socket_request.cxx:158] 参数: p_conn=08C413D0, p_buff=08C41421, len_buf=8
-2021/12/28 20:16:42 [info] pid_28777: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:268] 参数: p_conn = 08C413D0, is_flood_attack = false
-2021/12/28 20:16:42 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:284] 包头收完整了，包头结构体中表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [IsFloodAttack(), ngx_c_socket.cxx:258] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: p_conn->flood_attacked_n = 4, m_flood_attack_checked_n = 10
-2021/12/28 20:16:42 [info] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:365] 参数: p_conn = 08C413D0, is_flood_attack = false
-2021/12/28 20:16:42 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:371] 包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:464] 参数: p_buf = 08C731B8
-2021/12/28 20:16:42 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:486] 在发信号给线程之前从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [Call(), ngx_c_threadpool.cxx:418] 
-2021/12/28 20:16:42 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 20:16:42 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 20:16:42 [info] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:33] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: [RecvProc(), ngx_c_socket_request.cxx:158] 参数: p_conn=08C413D0, p_buff=08C41421, len_buf=8
-2021/12/28 20:16:42 [info] pid_28777: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:268] 参数: p_conn = 08C413D0, is_flood_attack = false
-2021/12/28 20:16:42 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:284] 包头收完整了，包头结构体中表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [IsFloodAttack(), ngx_c_socket.cxx:258] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: p_conn->flood_attacked_n = 5, m_flood_attack_checked_n = 10
-2021/12/28 20:16:42 [info] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:365] 参数: p_conn = 08C413D0, is_flood_attack = false
-2021/12/28 20:16:42 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:371] 包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:464] 参数: p_buf = 08C73188
-2021/12/28 20:16:42 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:486] 在发信号给线程之前从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [Call(), ngx_c_threadpool.cxx:418] 
-2021/12/28 20:16:42 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 20:16:42 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 20:16:42 [info] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:33] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: [RecvProc(), ngx_c_socket_request.cxx:158] 参数: p_conn=08C413D0, p_buff=08C41421, len_buf=8
-2021/12/28 20:16:42 [info] pid_28777: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:268] 参数: p_conn = 08C413D0, is_flood_attack = false
-2021/12/28 20:16:42 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:284] 包头收完整了，包头结构体中表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [IsFloodAttack(), ngx_c_socket.cxx:258] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: p_conn->flood_attacked_n = 6, m_flood_attack_checked_n = 10
-2021/12/28 20:16:42 [info] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:365] 参数: p_conn = 08C413D0, is_flood_attack = false
-2021/12/28 20:16:42 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:371] 包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:464] 参数: p_buf = 08C731A0
-2021/12/28 20:16:42 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:486] 在发信号给线程之前从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [Call(), ngx_c_threadpool.cxx:418] 
-2021/12/28 20:16:42 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 20:16:42 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 20:16:42 [info] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:33] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: [RecvProc(), ngx_c_socket_request.cxx:158] 参数: p_conn=08C413D0, p_buff=08C41421, len_buf=8
-2021/12/28 20:16:42 [info] pid_28777: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:268] 参数: p_conn = 08C413D0, is_flood_attack = false
-2021/12/28 20:16:42 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:284] 包头收完整了，包头结构体中表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [IsFloodAttack(), ngx_c_socket.cxx:258] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: p_conn->flood_attacked_n = 7, m_flood_attack_checked_n = 10
-2021/12/28 20:16:42 [info] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:365] 参数: p_conn = 08C413D0, is_flood_attack = false
-2021/12/28 20:16:42 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:371] 包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:464] 参数: p_buf = 08C73270
-2021/12/28 20:16:42 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:486] 在发信号给线程之前从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [Call(), ngx_c_threadpool.cxx:418] 
-2021/12/28 20:16:42 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 20:16:42 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 20:16:42 [info] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:33] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: [RecvProc(), ngx_c_socket_request.cxx:158] 参数: p_conn=08C413D0, p_buff=08C41421, len_buf=8
-2021/12/28 20:16:42 [info] pid_28777: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:268] 参数: p_conn = 08C413D0, is_flood_attack = false
-2021/12/28 20:16:42 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:284] 包头收完整了，包头结构体中表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [IsFloodAttack(), ngx_c_socket.cxx:258] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: p_conn->flood_attacked_n = 8, m_flood_attack_checked_n = 10
-2021/12/28 20:16:42 [info] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:365] 参数: p_conn = 08C413D0, is_flood_attack = false
-2021/12/28 20:16:42 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:371] 包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:464] 参数: p_buf = 08C73298
-2021/12/28 20:16:42 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:486] 在发信号给线程之前从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [Call(), ngx_c_threadpool.cxx:418] 
-2021/12/28 20:16:42 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 20:16:42 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 20:16:42 [info] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:33] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: [RecvProc(), ngx_c_socket_request.cxx:158] 参数: p_conn=08C413D0, p_buff=08C41421, len_buf=8
-2021/12/28 20:16:42 [info] pid_28777: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:268] 参数: p_conn = 08C413D0, is_flood_attack = false
-2021/12/28 20:16:42 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:284] 包头收完整了，包头结构体中表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [IsFloodAttack(), ngx_c_socket.cxx:258] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: p_conn->flood_attacked_n = 9, m_flood_attack_checked_n = 10
-2021/12/28 20:16:42 [info] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:365] 参数: p_conn = 08C413D0, is_flood_attack = false
-2021/12/28 20:16:42 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:371] 包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:464] 参数: p_buf = 08C732C0
-2021/12/28 20:16:42 [info] pid_28777: [AddMsgRecvQueueAndSignal(), ngx_c_threadpool.cxx:486] 在发信号给线程之前从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [Call(), ngx_c_threadpool.cxx:418] 
-2021/12/28 20:16:42 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 20:16:42 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 20:16:42 [info] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:33] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: [RecvProc(), ngx_c_socket_request.cxx:158] 参数: p_conn=08C413D0, p_buff=08C41421, len_buf=8
-2021/12/28 20:16:42 [info] pid_28777: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:268] 参数: p_conn = 08C413D0, is_flood_attack = false
-2021/12/28 20:16:42 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcPart1(), ngx_c_socket_request.cxx:284] 包头收完整了，包头结构体中表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [IsFloodAttack(), ngx_c_socket.cxx:258] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: p_conn->flood_attacked_n = 10, m_flood_attack_checked_n = 10
-2021/12/28 20:16:42 [info] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:365] 参数: p_conn = 08C413D0, is_flood_attack = true
-2021/12/28 20:16:42 [stderr] pid_28777: [LogStderr(), ngx_log.cxx:127] nginx: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:371] 包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [warn] pid_28777: [WaitRequestHandlerProcLast(), ngx_c_socket_request.cxx:379] 连接 p_conn = 08C413D0 有flood攻击嫌疑，此处程序将丢弃这个业务请求的消息包并释放收包占用的内存资源
-2021/12/28 20:16:42 [warn] pid_28777: [ReadRequestHandler(), ngx_c_socket_request.cxx:124] is_flood_attack为true了，发现客户端连接[08C413D0]有flood攻击嫌疑，此处程序干掉这个客户端连接，并将开始回收该连接所占资源
-2021/12/28 20:16:42 [info] pid_28777: [ManualCloseSocketProc(), ngx_c_socket.cxx:203] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: [DeleteFromTimerMultimap(), ngx_c_socket_time.cxx:198] 参数: p_conn = 08C413D0
-2021/12/28 20:16:42 [info] pid_28777: [AddRecyConnectList(), ngx_c_socket_conn.cxx:319] 连接加到延迟回收队列(list)中，连接[08C413D0]在[80]秒后将被回收
-2021/12/28 20:16:42 [info] pid_28777: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
-2021/12/28 20:16:42 [info] pid_28777: [EpollProcessEvents(), ngx_c_socket.cxx:879] 
-2021/12/28 20:16:42 [info] pid_28777: [ThreadFunc(), ngx_c_threadpool.cxx:290] 线程[3074108224]被激活正在处理从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [ThreadRecvProcFunc(), ngx_c_slogic_socket.cxx:129] 参数: p_msg_buf = 08C73248
-2021/12/28 20:16:42 [info] pid_28777: [ThreadFunc(), ngx_c_threadpool.cxx:290] 线程[3074108224]被激活正在处理从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [ThreadRecvProcFunc(), ngx_c_slogic_socket.cxx:129] 参数: p_msg_buf = 08C73220
-2021/12/28 20:16:42 [info] pid_28777: [ThreadFunc(), ngx_c_threadpool.cxx:290] 线程[3074108224]被激活正在处理从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [ThreadRecvProcFunc(), ngx_c_slogic_socket.cxx:129] 参数: p_msg_buf = 08C731F8
-2021/12/28 20:16:42 [info] pid_28777: [ThreadFunc(), ngx_c_threadpool.cxx:290] 线程[3074108224]被激活正在处理从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [ThreadRecvProcFunc(), ngx_c_slogic_socket.cxx:129] 参数: p_msg_buf = 08C731D0
-2021/12/28 20:16:42 [info] pid_28777: [ThreadFunc(), ngx_c_threadpool.cxx:290] 线程[3074108224]被激活正在处理从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [ThreadRecvProcFunc(), ngx_c_slogic_socket.cxx:129] 参数: p_msg_buf = 08C731B8
-2021/12/28 20:16:42 [info] pid_28777: [ThreadFunc(), ngx_c_threadpool.cxx:290] 线程[3074108224]被激活正在处理从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [ThreadRecvProcFunc(), ngx_c_slogic_socket.cxx:129] 参数: p_msg_buf = 08C73188
-2021/12/28 20:16:42 [info] pid_28777: [ThreadFunc(), ngx_c_threadpool.cxx:290] 线程[3074108224]被激活正在处理从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [ThreadRecvProcFunc(), ngx_c_slogic_socket.cxx:129] 参数: p_msg_buf = 08C731A0
-2021/12/28 20:16:42 [info] pid_28777: [ThreadFunc(), ngx_c_threadpool.cxx:290] 线程[3074108224]被激活正在处理从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [ThreadRecvProcFunc(), ngx_c_slogic_socket.cxx:129] 参数: p_msg_buf = 08C73270
-2021/12/28 20:16:42 [info] pid_28777: [ThreadFunc(), ngx_c_threadpool.cxx:290] 线程[3074108224]被激活正在处理从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [ThreadRecvProcFunc(), ngx_c_slogic_socket.cxx:129] 参数: p_msg_buf = 08C73298
-2021/12/28 20:16:42 [info] pid_28777: [ThreadFunc(), ngx_c_threadpool.cxx:290] 线程[3074108224]被激活正在处理从消息队列中取出最上面一个消息，消息队列中最上面一个消息表示[包头+包体]的长度len_pkg = 8
-2021/12/28 20:16:42 [info] pid_28777: [ThreadRecvProcFunc(), ngx_c_slogic_socket.cxx:129] 参数: p_msg_buf = 08C732C0
-2021/12/28 20:18:02 [info] pid_28777: [ServerRecyConnectionThread(), ngx_c_socket_conn.cxx:420] 已经延时[80]秒了，此时待回收连接数有[1]个
-2021/12/28 20:18:02 [info] pid_28777: [ServerRecyConnectionThread(), ngx_c_socket_conn.cxx:421] 现在对连接[08C413D0]开始走回收流程...
-2021/12/28 20:18:02 [info] pid_28777: [FreeConnectionToCPool(), ngx_c_socket_conn.cxx:297] 归还连接[4294967295]到连接池中完成，此时连接池中空闲连接有[m_list_free_connection.size()=1022]
-2021/12/28 20:18:02 [info] pid_28777: [ServerRecyConnectionThread(), ngx_c_socket_conn.cxx:431] 连接[08C413D0]回收完成!
+2021/12/29 02:28:47 [info] pid_31360: [main(), main.cxx:86] LogInit()完成，可以开始写日志记录了...
+2021/12/29 02:28:47 [info] pid_31360: [InitSignals(), ngx_signal.cxx:62] 
+2021/12/29 02:28:47 [info] pid_31360: [InitSocket(), ngx_c_slogic_socket.cxx:104] 
+2021/12/29 02:28:47 [info] pid_31360: [InitSocket(), ngx_c_socket.cxx:348] 
+2021/12/29 02:28:47 [info] pid_31360: [ReadConf(), ngx_c_socket.cxx:310] 
+2021/12/29 02:28:47 [info] pid_31360: [GetIntDefault(), ngx_c_conf.cxx:141] 
+2021/12/29 02:28:47 [info] pid_31360: [GetIntDefault(), ngx_c_conf.cxx:141] 
+2021/12/29 02:28:47 [info] pid_31360: [GetIntDefault(), ngx_c_conf.cxx:141] 
+2021/12/29 02:28:47 [info] pid_31360: [GetIntDefault(), ngx_c_conf.cxx:141] 
+2021/12/29 02:28:47 [info] pid_31360: [GetIntDefault(), ngx_c_conf.cxx:141] 
+2021/12/29 02:28:47 [info] pid_31360: [GetIntDefault(), ngx_c_conf.cxx:141] 
+2021/12/29 02:28:47 [info] pid_31360: [GetIntDefault(), ngx_c_conf.cxx:141] 
+2021/12/29 02:28:47 [info] pid_31360: [GetIntDefault(), ngx_c_conf.cxx:141] 
+2021/12/29 02:28:47 [info] pid_31360: [GetIntDefault(), ngx_c_conf.cxx:141] 
+2021/12/29 02:28:47 [info] pid_31360: [OpenListeningSockets(), ngx_c_socket.cxx:484] 
+2021/12/29 02:28:47 [info] pid_31360: [SetNonblocking(), ngx_c_socket.cxx:593] 参数: sockfd = 4
+2021/12/29 02:28:47 [info] pid_31360: [GetIntDefault(), ngx_c_conf.cxx:141] 
+2021/12/29 02:28:47 [info] pid_31360: [OpenListeningSockets(), ngx_c_socket.cxx:559] 监听端口[80]成功!
+2021/12/29 02:28:47 [info] pid_31360: [SetNonblocking(), ngx_c_socket.cxx:593] 参数: sockfd = 5
+2021/12/29 02:28:47 [info] pid_31360: [GetIntDefault(), ngx_c_conf.cxx:141] 
+2021/12/29 02:28:47 [info] pid_31360: [OpenListeningSockets(), ngx_c_socket.cxx:559] 监听端口[443]成功!
+2021/12/29 02:28:47 [info] pid_31360: [InitSetProcTitle(), ngx_set_proctitile.cxx:30] 
+2021/12/29 02:28:47 [info] pid_31360: [GetIntDefault(), ngx_c_conf.cxx:141] 
+2021/12/29 02:28:47 [info] pid_31360: [CreatDaemon(), ngx_daemon.cxx:25] 
+2021/12/29 02:28:47 [info] pid_31360: [main(), main.cxx:118] 原来的main进程完成使命退出历史舞台，后面任务交给守护进程master和后面会创建的工作进程worker了...
+2021/12/29 02:28:47 [info] pid_31361: [MasterProcessCycle(), ngx_process_cycle.cxx:37] 
+2021/12/29 02:28:47 [info] pid_31361: [SetProcTitle(), ngx_set_proctitile.cxx:69] 
+2021/12/29 02:28:47 [info] pid_31361: [MasterProcessCycle(), ngx_process_cycle.cxx:81] master process ./bin/x86/Debug/net_frame 31361 【master进程】启动并开始运行...
+2021/12/29 02:28:47 [info] pid_31361: [GetIntDefault(), ngx_c_conf.cxx:141] 
+2021/12/29 02:28:47 [info] pid_31361: [StartCreatWorkerProc(), ngx_process_cycle.cxx:148] 
+2021/12/29 02:28:47 [info] pid_31361: [CreatWorkerProc(), ngx_process_cycle.cxx:179] 
+2021/12/29 02:28:47 [info] pid_31362: [WorkerProcessCycle(), ngx_process_cycle.cxx:223] 
+2021/12/29 02:28:47 [info] pid_31362: [SetProcTitle(), ngx_set_proctitile.cxx:69] 
+2021/12/29 02:28:47 [info] pid_31362: [InitWorkerProcess(), ngx_process_cycle.cxx:273] 
+2021/12/29 02:28:47 [info] pid_31362: [GetIntDefault(), ngx_c_conf.cxx:141] 
+2021/12/29 02:28:47 [info] pid_31362: [Create(), ngx_c_threadpool.cxx:143] 参数: 线程池创建线程数量thread_n = 20
+2021/12/29 02:28:47 [stderr] pid_31362: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程0成功,线程id = 3074227008
+2021/12/29 02:28:47 [info] pid_31362: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[3074227008]时传递的参数thread_data = 08B63060
+2021/12/29 02:28:47 [stderr] pid_31362: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程1成功,线程id = 3065834304
+2021/12/29 02:28:47 [info] pid_31362: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[3065834304]时传递的参数thread_data = 08B630A0
+2021/12/29 02:28:47 [info] pid_31362: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[3055549248]时传递的参数thread_data = 08B63090
+2021/12/29 02:28:47 [stderr] pid_31362: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程2成功,线程id = 3055549248
+2021/12/29 02:28:47 [info] pid_31362: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[3047156544]时传递的参数thread_data = 08B632A8
+2021/12/29 02:28:47 [stderr] pid_31362: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程3成功,线程id = 3047156544
+2021/12/29 02:28:47 [info] pid_31362: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[3038763840]时传递的参数thread_data = 08B63368
+2021/12/29 02:28:47 [stderr] pid_31362: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程4成功,线程id = 3038763840
+2021/12/29 02:28:47 [stderr] pid_31362: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程5成功,线程id = 3030371136
+2021/12/29 02:28:47 [info] pid_31362: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[3030371136]时传递的参数thread_data = 08B63120
+2021/12/29 02:28:47 [stderr] pid_31362: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程6成功,线程id = 3021978432
+2021/12/29 02:28:47 [info] pid_31362: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[3021978432]时传递的参数thread_data = 08B63130
+2021/12/29 02:28:47 [stderr] pid_31362: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程7成功,线程id = 3013585728
+2021/12/29 02:28:47 [info] pid_31362: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[3013585728]时传递的参数thread_data = 08B63140
+2021/12/29 02:28:47 [stderr] pid_31362: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程8成功,线程id = 3005193024
+2021/12/29 02:28:47 [info] pid_31362: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[3005193024]时传递的参数thread_data = 08B63150
+2021/12/29 02:28:47 [stderr] pid_31362: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程9成功,线程id = 2996800320
+2021/12/29 02:28:47 [info] pid_31362: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[2996800320]时传递的参数thread_data = 08B63160
+2021/12/29 02:28:47 [stderr] pid_31362: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程10成功,线程id = 2988407616
+2021/12/29 02:28:47 [info] pid_31362: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[2988407616]时传递的参数thread_data = 08B63170
+2021/12/29 02:28:47 [stderr] pid_31362: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程11成功,线程id = 2980014912
+2021/12/29 02:28:47 [info] pid_31362: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[2980014912]时传递的参数thread_data = 08B667E0
+2021/12/29 02:28:47 [stderr] pid_31362: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程12成功,线程id = 2971622208
+2021/12/29 02:28:47 [info] pid_31362: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[2971622208]时传递的参数thread_data = 08B66888
+2021/12/29 02:28:47 [stderr] pid_31362: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程13成功,线程id = 2963229504
+2021/12/29 02:28:47 [info] pid_31362: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[2963229504]时传递的参数thread_data = 08B66930
+2021/12/29 02:28:47 [stderr] pid_31362: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程14成功,线程id = 2954836800
+2021/12/29 02:28:47 [info] pid_31362: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[2954836800]时传递的参数thread_data = 08B669D8
+2021/12/29 02:28:47 [stderr] pid_31362: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程15成功,线程id = 2946444096
+2021/12/29 02:28:47 [info] pid_31362: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[2946444096]时传递的参数thread_data = 08B66A80
+2021/12/29 02:28:47 [stderr] pid_31362: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程16成功,线程id = 2938051392
+2021/12/29 02:28:47 [info] pid_31362: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[2938051392]时传递的参数thread_data = 08B66B28
+2021/12/29 02:28:47 [stderr] pid_31362: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程17成功,线程id = 2929658688
+2021/12/29 02:28:47 [info] pid_31362: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[2929658688]时传递的参数thread_data = 08B665D0
+2021/12/29 02:28:47 [stderr] pid_31362: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程18成功,线程id = 2921265984
+2021/12/29 02:28:47 [info] pid_31362: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[2921265984]时传递的参数thread_data = 08B665E0
+2021/12/29 02:28:47 [stderr] pid_31362: [LogStderr(), ngx_log.cxx:127] nginx: CThreadPool::Create()创建线程19成功,线程id = 2912873280
+2021/12/29 02:28:47 [info] pid_31362: [ThreadFunc(), ngx_c_threadpool.cxx:221] 参数: 创建线程[2912873280]时传递的参数thread_data = 08B665F0
+2021/12/29 02:28:48 [info] pid_31362: [InitSubproc(), ngx_c_socket.cxx:379] 
+2021/12/29 02:28:48 [info] pid_31362: [InitEpoll(), ngx_c_socket.cxx:716] 
+2021/12/29 02:28:48 [info] pid_31362: [ServerSendListThread(), ngx_c_socket.cxx:1003] 参数: thread_data = 08B66600
+2021/12/29 02:28:48 [info] pid_31362: [ServerTimerQueueMonitorThread(), ngx_c_socket_time.cxx:290] 参数: 时间队列监视和处理线程[2887695168], 该线程的线程参数threadData = 08B66E20
+2021/12/29 02:28:48 [info] pid_31362: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx:229] 套接字[socket=4]来连接池取一个连接了...
+2021/12/29 02:28:48 [info] pid_31362: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx:244] 连接池中有空闲连接，从这些空闲连接中取到一个连接[08B67018]
+2021/12/29 02:28:48 [info] pid_31362: [EpollOperEvent(), ngx_c_socket.cxx:802] 参数: fd = 4, event_type = 1, flag = 8193, otherflag = 0, p_conn = 08B67018
+2021/12/29 02:28:48 [info] pid_31362: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx:229] 套接字[socket=5]来连接池取一个连接了...
+2021/12/29 02:28:48 [info] pid_31362: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx:244] 连接池中有空闲连接，从这些空闲连接中取到一个连接[08B670D0]
+2021/12/29 02:28:48 [info] pid_31362: [EpollOperEvent(), ngx_c_socket.cxx:802] 参数: fd = 5, event_type = 1, flag = 8193, otherflag = 0, p_conn = 08B670D0
+2021/12/29 02:28:48 [info] pid_31362: [WorkerProcessCycle(), ngx_process_cycle.cxx:230] 子进程worker process[pid_31362]已经启动并初始化完成，下面要开始真正干活了...
+2021/12/29 02:28:48 [info] pid_31362: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
+2021/12/29 02:28:48 [info] pid_31362: [EpollProcessEvents(), ngx_c_socket.cxx:880] 
+2021/12/29 02:31:04 [info] pid_31362: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx:229] 套接字[socket=7]来连接池取一个连接了...
+2021/12/29 02:31:04 [info] pid_31362: [GetConnectionFromCPool(), ngx_c_socket_conn.cxx:244] 连接池中有空闲连接，从这些空闲连接中取到一个连接[08B67198]
+2021/12/29 02:31:04 [info] pid_31362: [EpollOperEvent(), ngx_c_socket.cxx:802] 参数: fd = 7, event_type = 1, flag = 8193, otherflag = 0, p_conn = 08B67198
+2021/12/29 02:31:04 [info] pid_31362: [AddToTimerMultimap(), ngx_c_socket_time.cxx:46] 参数：p_conn = 08B67198
+2021/12/29 02:31:04 [info] pid_31362: [GetEarliestTime(), ngx_c_socket_time.cxx:81] 
+2021/12/29 02:31:04 [info] pid_31362: [ProcessEventsAndTimers(), ngx_event.cxx:7] 
+2021/12/29 02:31:04 [info] pid_31362: [EpollProcessEvents(), ngx_c_socket.cxx:880] 
+2021/12/29 02:31:25 [info] pid_31362: [GetOverTimeTimer(), ngx_c_socket_time.cxx:149] 参数: cur_time = 1640716285
+2021/12/29 02:31:25 [info] pid_31362: [GetEarliestTime(), ngx_c_socket_time.cxx:81] 
+2021/12/29 02:31:25 [info] pid_31362: [RemoveFirstTimer(), ngx_c_socket_time.cxx:110] 
+2021/12/29 02:31:25 [info] pid_31362: [GetOverTimeTimer(), ngx_c_socket_time.cxx:149] 参数: cur_time = 1640716285
+2021/12/29 02:31:25 [info] pid_31362: [PingTimeOutChecking(), ngx_c_slogic_socket.cxx:324] m_is_overtime_kick为true，开启了到时间直接踢出去的开关，按此配置将此连接[08B67198]踢下线!
+2021/12/29 02:31:25 [info] pid_31362: [ManualCloseSocketProc(), ngx_c_socket.cxx:203] 参数: p_conn = 08B67198
+2021/12/29 02:31:25 [info] pid_31362: [DeleteFromTimerMultimap(), ngx_c_socket_time.cxx:205] 参数: p_conn = 08B67198
+2021/12/29 02:31:25 [info] pid_31362: [AddRecyConnectList(), ngx_c_socket_conn.cxx:319] 连接加到延迟回收队列(list)中，连接[08B67198]在[80]秒后将被回收
+2021/12/29 02:32:45 [info] pid_31362: [ServerRecyConnectionThread(), ngx_c_socket_conn.cxx:420] 已经延时[80]秒了，此时待回收连接数有[1]个
+2021/12/29 02:32:45 [info] pid_31362: [ServerRecyConnectionThread(), ngx_c_socket_conn.cxx:421] 现在对连接[08B67198]开始走回收流程...
+2021/12/29 02:32:45 [info] pid_31362: [FreeConnectionToCPool(), ngx_c_socket_conn.cxx:297] 归还连接[4294967295]到连接池中完成，此时连接池中空闲连接有[m_list_free_connection.size()=1022]
+2021/12/29 02:32:45 [info] pid_31362: [ServerRecyConnectionThread(), ngx_c_socket_conn.cxx:431] 连接[08B67198]回收完成!

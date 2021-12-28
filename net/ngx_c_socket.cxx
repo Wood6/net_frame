@@ -317,6 +317,7 @@ void CSocket::ReadConf()
 	m_is_enable_ping_timer = p_config->GetIntDefault("enable_socket_wait_time", 0) ? true : false;    // 是否开启踢人时钟，true开启   false不开启
 	m_ping_wait_time = p_config->GetIntDefault("socket_max_wait_time", m_ping_wait_time);             // 多少秒检测一次是否 心跳超时，只有当m_is_enable_ping_timer = true时，本项才有用	
 	m_ping_wait_time = (m_ping_wait_time > 5) ? m_ping_wait_time : 5;                                 // 不建议低于5秒钟，因为无需太频繁
+    m_is_overtime_kick = p_config->GetIntDefault("socket_overtime_kick", 0) ? true : false;           // 当时间到达m_ping_wait_time指定的时间时，直接把客户端踢出去，只有当m_is_enable_ping_timer = 1时，本项才有用 
 
     m_enable_flood_attack_check = p_config->GetIntDefault("enable_flood_attack_check", 0) ? true : false;  // Flood攻击检测是否开启,1开启,0不开启
     m_flood_time_interval = p_config->GetIntDefault("flood_attack_time_interval", 100);                    // 表示每次收到数据包的时间间隔是100(毫秒)

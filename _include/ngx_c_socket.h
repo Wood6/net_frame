@@ -184,6 +184,8 @@ protected:
     size_t                        m_len_pkg_header;      // sizeof(COMM_PKG_HEADER);		
     size_t                        m_len_msg_header;      // sizeof(STRUC_MSG_HEADER);
 
+    // 时间相关
+    int                           m_is_overtime_kick;    // 当时间到达m_ping_wait_time指定的时间时，直接把客户端踢出去，只有当m_is_enable_ping_timer = true时，本项才有用 
 	int                           m_ping_wait_time;      // 多少秒检测一次是否 心跳超时，只有当 m_is_enable_ping_timer = true 时，本项才有用	
 
 private:

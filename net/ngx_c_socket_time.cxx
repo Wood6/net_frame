@@ -156,14 +156,21 @@ gps_msg_header_t CSocket::GetOverTimeTimer(time_t cur_time)
 	{
 		// 这回确实是有到时间的了【超时的节点】
 		gps_msg_header_t p_msg_header = RemoveFirstTimer();    // 把这个超时的节点从 m_multimap_timer 删掉，并把这个节点的第二项返回来；
-		time_t new_future_time = cur_time + (m_ping_wait_time);// 因为下次超时的时间我们也依然要判断，所以还要把这个节点加回来 
 
-		CMemory* p_memory = CMemory::GetInstance();
-		gps_msg_header_t p_tmp_msg_header = (gps_msg_header_t)p_memory->AllocMemory(sizeof(gps_msg_header_t), false);
-		p_tmp_msg_header->p_conn = p_msg_header->p_conn;
-		p_tmp_msg_header->currse_quence_n = p_msg_header->currse_quence_n;			
-		m_multimap_timer.insert(std::make_pair(new_future_time, p_tmp_msg_header)); // 自动排序 小->大			
-		m_multimap_timer_size++;       
+        if(false == m_is_overtime_kick)
+        {
+            // 如果不是要求超时就提出，则才做这里的事
+            
+            time_t new_future_time = cur_time + (m_ping_wait_time);// 因为下次超时的时间我们也依然要判断，所以还要把这个节点加回来 
+   
+            CMemory* p_memory = CMemory::GetInstance();
+            gps_msg_header_t p_tmp_msg_header = (gps_msg_header_t)p_memory->AllocMemory(sizeof(gps_msg_header_t), false);
+            p_tmp_msg_header->p_conn = p_msg_header->p_conn;
+            p_tmp_msg_header->currse_quence_n = p_msg_header->currse_quence_n;          
+            m_multimap_timer.insert(std::make_pair(new_future_time, p_tmp_msg_header)); // 自动排序 小->大            
+            m_multimap_timer_size++;       
+        }        
+
 
 		if(m_multimap_timer_size > 0)    // 这个判断条件必要，因为以后我们可能在这里扩充别的代码
 		{
