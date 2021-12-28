@@ -243,7 +243,11 @@ bool CLogicSocket::_HandleRegister(gps_connection_t p_conn, gps_msg_header_t p_m
 	CLock lock(&p_conn->mutex_logic_porc); // 凡是和本用户有关的访问都互斥
 
 	// (3)取得了整个发送过来的数据
-	//gps_register_t p_RecvInfo = (gps_register_t)p_pkg_body;
+	gps_register_t p_recv_info = (gps_register_t)p_pkg_body;
+    
+    p_recv_info->type = ntohl(p_recv_info->type);             // 所有数值型,short,int,long,uint64_t,int64_t这种大家都不要忘记传输之前主机网络序，收到后网络转主机序
+    p_recv_info->username[sizeof(p_recv_info->username)-1]=0; // 这非常关键，防止客户端发送过来畸形包，导致服务器直接使用这个数据出现错误。 
+    p_recv_info->password[sizeof(p_recv_info->password)-1]=0; // 这非常关键，防止客户端发送过来畸形包，导致服务器直接使用这个数据出现错误。 
 
 	// (4)这里可能要考虑 根据业务逻辑，进一步判断收到的数据的合法性，
 	//  当前该玩家的状态是否适合收到这个数据等等【比如如果用户没登陆，它就不适合购买物品等等】
