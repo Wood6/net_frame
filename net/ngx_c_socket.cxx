@@ -55,6 +55,9 @@ CSocket::CSocket()
 
 	m_multimap_timer_size = 0;          // 当前计时队列尺寸
 	m_multimap_timer_front_value = 0;   // 当前计时队列头部的时间值
+
+    // 在线用户相关
+    m_online_user_count = 0;            //在线用户数量统计，先给0  
 }
 
 /**
@@ -131,7 +134,6 @@ void CSocket::ShutdownSubproc()
 	m_vec_thread.clear();
 
     // (3)队列相关
-    //clearMsgSendQueue();
 	ClearConnectionPool();
 	ClearAllFromTimerMultimap();
     
@@ -140,7 +142,7 @@ void CSocket::ShutdownSubproc()
     pthread_mutex_destroy(&m_mutex_send_msg);            // 发消息互斥量释放    
     pthread_mutex_destroy(&m_mutex_recyList_connection); // 连接回收队列相关的互斥量释放
     sem_destroy(&m_sem_send_event);                      // 发消息相关线程信号量释放
-	pthread_mutex_destroy(&m_mutex_ping_timer);            // 时间处理队列相关的互斥量释放
+	pthread_mutex_destroy(&m_mutex_ping_timer);          // 时间处理队列相关的互斥量释放
 
     LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "Socket类回收程序 ShutdownSubproc() 成功执行完，Socket类相关程序全部正常结束");
 }
@@ -599,9 +601,9 @@ void CSocket::SendMsg(char* p_sendbuf)
 {
 	LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_sendbuf = %p", p_sendbuf);
 
-    CLock lock(&m_mutex_send_msg);      // 互斥量
+    CLock lock(&m_mutex_send_msg);       // 互斥量
     m_list_send_msg.push_back(p_sendbuf);    
-    ++m_send_msg_list_n;                // 原子操作
+    ++m_send_msg_list_n;                 // 原子操作
 
     // 将信号量的值+1,这样其他卡在sem_wait的就可以走下去
     if(sem_post(&m_sem_send_event)==-1)  // 让ServerSendQueueThread()流程走下来干活
@@ -774,99 +776,6 @@ int CSocket::EpollOperEvent(
     
     return 1;
 }
-
-#if 0
-/**
- * 功能：
-	epoll增加事件，可能被ngx_epoll_init()等函数调用
-
- * 输入参数：(int fd,int read_event, int write_event,uint32_t otherflag,
-              uint32_t event_type, gps_connection_t p_conn)
-	fd 句柄，一个socket
-	read_event  1是个读事件，0不是
-	write_event 1是个写事件，0不是
-	otherflag 其他需要额外补充的标记，弄到这里
-	event_type 事件类型  ，一般就是用系统的枚举值，增加，删除，修改等;
-	p_conn 对应的连接池中的连接的指针
-
- * 返回值：
-	成功返回1，失败返回-1；
-
- * 调用了函数：
-	主要系统调用：epoll_ctl()
-	主要调用自定义函数：
-
- * 其他说明：
-
- * 例子说明：
-
- */
-int CSocket::EpollAddEvent(int fd,
-	int read_event, int write_event,
-	uint32_t otherflag,
-	uint32_t event_type,
-	gps_connection_t p_conn
-)
-{
-	struct epoll_event ev;
-	memset(&ev, 0, sizeof(ev));
-
-	if (1 == read_event)   // 是个读事件
-	{
-		// 读事件，这里发现官方nginx没有使用EPOLLERR，因此我们也不用【有些范例中是使用EPOLLERR的】
-		ev.events = EPOLLIN | EPOLLRDHUP;  // EPOLLIN读事件，也就是read ready
-										   //【客户端三次握手连接进来，也属于一种可读事件】   EPOLLRDHUP 客户端关闭连接，断连
-										   // 似乎不用加EPOLLERR，只用EPOLLRDHUP即可，EPOLLERR/EPOLLRDHUP 
-		                                   // 实际上是通过触发读写事件进行读写操作recv write来检测连接异常
-
-		//ev.events |= (ev.events | EPOLLET);  // 只支持非阻塞socket的高速模式【ET：边缘触发】，
-		                                       // 就拿accetp来说，如果加这个EPOLLET，则客户端连入时，epoll_wait()只会返回一次该事件，
-					                           // 如果用的是EPOLLLT【水平触发：低速模式】，则客户端连入时，
-		                                       // epoll_wait()会被触发多次，一直到用accept()来处理；
-
-
-
-		// https://blog.csdn.net/q576709166/article/details/8649911
-		// 找下EPOLLERR的一些说法：
-		// a)对端正常关闭（程序里close()，shell下kill或ctr+c），触发EPOLLIN和EPOLLRDHUP，但是不触发EPOLLERR 和EPOLLHUP。
-		// b)EPOLLRDHUP    这个好像有些系统检测不到，可以使用EPOLLIN，
-		//   read返回0，删除掉事件，关闭close(fd);如果有EPOLLRDHUP，检测它就可以直到是对方关闭；否则就用上面方法。
-		// c)client 端close()联接,server 会报某个sockfd可读，即epollin来临,然后recv一下 ， 如果返回0再掉用epoll_ctl 中的EPOLL_CTL_DEL , 同时close(sockfd)。
-		//   有些系统会收到一个EPOLLRDHUP，当然检测这个是最好不过了。只可惜是有些系统，上面的方法最保险；如果能加上对EPOLLRDHUP的处理那就是万能的了。
-		// d)EPOLLERR      只有采取动作时，才能知道是否对方异常。即对方突然断掉，是不可能有此事件发生的。
-		//   只有自己采取动作（当然自己此刻也不知道），read，write时，出EPOLLERR错，说明对方已经异常断开。
-		// e)EPOLLERR 是服务器这边出错（自己出错当然能检测到，对方出错你咋能知道啊）
-		// f)给已经关闭的socket写时，会发生EPOLLERR，也就是说，只有在采取行动
-		//   （比如读一个已经关闭的socket，或者写一个已经关闭的socket）时候，才知道对方是否关闭了。
-		// 这个时候，如果对方异常关闭了，则会出现EPOLLERR，出现Error把对方DEL掉，close就可以了。
-	}
-	else
-	{
-		// 其他事件类型待处理
-		// .....
-	}
-	
-	if (otherflag != 0)
-	{
-		ev.events |= otherflag;
-	}
-
-	// 以下这段代码抄自nginx官方,因为指针的最后一位【二进制位】肯定不是1，
-	// 所以 和 c->instance做 |运算；到时候通过一些编码，既可以取得c的真实地址，又可以把此时此刻的c->instance值取到
-	// 比如c是个地址，可能的值是 0x00af0578，对应的二进制是‭101011110000010101111000‬，而 | 1后是0x00af0579
-	ev.data.ptr = (void *)((uintptr_t)p_conn | p_conn->instance);  // 把对象弄进去，后续来事件时，用epoll_wait()后，这个对象能取出来用 
-														     // 但同时把一个 标志位【不是0就是1】弄进去
-
-	if (epoll_ctl(m_handle_epoll, event_type, fd, &ev) == -1)
-	{
-		LogStderrAddPrintAddr(errno, "CSocket::EpollAddEvent()中epoll_ctl(%d,%d,%d,%ud,%ud)失败.", fd, read_event, write_event, otherflag, event_type);
-		//exit(2); // 这是致命问题了，直接退，资源由系统释放吧，这里不刻意释放了，比较麻烦，后来发现不能直接退；
-		return -1;
-	}
-
-	return 1;
-}
-#endif
 
 /**
  * 功能：

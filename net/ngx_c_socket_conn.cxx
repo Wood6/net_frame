@@ -342,6 +342,8 @@ void CSocket::AddRecyConnectList(gps_connection_t p_conn)
     
     m_list_recy_connection.push_back(p_conn);   // 等待ServerRecyConnectionThread线程自会处理 
     ++m_totol_recy_connection_n;                // 待释放连接队列大小+1
+    --m_online_user_count;                      // 连入用户数量-1
+    
 }
 
 /**

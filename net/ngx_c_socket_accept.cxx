@@ -118,7 +118,15 @@ void CSocket::EventAccept(gps_connection_t p_oldc)
 			return;
 		}  //end if(fd_ret_accept == -1)
 
-		// 走到这里的，表示accept4()成功了        
+		// 走到这里的，表示 accept4()/accept() 成功了       
+        if(m_online_user_count >= m_worker_connections_n)  // 用户连接数过多，要关闭该用户socket，因为现在也没分配连接，所以直接关闭即可
+        {
+            LogErrorCoreAddPrintAddr(NGX_LOG_WARN, 0, "超出系统允许的最大连入用户数[%d]，关闭连入请求[%d]", m_worker_connections_n, fd_ret_accept);  
+            close(fd_ret_accept);
+            
+            return ;
+        }
+        
 		p_newc = GetConnectionFromCPool(fd_ret_accept);   // 这是针对新连入用户的连接，和监听套接字 所对应的连接是两个不同的东西，不要搞混
 		if (p_newc == NULL)
 		{
@@ -172,7 +180,9 @@ void CSocket::EventAccept(gps_connection_t p_oldc)
 			AddToTimerMultimap(p_newc);
 		}
 
-		break;                       // 一般就是循环一次就跳出去
+        ++m_online_user_count;   // 连入用户数量+1
+
+        break;                   // 一般就是循环一次就跳出去
 	} while (1);
 
 	return;

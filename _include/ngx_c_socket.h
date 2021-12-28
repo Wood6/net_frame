@@ -167,6 +167,9 @@ private:
 	size_t                         m_multimap_timer_size;        // 时间队列的尺寸
 	time_t                         m_multimap_timer_front_value; // 当前计时队列头部时间值
 
+    // 在线用户相关
+	std::atomic<int>               m_online_user_count;          // 当前在线用户数统计
+
 protected:
     // 一些和网络通讯有关的成员变量
     size_t                        m_len_pkg_header;      // sizeof(COMM_PKG_HEADER);		
