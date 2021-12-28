@@ -88,6 +88,9 @@ void _gs_connection::GetOneToUse()
 	p_sendbuf_mem = NULL;                    // 发送数据头指针记录
 	epoll_events_type    = 0;                // epoll事件先给0
 	last_ping_time = time(NULL);             // 上次ping的时间
+
+    flood_attacked_last_time = 0;                   // Flood攻击上次收到包的时间
+	flood_attacked_n  = 0;	                 // Flood攻击在该时间内收到包的次数统计
 }
 
 

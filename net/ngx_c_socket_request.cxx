@@ -30,7 +30,9 @@
  */
 void CSocket::ReadRequestHandler(gps_connection_t p_conn)
 {
-    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_conn = %p", p_conn);
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_conn = %Xp", p_conn);
+
+    bool is_flood_attack = false;
 
     // 收包，注意我们用的第二个和第三个参数，我们用的始终是这两个参数，
     // 因此我们必须保证 p_conn->p_recvbuf_pos 指向正确的收包位置，保证 p_conn->len_recv 指向正确的收包宽度  
@@ -46,7 +48,7 @@ void CSocket::ReadRequestHandler(gps_connection_t p_conn)
     {        
         if(recv_cnt == static_cast<ssize_t>(m_len_pkg_header))  // 正好收到完整包头，这里拆解包头
         {   
-            WaitRequestHandlerProcPart1(p_conn); //那就调用专门针对包头处理完整的函数去处理把。
+            WaitRequestHandlerProcPart1(p_conn, is_flood_attack); //那就调用专门针对包头处理完整的函数去处理把。
         }
         else
 		{
@@ -62,7 +64,7 @@ void CSocket::ReadRequestHandler(gps_connection_t p_conn)
         if(static_cast<ssize_t>(p_conn->len_recv) == recv_cnt)                  // 要求收到的宽度和我实际收到的宽度相等
         {
             // 包头收完整了
-            WaitRequestHandlerProcPart1(p_conn);          // 那就调用专门针对包头处理完整的函数去处理把。
+            WaitRequestHandlerProcPart1(p_conn, is_flood_attack);          // 那就调用专门针对包头处理完整的函数去处理把。
         }
         else
 		{
@@ -77,8 +79,14 @@ void CSocket::ReadRequestHandler(gps_connection_t p_conn)
         //  包头刚好收完，准备接收包体
         if(static_cast<ssize_t>(p_conn->len_recv) == recv_cnt)
         {
+            if(m_enable_flood_attack_check) 
+            {
+                // Flood攻击检测是否开启
+                is_flood_attack = IsFloodAttack(p_conn);
+            }
+
             // 收到的宽度等于要收的宽度，包体也收完整了
-            WaitRequestHandlerProcLast(p_conn);
+            WaitRequestHandlerProcLast(p_conn, is_flood_attack);
         }
         else
 		{
@@ -93,8 +101,14 @@ void CSocket::ReadRequestHandler(gps_connection_t p_conn)
         // 接收包体中，包体不完整，继续接收中
         if(static_cast<ssize_t>(p_conn->len_recv) == recv_cnt)
         {
+            if(m_enable_flood_attack_check) 
+            {
+                // Flood攻击检测是否开启
+                is_flood_attack = IsFloodAttack(p_conn);
+            }
+
             // 包体收完整了
-            WaitRequestHandlerProcLast(p_conn);
+            WaitRequestHandlerProcLast(p_conn, is_flood_attack);
         }
         else
         {
@@ -103,6 +117,14 @@ void CSocket::ReadRequestHandler(gps_connection_t p_conn)
             p_conn->len_recv      -= recv_cnt;            // 要收的内容当然要减少，以确保只收到完整的包头先
         }
     } 
+
+    if(is_flood_attack)
+    {
+        // 客户端连接flood攻击服务器，则直接把该客户端连接踢掉
+        LogErrorCoreAddPrintAddr(NGX_LOG_WARN, 0, "is_flood_attack为true了，发现客户端连接[%Xp]有flood攻击嫌疑，此处程序干掉这个客户端连接，并将开始回收该连接所占资源", p_conn);
+        ManualCloseSocketProc(p_conn);
+    }
+
     
     return;
 }
@@ -133,7 +155,7 @@ void CSocket::ReadRequestHandler(gps_connection_t p_conn)
  */
 ssize_t CSocket::RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_buf) 
 {
-    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_conn=%p, p_buff=%p, len_buf=%ud", p_conn, p_buff, len_buf);
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_conn=%Xp, p_buff=%p, len_buf=%ud", p_conn, p_buff, len_buf);
     
     ssize_t recv_cnt = 0;
     recv_cnt = recv(p_conn->fd, p_buff, len_buf, 0);   // recv()系统函数， 最后一个参数flag，一般为0； 
@@ -226,8 +248,9 @@ ssize_t CSocket::RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_bu
  * 功能：
     包头收完整后的处理，我们称为包处理阶段1：写成函数，方便复用
     
- * 输入参数：(gps_connection_t p_conn)
+ * 输入参数：(gps_connection_t p_conn, bool& is_flood)
  	p_conn 指针，指向连接池中的一个连接
+ 	is_flood 
 
  * 返回值：
 	无
@@ -235,13 +258,14 @@ ssize_t CSocket::RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_bu
  * 调用了函数：
 
  * 其他说明：
+    注意参数isflood是个引用
 
  * 例子说明：
 
  */
-void CSocket::WaitRequestHandlerProcPart1(gps_connection_t p_conn)
+void CSocket::WaitRequestHandlerProcPart1(gps_connection_t p_conn, bool& is_flood_attack)
 {
-    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_conn = %p", p_conn);
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_conn = %Xp, is_flood_attack = %s", p_conn, (is_flood_attack ? "true" : "false") );
 
     CMemory* p_memory = CMemory::GetInstance();		
 
@@ -300,7 +324,14 @@ void CSocket::WaitRequestHandlerProcPart1(gps_connection_t p_conn)
         {
             // 该报文只有包头无包体【我们允许一个包只有包头，没有包体】
             // 这相当于收完整了，则直接入消息队列待后续业务逻辑线程去处理吧
-            WaitRequestHandlerProcLast(p_conn);
+
+            if(m_enable_flood_attack_check) 
+            {
+                // Flood攻击检测是否开启
+                is_flood_attack = IsFloodAttack(p_conn);
+            }
+        
+            WaitRequestHandlerProcLast(p_conn, is_flood_attack);
         } 
         else
         {
@@ -329,18 +360,28 @@ void CSocket::WaitRequestHandlerProcPart1(gps_connection_t p_conn)
  * 例子说明：
 
  */
-void CSocket::WaitRequestHandlerProcLast(gps_connection_t p_conn)
+void CSocket::WaitRequestHandlerProcLast(gps_connection_t p_conn, bool& is_flood_attack)
 {
-    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_conn = %p", p_conn);
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_conn = %Xp, is_flood_attack = %s", p_conn, (is_flood_attack ? "true" : "false") );
     // 上面拿到消息数，下面就知道有多少消息需要处理，
     // 从而好直接告诉线程需要激活多个个线程来处理消息对应的业务逻辑了  
 
     // 加个信息日志，方便调试
     LogStderrAddPrintAddr(0, "包体收完整了，读取出包头中信息[包头+包体]的长度len_pkg = %ud",\
                                   ntohs( ((gps_pkg_header_t)p_conn->arr_pkghead_info)->len_pkg ));     
+    if(false == is_flood_attack)
+    {
+        g_threadpool.AddMsgRecvQueueAndSignal(p_conn->p_recvbuf_array_mem_addr);  // 入消息队列并触发线程处理消息
+    }
+    else
+    {
+        // 输出一条警告日志记录
+        LogErrorCoreAddPrintAddr(NGX_LOG_WARN, 0, "连接 p_conn = %Xp 有flood攻击嫌疑，此处程序将丢弃这个业务请求的消息包并释放收包占用的内存资源", p_conn);
+        // 对于有攻击倾向的恶人，先把他的包丢掉
+        CMemory* p_memory = CMemory::GetInstance();
+        p_memory->FreeMemory(p_conn->p_recvbuf_array_mem_addr); // 直接释放掉内存，根本不往消息队列入
+    }
     
-    g_threadpool.AddMsgRecvQueueAndSignal(p_conn->p_recvbuf_array_mem_addr);  // 入消息队列并触发线程处理消息
-
     p_conn->p_recvbuf_array_mem_addr  = NULL;
     p_conn->pkg_cur_state      = PKG_HEAD_INIT;              // 收包状态机的状态恢复为原始态，为收下一个包做准备                    
     p_conn->p_recvbuf_pos      = p_conn->arr_pkghead_info;   // 设置好收包的位置
@@ -374,7 +415,7 @@ void CSocket::WaitRequestHandlerProcLast(gps_connection_t p_conn)
  */
 ssize_t CSocket::SendProc(gps_connection_t p_conn, char* p_buf, ssize_t size) 
 {
-    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_conn = %p, p_buf = %p, size = %d", p_conn, p_buf, size);
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_conn = %Xp, p_buf = %p, size = %d", p_conn, p_buf, size);
     
     // 这里参考借鉴了官方nginx函数ngx_unix_send()的写法
     ssize_t n = 0;
@@ -452,7 +493,7 @@ ssize_t CSocket::SendProc(gps_connection_t p_conn, char* p_buf, ssize_t size)
  */
 void CSocket::WriteRequestHandler(gps_connection_t p_conn)
 {  
-    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_conn = %p", p_conn);
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_conn = %Xp", p_conn);
     
     CMemory *p_memory = CMemory::GetInstance();
     

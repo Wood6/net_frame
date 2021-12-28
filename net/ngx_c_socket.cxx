@@ -13,6 +13,7 @@
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include <pthread.h>
+#include <sys/time.h>            // gettimeofday(xxx) 
 
 
 /**
@@ -192,13 +193,14 @@ void CSocket::ClearSendMsgList()
  * 调用了函数：
 
  * 其他说明：
+    这个函数是可能被多线程调用的，但是即便被多线程调用，也没关系，不影响本服务器程序的稳定性和正确运行性
 
  * 例子说明：
 
  */
 void CSocket::ManualCloseSocketProc(gps_connection_t p_conn)
 {
-    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "");
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_conn = %Xp", p_conn);
     
 	if (true == m_is_enable_ping_timer)
 	{
@@ -214,6 +216,75 @@ void CSocket::ManualCloseSocketProc(gps_connection_t p_conn)
 		--p_conn->atomi_sendbuf_full_flag_n;   // 归0
 
 	AddRecyConnectList(p_conn);  // 将此链接放入延迟回收队列
+}
+
+/**
+ * 功能：
+    测试该连接是否是flood攻击，是则返回true，否则返回false
+
+ * 输入参数：(gps_connection_t p_conn)
+ 	p_conn 检测的连接
+
+ * 返回值：bool
+	true  是flood攻击
+    false 不是flood攻击
+
+ * 调用了函数：
+
+ * 其他说明：
+    Flood类攻击中最常见，危害最大的是Syn-Flood攻击，另外还有 ICMP Flood攻击，UDP Flood攻击，DNS Flood攻击。重点说明一下Syn-Flood攻击
+
+    Syn-Flood攻击是当前网络上最为常见的DDoS攻击，也是最为经典的拒绝服务攻击，它利用了TCP协议实现上的一个缺陷，
+    通过向网络服务所在端口发送大量的伪造源地址的攻击报文，就可能造成目标服务器中的半开连接队列被占满，从而阻止其他合法用户进行访问。
+
+    Syn_Flood攻击原理：攻击者首先伪造地址对服务器发起SYN请求（我可以建立连接吗？），服务器就会回应一个ACK+SYN（可以+请确认）。
+    而真实的IP会认为，我没有发送请求，不作回应。服务器没有收到回应，会重试3-5次并且等待一个SYN Time（一般30秒-2分钟）后，丢弃这个连接。
+    如果攻击者大量发送这种伪造源地址的SYN请求，服务器端将会消耗非常多的资源来处理这种半连接，保存遍历会消耗非常多的CPU时间和内存，
+    何况还要不断对这个列表中的IP进行SYN+ACK的重试。TCP是可靠协议，这时就会重传报文，默认重试次数为5次，重试的间隔时间从1s开始每次都番倍，
+    分别为1s + 2s + 4s + 8s +16s = 31s,第5次发出后还要等32s才知道第5次也超时了，所以一共是31 + 32 = 63s，也就是说一共假的syn报文，
+    会占用TCP准备队列63s之久，而半连接队列默认为1024，系统默认不同，可 cat /proc/sys/net/ipv4/tcp_max_syn_backlog c查看。
+    也就是说在没有任何防护的情况下，每秒发送200个伪造syn包，就足够撑爆半连接队列，从而使真正的连接无法建立，无法响应正常请求。
+    最后的结果是服务器无暇理睬正常的连接请求—拒绝服务。
+    
+    参考网址：
+    https://blog.csdn.net/qq_34777600/article/details/81946514
+    http://www.h3c.com/cn/d_202009/1334282_30005_0.htm
+
+ * 例子说明：
+
+ */
+bool CSocket::IsFloodAttack(gps_connection_t p_conn)
+{
+    LogErrorCoreAddPrintAddr(NGX_LOG_INFO, 0, "参数: p_conn = %Xp", p_conn);
+    
+    bool  ret = false;
+
+    struct timeval s_curr_time;       // 当前时间结构
+	gettimeofday(&s_curr_time, NULL); // 取得当前时间
+    uint64_t curr_time_ms =  (s_curr_time.tv_sec * 1000 + s_curr_time.tv_usec / 1000);  // 当前时间（单位：毫秒）
+
+	if((curr_time_ms - p_conn->flood_attacked_last_time) < m_flood_time_interval)       // 两次收到包的时间 < 100毫秒
+	{
+        // 发包太频繁记录
+		++p_conn->flood_attacked_n;
+		p_conn->flood_attacked_last_time = curr_time_ms;
+	}
+	else
+	{
+        // 既然发布不这么频繁，则恢复计数值
+		p_conn->flood_attacked_n = 0;
+		p_conn->flood_attacked_last_time = curr_time_ms;
+	}
+
+    LogErrorCore(NGX_LOG_INFO, 0, "p_conn->flood_attacked_n = %d, m_flood_attack_checked_n = %d", p_conn->flood_attacked_n, m_flood_attack_checked_n);
+
+	if(p_conn->flood_attacked_n >= m_flood_attack_checked_n)
+	{
+		// 可以踢此人的标志
+		ret = true;
+	}
+
+	return ret;
 }
 
 /**
@@ -244,8 +315,12 @@ void CSocket::ReadConf()
     m_recy_connection_wait_time  = p_config->GetIntDefault("recy_connection_wait_time",m_recy_connection_wait_time); //等待这么些秒后才回收连接
 
 	m_is_enable_ping_timer = p_config->GetIntDefault("enable_socket_wait_time", 0) ? true : false;    // 是否开启踢人时钟，true开启   false不开启
-	m_ping_wait_time = p_config->GetIntDefault("socket_max_wait_time", m_ping_wait_time);        // 多少秒检测一次是否 心跳超时，只有当m_is_enable_ping_timer = true时，本项才有用	
-	m_ping_wait_time = (m_ping_wait_time > 5) ? m_ping_wait_time : 5;                            // 不建议低于5秒钟，因为无需太频繁
+	m_ping_wait_time = p_config->GetIntDefault("socket_max_wait_time", m_ping_wait_time);             // 多少秒检测一次是否 心跳超时，只有当m_is_enable_ping_timer = true时，本项才有用	
+	m_ping_wait_time = (m_ping_wait_time > 5) ? m_ping_wait_time : 5;                                 // 不建议低于5秒钟，因为无需太频繁
+
+    m_enable_flood_attack_check = p_config->GetIntDefault("enable_flood_attack_check", 0) ? true : false;  // Flood攻击检测是否开启,1开启,0不开启
+    m_flood_time_interval = p_config->GetIntDefault("flood_attack_time_interval", 100);                    // 表示每次收到数据包的时间间隔是100(毫秒)
+    m_flood_attack_checked_n = p_config->GetIntDefault("flood_attack_checked_n", 10);                      // 累积多少次踢出此人
 }
 
 /**

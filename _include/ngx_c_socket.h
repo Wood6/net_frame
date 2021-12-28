@@ -92,6 +92,10 @@ struct _gs_connection
 	// 和心跳包有关
 	time_t                    last_ping_time;             // 上次收到心跳包的时间【上次发送心跳包的时间】
 
+	// 和网络安全有关	
+	uint64_t                  flood_attacked_last_time;   // Flood攻击上次收到包的时间
+	int                       flood_attacked_n;           // Flood攻击在该时间内收到包的次数统计
+
 	// ----------------------------------------
 	gps_connection_t            data;             // 这是个指针【等价于传统链表里的next成员：后继指针】，
 	                                              // 指向下一个本类型对象，用于把空闲的连接池对象串起来
@@ -170,6 +174,11 @@ private:
     // 在线用户相关
 	std::atomic<int>               m_online_user_count;          // 当前在线用户数统计
 
+	// 网络安全相关
+	bool                           m_enable_flood_attack_check;  // Flood攻击检测是否开启,true开启,false不开启
+	unsigned int                   m_flood_time_interval;        // 表示每次收到数据包的时间间隔是100(毫秒)
+	int                            m_flood_attack_checked_n;     // 累积多少次踢出此人
+
 protected:
     // 一些和网络通讯有关的成员变量
     size_t                        m_len_pkg_header;      // sizeof(COMM_PKG_HEADER);		
@@ -204,8 +213,8 @@ private:
 	size_t SocketNtop(struct sockaddr *sa, int port, u_char *text, size_t len);  
 
     ssize_t RecvProc(gps_connection_t p_conn,  char* p_buff, ssize_t len_buf);  // 接收从客户端来的数据专用函数
-	void WaitRequestHandlerProcPart1(gps_connection_t p_conn);                  // 包头收完整后的处理                                                                   
-	void WaitRequestHandlerProcLast(gps_connection_t p_conn);                   // 收到一个完整包后的处理
+	void WaitRequestHandlerProcPart1(gps_connection_t p_conn, bool& is_flood);  // 包头收完整后的处理                                                                   
+	void WaitRequestHandlerProcLast(gps_connection_t p_conn, bool& is_flood);   // 收到一个完整包后的处理
 	void AddMsgRecvQueue(char* p_buf, int& ret_msgqueue_n);                     // 收到一个完整消息后，入消息队列
 
     //线程相关函数
@@ -224,6 +233,9 @@ private:
 	gps_msg_header_t GetOverTimeTimer(time_t cur_time);           // 根据给的当前时间，从m_multimap_timer找到比这个时间更老（更早）的节点【1个】返回去，这些节点都是时间超过了，要处理的节点      
 	void DeleteFromTimerMultimap(gps_connection_t p_conn);        // 把指定用户tcp连接从timer表中抠出去
 	void ClearAllFromTimerMultimap();                             // 清理时间队列中所有内容
+
+	// 和网络安全有关
+	bool IsFloodAttack(gps_connection_t p_conn);                      // 测试是否flood攻击成立，成立则返回true，否则返回false
 
 protected:
     void SendMsg(char *p_send_buf);                               // 把数据扔到待发送对列中 
